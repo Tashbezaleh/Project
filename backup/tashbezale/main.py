@@ -19,9 +19,9 @@ import webapp2, scrapy, cgi
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        in_text = "hello2"
+        in_text = "hello"
         self.response.write(in_text)
 
-app2 = webapp2.WSGIApplication([
+app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)

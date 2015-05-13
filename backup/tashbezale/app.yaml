@@ -13,7 +13,7 @@ handlers:
   upload: favicon\.ico
 
 - url: .*
-  script: main.app2
+  script: main.app
 
 libraries:
 - name: webapp2
