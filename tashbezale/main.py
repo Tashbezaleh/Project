@@ -21,27 +21,31 @@ import jinja2
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True)	
 
+
+
 class MainHandler(webapp2.RequestHandler):
+    def get(self):
+    	template_values = {}
+    	template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
+        in_text = template.render(template_values)
+    	self.response.write(in_text)
+
+class MainHandler2(webapp2.RequestHandler):
     def get(self):
     	intext = cgi.escape(self.request.get('definition'))
         regex = cgi.escape(self.request.get('guess'))
+        regex = regex.replace('?', '..').encode('utf')
 
-        if ( regex == '' or intext == ''): # no search request
-        	template_values = {}
-	        template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
-	        in_text = template.render(template_values)
-	        self.response.write(in_text)
-        else:
-	        regex = regex.replace('?', '..').encode('utf')
-	        regex = cgi.escape(self.request.get('guess'))
-	        regex = regex.replace('?', '..').encode('utf')
-	        template_values = {
-	        	'results_list' = [ " a", "b", "c", "d"]
-	        }
-	        template = JINJA_ENVIRONMENT.get_template('/template/results.html')
-	        in_text = template.render(template_values)
-	        self.response.write(in_text)
+    	template_values= {
+    		'results_list' : [ intext, regex],
+    	}
+    	template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
+        in_text = template.render(template_values)
+    	self.response.write(in_text)
+
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/results.html', MainHandler2)
 ], debug=True)

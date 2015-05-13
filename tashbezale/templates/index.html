@@ -12,26 +12,30 @@
 		</script>	
 	</head>
 	<body>
-		<form method="GET" action="results.html" target="results">
+		
 			<div id="main_search">
+				<form method="GET" action="results.html" target="results">
 				<img src="graphics/logo.jpg" alt="logo" id="logo">
 				<br>
 				<br>
-				<label>Enter shit to search:
+				<label>הכנס הגדרה:
 				<br>
 				<input type="text" id="definition" name="definition" class = "slide"/>
 				</label>
 				<br>
 				<br>
-				<label>Enter shit to regex:
+				<label>הכנס תבנית:
 				<br>
 				<input type="text" id="guess" name="guess" class = "slide"/>
 				</label>
 				<br>
 				<br>
 				<input id="submit_button" type="submit" value="Search!"  class = "slide"/>
+				</form>
+				<br>
+				<iframe style="border-width:0px;" src name="results"></iframe>
 			</div>
-		</form>
-		<iframe  name="results"></iframe>
+		
+		
 	</body>
 </html>
