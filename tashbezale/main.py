@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Copyright 2007 Google Inc.
 #
@@ -15,18 +17,17 @@
 #
 from google.appengine.api import users
 
-import webapp2, scrapy, cgi
+import webapp2, solver, cgi, re
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         with open('index.html') as stream:
             source = stream.read();
+
         intext = cgi.escape(self.request.get('definition'))
         regex = cgi.escape(self.request.get('guess'))
-        regex = regex.replace('?', '..').encode('utf')
-        in_text = source % scrapy.best_func(intext.encode('utf'), '$' + regex + '^')
+        regex = re.compile('^' + regex.replace('?', '..').encode('utf') + '$', re.UNICODE)
+        in_text = source % solver.html_solve(intext.encode('utf'), regex)
         self.response.write(in_text)
 
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
+app = webapp2.WSGIApplication([('/', MainHandler)], debug=True)
