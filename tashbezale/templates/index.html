@@ -2,40 +2,81 @@
 	<head>
 		<title>Awesome Crossome</title>
 		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
-		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js" ></script>
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$("#main_search").children().not("br").each(function (index,elem) {
-					$(elem).hide().delay(index * 300).fadeIn(1000);
-				});
-			});
-		</script>	
+		<script type="text/javascript" src="Scripts/jquery-2.1.4.min.js" ></script>
+        <script src="Scripts/jQuery-easing.js" type="text/javascript"></script>
+		<script type="text/javascript" src="Scripts/General.js"></script>
 	</head>
 	<body>
-		
+        <div id="rightColumn">
+                <ul id="slidingNavigation">
+                    <li><h3>הפופאפים שלנו</h3></li>
+                    <li>
+                        <a href="#zero" class="popup" >
+                            פופאפ אפסי
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#one" class="popup" >
+                            פופאפ ראשון
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#two" class="popup" >
+                            פופאפ שני
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#three" class="popup" >
+                            פופאפ שלישי
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#four" class="popup" >
+                            פופאפ רביעי
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <center>
 			<div id="main_search">
-				<form method="GET" action="results.html" target="results">
+				<form method="GET" action="results" target="results">
 				<img src="graphics/logo.jpg" alt="logo" id="logo">
 				<br>
 				<br>
 				<label>הכנס הגדרה:
 				<br>
-				<input type="text" id="definition" name="definition" class = "slide"/>
+				<input type="text" id="definition" name="definition" class = "peleg" placeholder="עוף דורס" />
 				</label>
 				<br>
 				<br>
 				<label>הכנס תבנית:
 				<br>
-				<input type="text" id="guess" name="guess" class = "slide"/>
+				<input type="text" id="guess" name="guess" class = "peleg" placeholder="תנש**"/>
 				</label>
 				<br>
 				<br>
-				<input id="submit_button" type="submit" value="Search!"  class = "slide"/>
+				<input id="submit_button" type="submit" value="חפש!"  class = "peleg"/>
 				</form>
-				<br>
-				<iframe style="border-width:0px;" src name="results"></iframe>
+		    	<iframe style="border-width:0px; display:none;" src name="results"></iframe>
 			</div>
-		
-		
+		</center>
+
+        
+        <div id="zero" class="popupContent">
+            אפס ביחסי אנוש.
+        </div>
+        <div id="one" class="popupContent">
+            אחד אוסטרוברנו.
+        </div>
+        <div id="two" class="popupContent">
+            שניים שרייברים.
+        </div>
+        <div id="three" class="popupContent">
+            שלושה דן דוד.
+        </div>
+        <div id="four" class="popupContent">
+            ארבע הציון שנקבל בגוגל.
+        </div>
+        <div id="currentPopup"></div>
 	</body>
 </html>
