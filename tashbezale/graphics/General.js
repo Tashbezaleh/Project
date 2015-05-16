@@ -1,12 +1,12 @@
-﻿function doSomeCSS() {
+﻿function fixCSSIssues() {
     $("#popupContentHolder").css("right", ($(window).width() - $("#popupContentHolder").outerWidth()) / 2);
     $("#popupContentHolder").css("top", ($(window).height() - $("#popupContentHolder").outerHeight()) / 2);
-    $("#main_search").animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
-    $("#rightColumn").animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
+    $("#main_search").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
+    $("#rightColumn").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
 }
 function appear(list){
     list
-    .not("br")
+    .not("br, script")
     .each(function (index, elem) {
         $(elem).hide().delay(index * 200).fadeIn(1000);
     });
@@ -44,33 +44,47 @@ function closePopup() {
         $("#currentPopup").empty();
     });
 }
-function setPopups() {
-    $(".popup").click(function (event) {
-        event.preventDefault();
-        closePopup();
-        content = $($(this).attr('href')).clone();
-        $("#currentPopup").append("<div id='blackblock'></div>");
-        $("#blackblock").click(closePopup).fadeIn(1000, function () {
-            $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
-            $("#popupContentHolder").fadeIn(1000, function () {
-                $(this)
+function showPopup(content) {
+    closePopup();
+    $("#currentPopup").append("<div id='blackblock'></div>");
+    $("#blackblock").click(closePopup).fadeIn(1000, function () {
+        $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
+        $("#popupContentHolder").fadeIn(1000, function () {
+            $(this)
                 .append(content)
                 .children().fadeIn(1000);
-            });
-            doSomeCSS();
+        });
+        fixCSSIssues();
+    });
+}
+function setPopups() {
+    $(".popup").click(function (e) {
+        e.preventDefault();
+        showPopup($($(this).attr('href')).clone());
+    });
+}
+function expirementWithForms() {
+    $(document).on("submit","form", function (e) {
+        e.preventDefault();
+        $.get($(this).attr("action"), $(this).serialize())
+        .done(function (data) {
+            //do something with server data!
+            //one option is:
+            showPopup(data);
+            //the other is:
+            $("#results").empty().append(data);
+            fixCSSIssues();
+            appear($("#results").children());
+        })
+        .fail(function () {
+            alert("Whoops... something went wront... blah blah info blah blah ignore blah");
         });
     });
 }
-function poop() {
-    $("submit_button").click(function () {
-        $("iframe").show(0); //shows ALL iframes, not good. change to id-based show.
-        doSomeCSS();
-    });
-}
 $(document).ready(function () {
-    $(window).resize(doSomeCSS);
+    $(window).resize(fixCSSIssues);
     appear($("#main_search form").children());
     slide("#slidingNavigation", 17, 1700, 200);
     setPopups();
-    poop();
+    expirementWithForms();
 });

@@ -1,22 +1,11 @@
-<html>
-	<head>
-		<title>Awesome Crossome</title>
-		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
-		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js" ></script>
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$("li").each(function (index,elem) {
-					$(elem).hide().delay(index * 300).fadeIn(1000);
-				});
-			});
-		</script>
-	</head>
-	<body>
-		
-	<ul>
-		{% for item in results_list %}
-			<li>{{ item }}</li>
-			{% endfor %}
-	</ul>
-	</body>
-</html>
+<script type="text/javascript">
+    function submitUpVote() {
+        //todo complete using ajax and test
+    }
+</script>
+{% for item in results_list %}
+<li>{{ item }}
+<a href="#" onclick="submitUpVote()">upvote</a>
+<a href="#" onclick="submitUpVote()">downvote</a>
+</li> 
+{% endfor %}

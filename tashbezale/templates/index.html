@@ -2,9 +2,9 @@
 	<head>
 		<title>Awesome Crossome</title>
 		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
-		<script type="text/javascript" src="Scripts/jquery-2.1.4.min.js" ></script>
-        <script src="Scripts/jQuery-easing.js" type="text/javascript"></script>
-		<script type="text/javascript" src="Scripts/General.js"></script>
+		<script type="text/javascript" src="graphics/jquery-2.1.4.min.js" ></script>
+        <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+		<script type="text/javascript" src="graphics/General.js"></script>
 	</head>
 	<body>
         <div id="rightColumn">
@@ -39,25 +39,26 @@
             </div>
         <center>
 			<div id="main_search">
-				<form method="GET" action="results" target="results">
-				<img src="graphics/logo.jpg" alt="logo" id="logo">
-				<br>
-				<br>
-				<label>הכנס הגדרה:
-				<br>
-				<input type="text" id="definition" name="definition" class = "peleg" placeholder="עוף דורס" />
-				</label>
-				<br>
-				<br>
-				<label>הכנס תבנית:
-				<br>
-				<input type="text" id="guess" name="guess" class = "peleg" placeholder="תנש**"/>
-				</label>
-				<br>
-				<br>
-				<input id="submit_button" type="submit" value="חפש!"  class = "peleg"/>
+				<form method="GET" action="results.html" target="results">
+				    <img src="graphics/logo.jpg" alt="logo" id="logo">
+				    <br/>
+				    <br/>
+				    <label>הכנס הגדרה:
+				    <br/>
+				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="עוף דורס" />
+				    </label>
+				    <br/>
+				    <br/>
+				    <label>הכנס תבנית:
+				    <br/>
+				    <input type="text" id="guess" name="guess" class = "peleg" placeholder="תנש**"/>
+				    </label>
+				    <br/>
+				    <br/>
+				    <input id="submit_button" type="submit" value="חפש!"  class = "peleg"/>
 				</form>
-		    	<iframe style="border-width:0px; display:none;" src name="results"></iframe>
+                <br />
+                <ul id="results"></ul>
 			</div>
 		</center>
 
