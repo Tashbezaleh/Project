@@ -40,19 +40,19 @@ function sideSlide(father,limit) { //idea only, not yet tested.
     });
 }
 function closePopup() {
-    $("#currentPopup").children().fadeOut(1000, function () {
+    $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
     });
 }
 function showPopup(content) {
     closePopup();
     $("#currentPopup").append("<div id='blackblock'></div>");
-    $("#blackblock").click(closePopup).fadeIn(1000, function () {
+    $("#blackblock").click(closePopup).fadeIn(500, function () {
         $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
-        $("#popupContentHolder").fadeIn(1000, function () {
+        $("#popupContentHolder").fadeIn(0, function () {
             $(this)
                 .append(content)
-                .children().fadeIn(1000);
+                .children().fadeIn(0);
         });
         fixCSSIssues();
     });
@@ -70,7 +70,7 @@ function expirementWithForms() {
         .done(function (data) {
             //do something with server data!
             //one option is:
-            showPopup(data);
+            //showPopup(data);
             //the other is:
             $("#results").empty().append(data);
             fixCSSIssues();
@@ -84,7 +84,7 @@ function expirementWithForms() {
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
     appear($("#main_search form").children());
-    slide("#slidingNavigation", 17, 1700, 200);
+    slide("#slidingNavigation", 17, 900, 150);
     setPopups();
     expirementWithForms();
 });

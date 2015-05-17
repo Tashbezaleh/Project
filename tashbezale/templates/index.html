@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Awesome Crossome</title>
+		<title>תשבצל'ה</title>
 		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
 		<script type="text/javascript" src="graphics/jquery-2.1.4.min.js" ></script>
         <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
@@ -9,30 +9,35 @@
 	<body>
         <div id="rightColumn">
                 <ul id="slidingNavigation">
-                    <li><h3>הפופאפים שלנו</h3></li>
+                    <li><h3>אפשרויות</h3></li>
                     <li>
-                        <a href="#zero" class="popup" >
-                            פופאפ אפסי
+                        <a href="/">
+                            חפש הגדרה
                         </a>
                     </li>
                     <li>
                         <a href="#one" class="popup" >
-                            פופאפ ראשון
+                            הוסף הגדרה
                         </a>
                     </li>
                     <li>
                         <a href="#two" class="popup" >
-                            פופאפ שני
+                            פורום
                         </a>
                     </li>
                     <li>
                         <a href="#three" class="popup" >
-                            פופאפ שלישי
+                            משחקונים
                         </a>
                     </li>
                     <li>
                         <a href="#four" class="popup" >
-                            פופאפ רביעי
+                            צור קשר
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#five" class="popup" >
+                            אודות
                         </a>
                     </li>
                 </ul>
@@ -45,13 +50,13 @@
 				    <br/>
 				    <label>הכנס הגדרה:
 				    <br/>
-				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="עוף דורס" />
+				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="למשל: עוף דורס" />
 				    </label>
 				    <br/>
 				    <br/>
 				    <label>הכנס תבנית:
 				    <br/>
-				    <input type="text" id="guess" name="guess" class = "peleg" placeholder="תנש**"/>
+				    <input type="text" id="guess" name="guess" class = "peleg" placeholder="למשל: ת????"/>
 				    </label>
 				    <br/>
 				    <br/>
@@ -62,21 +67,25 @@
 			</div>
 		</center>
 
-        
-        <div id="zero" class="popupContent">
-            אפס ביחסי אנוש.
-        </div>
         <div id="one" class="popupContent">
-            אחד אוסטרוברנו.
+            <form method="post">
+                הוסף הגדרה<br/><br/>
+                הגדרה: <input type="text" class="peleg"/><br/><br/>
+                פתרון: <input type="text" class="peleg"/><br/><br/>
+                <input type="submit" class="peleg" value="הוסף!" disabled/>
+            </form>
         </div>
         <div id="two" class="popupContent">
-            שניים שרייברים.
+            תכונה זאת לא נתמכת עדיין
         </div>
         <div id="three" class="popupContent">
-            שלושה דן דוד.
+            תכונה זאת לא נתמכת עדיין
         </div>
         <div id="four" class="popupContent">
-            ארבע הציון שנקבל בגוגל.
+            תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="five" class="popupContent">
+            תכונה זאת לא נתמכת עדיין
         </div>
         <div id="currentPopup"></div>
 	</body>
