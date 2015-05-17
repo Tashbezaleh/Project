@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<title>תשבצל'ה</title>
+		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
+		<script type="text/javascript" src="graphics/jquery-2.1.4.min.js" ></script>
+        <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+		<script type="text/javascript" src="graphics/General.js"></script>
+	</head>
+	<body>
+        <div id="rightColumn">
+                <ul id="slidingNavigation">
+                    <li><h3>אפשרויות</h3></li>
+                    <li>
+                        <a href="/">
+                            חפש הגדרה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#one" class="popup" >
+                            הוסף הגדרה
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#two" class="popup" >
+                            פורום
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#three" class="popup" >
+                            משחקונים
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#four" class="popup" >
+                            צור קשר
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#five" class="popup" >
+                            אודות
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <center>
+			<div id="main_search">
+				<form method="GET" action="results.html" target="results">
+				    <img src="graphics/logo.jpg" alt="logo" id="logo">
+				    <br/>
+				    <br/>
+				    <label>הכנס הגדרה:
+				    <br/>
+				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="למשל: עוף דורס" />
+				    </label>
+				    <br/>
+				    <br/>
+				    <label>הכנס תבנית:
+				    <br/>
+				    <input type="text" id="guess" name="guess" class = "peleg" placeholder="למשל: ת????"/>
+				    </label>
+				    <br/>
+				    <br/>
+				    <input id="submit_button" type="submit" value="חפש!" class = "peleg"/>
+				</form>
+                <br />
+                <ul id="results"></ul>
+			</div>
+		</center>
+
+        <div id="one" class="popupContent">
+            <form method="post">
+                הוסף הגדרה<br/><br/>
+                הגדרה: <input type="text" class="peleg"/><br/><br/>
+                פתרון: <input type="text" class="peleg"/><br/><br/>
+                <input type="submit" class="peleg" value="הוסף!" disabled/>
+            </form>
+        </div>
+        <div id="two" class="popupContent">
+            תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="three" class="popupContent">
+            תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="four" class="popupContent">
+            תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="five" class="popupContent">
+            תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="currentPopup"></div>
+	</body>
+</html>

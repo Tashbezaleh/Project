@@ -1,0 +1,12 @@
+<script type="text/javascript">
+    function submitUpVote() {
+        //todo complete using ajax and test
+    }
+</script>
+{% for item in results_list %}
+<li>
+	<img href="#" onclick="submitUpVote()" src="graphics/plus.png"/>
+	{{ item }}
+	<img href="#" onclick="submitDownVote()" src="graphics/minus.png"/>
+</li> 
+{% endfor %}
