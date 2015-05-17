@@ -4,7 +4,7 @@
 import urllib, json, re
 
 defs = ''
-with open(r"definitions.txt", 'rb') as f:
+with open(r'definitions.txt', 'rb') as f:
     defs = f.read()
 
     
@@ -12,17 +12,11 @@ defs_to_sols = {l.split('-')[0].strip():
                 map(str.strip, l.split('-')[1].split(';'))
                 for l in defs.split('\n')[:-1]}
 
-def text_to_database():
-    for def_sol in defs_to_sols:
-        entry = Answer(answer=def_sol[1], definition=def_sol[0], source=r"תשבצלה", rank=100)
-        entry.put()
-    return "Success"     
-
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
     res=res.split()
-    res=map(lambda i: "".join([x for x in i if x in r"אבגדהוזחטיכלמנסעפצקרשתץףםךן"]),res)
-    res=filter(lambda x: x.strip()!="",res)
+    res=map(lambda i: ''.join([x for x in i if x in r'אבגדהוזחטיכלמנסעפצקרשתץףםךן']), res)
+    res=filter(lambda x: len(x.strip()) > 0, res)
     res = filter(lambda x: regex.match(x), res)
     return res
 
@@ -34,9 +28,9 @@ def add_to_hist(hist, res, regex):
 
 def style(hist):
     '''Return a sorted list of the 10 most frequent occurences in 'hist'.'''
-    items = sorted(hist.items(), key=lambda t:-t[1])[:10]
+    items = sorted(hist.items(), key=lambda t: -t[1])[:10]
     n_matches = sum(t[1] for t in items)
-    return [(k, 100.0 * v / n_matches) for (k,v) in items]
+    return [(k, 100.0 * v / n_matches) for (k, v) in items]
         
 def find_online(definition, guess):
     '''Searches for 'definition' in google and then scans for 'guess' (compiled regex).'''
@@ -46,6 +40,8 @@ def find_online(definition, guess):
     search_results = search_response.read()
     results = json.loads(search_results)
     data = results['responseData']
+    if data == None:
+        return 'Failure'
     hits = data['results']
     histogram = dict()
     for h in hits:
@@ -75,15 +71,17 @@ def find_offline(definition, guess):
         return filter(lambda w: guess.match(w), defs_to_sols[definition])
     return []
 
-def find(definition, guess):
+def find(definition, guess, search_online):
     lst = find_offline(definition, guess)
     if lst:
-        return [(w, 100.0 / len(lst)) for w in lst]
-    return find_online(definition, guess)
+        return [(w, 100.0 / len(lst)) for w in lst], False
+    if search_online:
+        return find_online(definition, guess), True
+    return [], search_online
 
-def html_solve(search , guess):
+def html_solve(definition , guess, search_online=True):
     '''Solves 'definition' using 'guess' (compiled regex) and returns embeddable html.'''
-    return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, find(search, guess)))
-
-def user_pat_to_regex(pat):
-    return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
+    results, online = find(definition, guess, search_online)
+    if results and results != 'Failure':
+        return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, results)), online
+    return ':( לא נמצאו תוצאות', online
