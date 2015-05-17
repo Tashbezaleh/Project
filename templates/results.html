@@ -12,10 +12,10 @@
         .fail(ajaxFail);
     }
 </script>
-{% for item,prec in results_list %}
+{% for answer in results_list %}
 <li>
-	<img href="#" onclick="submitVote('{{ definition }}', '{{ item }}', 'up');" src="graphics/plus.png" />
-	{{ item }}
-	<img href="#" onclick="submitVote('{{ definition }}', '{{ item }}', 'down')" src="graphics/minus.png" />
+	<img href="#" onclick="submitVote({{ definition }}, {{ answer }}, 'up');" src="graphics/plus.png" />
+	{{ answer }}
+	<img href="#" onclick="submitVote({{ definition }}, {{ answer }}, 'down')" src="graphics/minus.png" />
 </li>
 {% endfor %}

@@ -1,17 +1,11 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import urllib, json, re
+import databaseUtils
 
-defs = ''
-with open(r'definitions.txt', 'rb') as f:
-    defs = f.read()
-
-    
-defs_to_sols = {l.split('-')[0].strip():
-                map(str.strip, l.split('-')[1].split(';'))
-                for l in defs.split('\n')[:-1]}
-
+#
+# methods for online search
+#
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
     res=res.split()
@@ -28,7 +22,8 @@ def add_to_hist(hist, res, regex):
 
 def style(hist):
     '''Return a sorted list of the 10 most frequent occurences in 'hist'.'''
-    items = sorted(hist.items(), key=lambda t: -t[1])[:10]
+    max_num_of_options = 5
+    items = sorted(hist.items(), key=lambda t: -t[1])[:max_num_of_options]
     n_matches = sum(t[1] for t in items)
     return [(k, 100.0 * v / n_matches) for (k, v) in items]
         
@@ -47,8 +42,11 @@ def find_online(definition, guess):
     for h in hits:
         res = urllib.urlopen(urllib.unquote(h['url'])).read()
         add_to_hist(histogram, res, guess)
-    histogram = style(histogram)
-    return histogram
+    #return style(histogram)
+
+    # removing the freqs
+    answers = map(lambda t: t[0], style(histogram))
+    return [databaseUtils.Answer(answer, definition, 'הפותר האוטומטי', 0) for answer in answers]
 
 
 ##def deep_online_search(definition, guess):
@@ -61,30 +59,30 @@ def find_online(definition, guess):
 ##    total = sum(f for (w, f) in lst)
 ##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t: -t[1])
         
-def search_guess_in_sols(regex):
-    hist = dict()
-    add_to_hist(hist, defs, regex)
-    return hist
+# def search_guess_in_sols(regex):
+#     hist = dict()
+#     add_to_hist(hist, defs, regex)
+#     return hist
 
-def find_offline(definition, guess):
-    if definition in defs_to_sols:
-        return filter(lambda w: guess.match(w), defs_to_sols[definition])
-    return []
+# def find_offline(definition, guess):
+#     if definition in defs_to_sols:
+#         return filter(lambda w: guess.match(w), defs_to_sols[definition])
+#     return []
 
 def find(definition, guess, search_online):
-    lst = find_offline(definition, guess)
+    lst = databaseUtils.find_in_ndb(definition, guess)
     if lst:
-        return [(w, 100.0 / len(lst)) for w in lst], False
+        return lst, False#[(w, 100.0 / len(lst)) for w in lst], False
     if search_online:
         return find_online(definition, guess), True
     return [], search_online
 
-def html_solve(definition , guess, search_online=True):
-    '''Solves 'definition' using 'guess' (compiled regex) and returns embeddable html.'''
-    results, online = find(definition, guess, search_online)
-    if results and results != 'Failure':
-        return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, results)), online
-    return 'לא נמצאו תוצאות', online
+# def html_solve(definition , guess, search_online=True):
+#     '''Solves 'definition' using 'guess' (compiled regex) and returns embeddable html.'''
+#     results, online = find(definition, guess, search_online)
+#     if results and results != 'Failure':
+#         return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, results)), online
+#     return 'לא נמצאו תוצאות', online
 
 def user_pat_to_regex(pat):
     return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)

@@ -24,6 +24,11 @@ import os
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
+red_font = '<font color="red">%s</font>'
+missing_field_message = red_font % 'אנא הכנס %s'
+
+
+#main page, "/"
 class MainHandler(webapp2.RequestHandler):
     def get(self):      
         template_values = {}
@@ -35,8 +40,17 @@ class ResultsHandler(webapp2.RequestHandler):
     def get(self):
         intext = cgi.escape(self.request.get('definition'))
         pattern = cgi.escape(self.request.get('pattern'))
-        regex = user_pat_to_regex(pattern)
+        
+        #check GET input
+        if intext == '':
+            self.response.write(missing_field_message % 'הגדרה')
+            return
+        elif pattern == '':
+            self.response.write(missing_field_message % 'תבנית')
+            return
 
+        regex = solver.user_pat_to_regex(pattern)
+            
         # cooldown control
         app = webapp2.get_app()
         if 'num calls' not in app.registry:
@@ -50,8 +64,9 @@ class ResultsHandler(webapp2.RequestHandler):
             app.registry['num calls'] += 1
             app.registry['last call'] = time.time()
 
+        #render page with results of the computation
         template_values= {
-            'results_list' : results,
+            'results_list' : map(lambda answer: answer.answer, results),#map(lambda s: s[0].decode('utf'), results),
             'definition' : intext,
             'pattern' : pattern
         }
@@ -59,13 +74,27 @@ class ResultsHandler(webapp2.RequestHandler):
         in_text = template.render(template_values)
         self.response.write(in_text)
 
-class Result_ActionHandler(webapp2.RequestHandler):
+class ResultActionHandler(webapp2.RequestHandler):
     def get(self):
         definition = cgi.escape(self.request.get('definition'))
         answer = cgi.escape(self.request.get('answer'))
         action = cgi.escape(self.request.get('action'))
+
+        #check GET input
+        if definition == '':
+            self.response.write(missing_field_message % 'הגדרה')
+            return
+        elif answer == '':
+            self.response.write(missing_field_message % 'פתרון')
+            return
+        elif action == '':
+            self.response.write(red_font % 'פעולה לא נתמכת')
+            return
+
         if not entry_exits(definition,answer):
             add_to_ndb(definition,answer, "אונליין", 0)
+        
+
         #call peleg's func
         if (action == 'up'):
             upvote_to_ndb(definition, answer)
@@ -89,6 +118,6 @@ class TestHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/results_action.html', Result_ActionHandler),
+    ('/results_action.html', ResultActionHandler),
     ('/test.html', TestHandler)
 ], debug=True)
