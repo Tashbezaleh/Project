@@ -31,7 +31,7 @@ def NDBAnswer_to_Answer(ndb_answer):
 				  ndb_answer.source, ndb_answer.rank)
 
 def Answer_to_NDBAnswer(answer):
-	return CreateNDBAnswer(answer.answer, answer.definition, \
+	return create_NDBAnswer(answer.answer, answer.definition, \
 								answer.source, answer.rank)
 
 def initialize_ndb():
@@ -45,22 +45,30 @@ def create_NDBAnswer(answer, definition, source, rank):
 					 source=source, rank=rank)
     
 
+<<<<<<< HEAD
 def add_to_ndb(definition, answer, source, rank):
 	if (not entry_exists(definition, answer)):
 		entry = CreateNDBAnswer(answer, definition, source, rank)
 		entry.put()
+=======
+def add_to_ndb(answer, definition, source, rank):
+	entry = create_NDBAnswer(answer, definition, source, rank)
+	entry.put()
+>>>>>>> origin/master
 
 def text_to_database():
 	"""reads the entities from solver.defs_to_sols and store them in ndb"""
 	ls = []
     for definition in solver.defs_to_sols:
     	for sol in solver.defs_to_sols[definition]:
-        	entry = CreateNDBAnswer(sol, definition, "Tashbezaleh", 100)
+        	entry = create_NDBAnswer(sol, definition, "Tashbezaleh", 100)
         	ls.append(entry)
    	ndb.put_multi(ls)
 
 def find_in_ndb(definition, guess):
+	'''Returns a list of Answers to definition that match guess'''
     qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(definition))
+<<<<<<< HEAD
     answers = [NDBAnswerToAnswer(ndbanswer) for ndbanswer in qry]
     return filter(lambda x: guess.match(x.answer), answers)
 
@@ -85,3 +93,7 @@ def entry_exists(definition, answer):
 		return True
 
 	return False
+=======
+    answers = [NDBAnswer_to_Answer(ndbanswer) for ndbanswer in qry]
+    return filter(lambda x: guess.match(x.answer), answers)
+>>>>>>> origin/master
