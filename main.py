@@ -45,19 +45,50 @@ class ResultsHandler(webapp2.RequestHandler):
             app.registry['last call'] = time.time()
         if (time.time() - app.registry['last call']) / 60 > 5:
             app.registry['num calls'] = 0
-        results, online = solver.html_solve(intext.encode('utf'), regex, app.registry['num calls'] < 20)
+        results, online = solver.find(intext.encode('utf'), regex, app.registry['num calls'] < 20)
         if online:
             app.registry['num calls'] += 1
             app.registry['last call'] = time.time()
 
         template_values= {
-            'results_list' : [ intext, regex],
+            'results_list' : results,
+            'definition' : intext,
+            'pattern' : pattern
         }
         template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
         in_text = template.render(template_values)
         self.response.write(in_text)
 
+class Result_ActionHandler(webapp2.RequestHandler):
+    def get(self):
+        definition = cgi.escape(self.request.get('definition'))
+        answer = cgi.escape(self.request.get('answer'))
+        action = cgi.escape(self.request.get('action'))
+        if not entry_exits(definition,answer):
+            add_to_ndb(definition,answer, "אונליין", 0)
+        #call peleg's func
+        if (action == 'up'):
+            upvote_to_ndb(definition, answer)
+        elif (action == 'down'):
+            downvote_to_ndb(definition, answer)
+        elif (action == 'add'):
+            source = cgi.escape(self.request.get('source'))
+            add_to_ndb(definition, answer, source, 0)
+
+        self.response.write(action)
+
+class TestHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
+        output = template.render({})
+        self.response.write(output)
+
+
+
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/results.html', ResultsHandler)
+    ('/results.html', ResultsHandler),
+    ('/results_action.html', Result_ActionHandler),
+    ('/test.html', TestHandler)
 ], debug=True)
