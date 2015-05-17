@@ -1,12 +1,21 @@
 <script type="text/javascript">
-    function submitUpVote() {
-        //todo complete using ajax and test
+    function submitVote(definition, answer, action) {
+    	img=$(this);
+    	$.get("result_action", {
+    		"definition" : definition,
+    		"answer" : answer,
+    		"action" : action
+    	})
+    	.done(function (data) {
+    		img.outerHTML="thank you."
+    	})
+        .fail(ajaxFail);
     }
 </script>
-{% for item in results_list %}
+{% for item in results_list['answers'] %}
 <li>
-	<img href="#" onclick="submitUpVote()" src="graphics/plus.png"/>
+	<img href="#" onclick="submitVote({{ results_list['definition'] }}, {{ item }}, 'up');" src="graphics/plus.png" />
 	{{ item }}
-	<img href="#" onclick="submitDownVote()" src="graphics/minus.png"/>
-</li> 
+	<img href="#" onclick="submitVote({{ results_list['definition'] }}, {{ item }}, 'down')" src="graphics/minus.png" />
+</li>
 {% endfor %}

@@ -63,6 +63,9 @@ function setPopups() {
         showPopup($($(this).attr('href')).clone());
     });
 }
+function ajaxFail() {
+    alert("Whoops... something went wront... blah blah info blah blah ignore blah");
+}
 function expirementWithForms() {
     $(document).on("submit","form", function (e) {
         e.preventDefault();
@@ -77,9 +80,7 @@ function expirementWithForms() {
             fixCSSIssues();
             appear($("#results").children());
         })
-        .fail(function () {
-            alert("Whoops... something went wront... blah blah info blah blah ignore blah");
-        });
+        .fail(ajaxFail);
     });
 }
 $(document).ready(function () {

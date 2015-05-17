@@ -31,7 +31,7 @@ def NDBAnswer_to_Answer(ndb_answer):
 				  ndb_answer.source, ndb_answer.rank)
 
 def Answer_to_NDBAnswer(answer):
-	return CreateNDBAnswer(answer.answer, answer.definition, \
+	return create_NDBAnswer(answer.answer, answer.definition, \
 								answer.source, answer.rank)
 
 def initialize_ndb():
@@ -46,7 +46,7 @@ def create_NDBAnswer(answer, definition, source, rank):
     
 
 def add_to_ndb(answer, definition, source, rank):
-	entry = CreateNDBAnswer(answer, definition, source, rank)
+	entry = create_NDBAnswer(answer, definition, source, rank)
 	entry.put()
 
 def text_to_database():
@@ -54,11 +54,12 @@ def text_to_database():
 	ls = []
     for definition in solver.defs_to_sols:
     	for sol in solver.defs_to_sols[definition]:
-        	entry = CreateNDBAnswer(sol, definition, "Tashbezaleh", 100)
+        	entry = create_NDBAnswer(sol, definition, "Tashbezaleh", 100)
         	ls.append(entry)
    	ndb.put_multi(ls)
 
 def find_in_ndb(definition, guess):
+	'''Returns a list of Answers to definition that match guess'''
     qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(definition))
-    answers = [NDBAnswerToAnswer(ndbanswer) for ndbanswer in qry]
+    answers = [NDBAnswer_to_Answer(ndbanswer) for ndbanswer in qry]
     return filter(lambda x: guess.match(x.answer), answers)
