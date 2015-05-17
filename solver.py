@@ -12,6 +12,12 @@ defs_to_sols = {l.split('-')[0].strip():
                 map(str.strip, l.split('-')[1].split(';'))
                 for l in defs.split('\n')[:-1]}
 
+def text_to_database():
+    for def_sol in defs_to_sols:
+        entry = Answer(answer=def_sol[1], definition=def_sol[0], source=r"תשבצלה", rank=100)
+        entry.put()
+    return "Success"     
+
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
     res=res.split()

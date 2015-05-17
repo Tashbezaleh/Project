@@ -16,18 +16,15 @@
 # limitations under the License.
 #
 from google.appengine.api import users
+from google.appengine.ext import ndb
+from google.appengine.ext.ndb import stats
 
-import webapp2, solver, cgi, re
+import webapp2, solver, cgi, re, databaseUtils
+import urllib
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        with open('index.html') as stream:
-            source = stream.read();
-
-        intext = cgi.escape(self.request.get('definition'))
-        regex = cgi.escape(self.request.get('guess'))
-        regex = re.compile('^' + regex.replace('?', '..').encode('utf') + '$', re.UNICODE)
-        in_text = source % solver.html_solve(intext.encode('utf'), regex)
-        self.response.write(in_text)
+        pass 
+        
 
 app = webapp2.WSGIApplication([('/', MainHandler)], debug=True)
