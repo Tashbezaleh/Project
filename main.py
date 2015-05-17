@@ -20,42 +20,35 @@ from google.appengine.api import users
 import urllib
 import webapp2, solver, cgi, re, time
 import jinja2
+import os
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
 class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        with open('index.html') as stream:
-           source = stream.read();
-
-        
-
-        intext = cgi.escape(self.request.get('definition'))
-        regex = cgi.escape(self.request.get('guess'))
-        regex = re.compile('^' + regex.replace('?', '..').encode('utf') + '$', re.UNICODE)
-        app = webapp2.get_app()
-        if 'num calls' not in app.registry:
-        	app.registry['num calls'] = 0
-        if 'last call' not in app.registry:
-        	app.registry['last call'] = time.time()
-        if (time.time() - app.registry['last call']) / 60 > 5:
-        	app.registry['num calls'] = 0
-        results, online = solver.html_solve(intext.encode('utf'), regex, app.registry['num calls'] < 20)
-        if online:
-        	app.registry['num calls'] += 1
-        	app.registry['last call'] = time.time()
-
+    def get(self):      
         template_values = {}
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)
-
         self.response.write(in_text)
 
-class MainHandler2(webapp2.RequestHandler):
+class ResultsHandler(webapp2.RequestHandler):
     def get(self):
         intext = cgi.escape(self.request.get('definition'))
-        regex = cgi.escape(self.request.get('guess'))
-        regex = regex.replace('?', '..').encode('utf')
+        pattern = cgi.escape(self.request.get('pattern'))
+        regex = user_pat_to_regex(pattern)
+
+        # cooldown control
+        app = webapp2.get_app()
+        if 'num calls' not in app.registry:
+            app.registry['num calls'] = 0
+        if 'last call' not in app.registry:
+            app.registry['last call'] = time.time()
+        if (time.time() - app.registry['last call']) / 60 > 5:
+            app.registry['num calls'] = 0
+        results, online = solver.html_solve(intext.encode('utf'), regex, app.registry['num calls'] < 20)
+        if online:
+            app.registry['num calls'] += 1
+            app.registry['last call'] = time.time()
 
         template_values= {
             'results_list' : [ intext, regex],
@@ -66,5 +59,5 @@ class MainHandler2(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/results.html', MainHandler2)
+    ('/results.html', ResultsHandler)
 ], debug=True)
