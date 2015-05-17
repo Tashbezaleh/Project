@@ -45,9 +45,10 @@ def create_NDBAnswer(answer, definition, source, rank):
 					 source=source, rank=rank)
     
 
-def add_to_ndb(answer, definition, source, rank):
-	entry = CreateNDBAnswer(answer, definition, source, rank)
-	entry.put()
+def add_to_ndb(definition, answer, source, rank):
+	if (not entry_exists(definition, answer)):
+		entry = CreateNDBAnswer(answer, definition, source, rank)
+		entry.put()
 
 def text_to_database():
 	"""reads the entities from solver.defs_to_sols and store them in ndb"""
@@ -62,3 +63,25 @@ def find_in_ndb(definition, guess):
     qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(definition))
     answers = [NDBAnswerToAnswer(ndbanswer) for ndbanswer in qry]
     return filter(lambda x: guess.match(x.answer), answers)
+
+def upvote_to_ndb(definition, answer):
+	entities = NDBAnswer.qry(ndb.AND(NDBAnswer.answer == answer, \
+									 NDBAnswer.definition == definition))
+	for entity in entities:
+		entity.rank = entity.rank + 1
+		entity.put()
+
+def downvote_to_ndb(definition, answer):
+	entities = NDBAnswer.qry(ndb.AND(NDBAnswer.answer == answer, \
+									 NDBAnswer.definition == definition))
+	for entity in entities:
+		entity.rank = entity.rank - 1
+		entity.put()0
+
+def entry_exists(definition, answer):
+	entities = NDBAnswer.qry(ndb.AND(NDBAnswer.answer == answer, \
+									 NDBAnswer.definition == definition))
+	for entry in entities:
+		return True
+
+	return False
