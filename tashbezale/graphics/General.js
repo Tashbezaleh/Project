@@ -27,7 +27,7 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
 	            });
     });
 }
-function sideSlide(father,limit) { //idea only, not yet tested.
+/*function sideSlide(father,limit) { //idea only, not yet tested.
     $(window).scroll(function () {
         var windowScroll = $(window).scrollTop();
         var menuScrollTop = $(navigation_id).offset().top;
@@ -38,7 +38,7 @@ function sideSlide(father,limit) { //idea only, not yet tested.
         else
             $(navigation_id).animate({ "paddingTop": "-=" + (menuScroll - menuScrollTop - limit) }, 1000, "elasout"); //bounceout?
     });
-}
+}*/
 function closePopup() {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
@@ -70,6 +70,7 @@ function expirementWithForms() {
         .done(function (data) {
             //do something with server data!
             //one option is:
+            // we don't want popup
             //showPopup(data);
             //the other is:
             $("#results").empty().append(data);
@@ -83,8 +84,12 @@ function expirementWithForms() {
 }
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
-    appear($("#main_search form").children());
     slide("#slidingNavigation", 17, 900, 150);
     setPopups();
     expirementWithForms();
 });
+
+window.onload = function(){ 
+    fixCSSIssues();
+    appear($("#main_search form").children());
+};

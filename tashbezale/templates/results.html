@@ -4,8 +4,9 @@
     }
 </script>
 {% for item in results_list %}
-<li>{{ item }}
-<a href="#" onclick="submitUpVote()">upvote</a>
-<a href="#" onclick="submitUpVote()">downvote</a>
+<li>
+	<img href="#" onclick="submitUpVote()" src="graphics/plus.png"/>
+	{{ item }}
+	<img href="#" onclick="submitDownVote()" src="graphics/minus.png"/>
 </li> 
 {% endfor %}
