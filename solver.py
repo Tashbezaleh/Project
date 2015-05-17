@@ -84,4 +84,7 @@ def html_solve(definition , guess, search_online=True):
     results, online = find(definition, guess, search_online)
     if results and results != 'Failure':
         return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, results)), online
-    return ':( לא נמצאו תוצאות', online
+    return 'לא נמצאו תוצאות', online
+
+def user_pat_to_regex(pat):
+    return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
