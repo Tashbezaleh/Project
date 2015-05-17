@@ -28,3 +28,6 @@ https://cloud-playground.appspot.com/playground/p/5293573634260992/#guestbook.py
 https://cloud.google.com/appengine/docs/python/gettingstartedpython27/staticfiles
 https://cloud.google.com/appengine/docs/python/config/appconfig
 http://jinja.pocoo.org/docs/dev/
+
+
+All URLs that begin with this prefix are handled by this handler, using the portion of the URL after the prefix as part of the file path.
