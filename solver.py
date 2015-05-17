@@ -84,3 +84,6 @@ def find(definition, guess):
 def html_solve(search , guess):
     '''Solves 'definition' using 'guess' (compiled regex) and returns embeddable html.'''
     return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, find(search, guess)))
+
+def user_pat_to_regex(pat):
+    return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)

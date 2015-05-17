@@ -25,12 +25,12 @@ class NDBAnswer(ndb.Model):
     	"""returns the query in which definition is as given"""
         return cls.query(cls.defnition == definition).order(cls.rank)
 
-def NDBAnswerToAnswer(ndb_answer):
+def NDBAnswer_to_Answer(ndb_answer):
 	return Answer(urllib.unquote(str(ndb_answer.answer)), \
 				  urllib.unquote(str(ndb_answer.definition)), \
 				  ndb_answer.source, ndb_answer.rank)
 
-def AnswerToNDBAnswer(answer):
+def Answer_to_NDBAnswer(answer):
 	return CreateNDBAnswer(answer.answer, answer.definition, \
 								answer.source, answer.rank)
 
@@ -39,7 +39,7 @@ def initialize_ndb():
 	if global_stat.count == 0:
 		text_to_database()
 
-def CreateNDBAnswer(answer, definition, source, rank):
+def create_NDBAnswer(answer, definition, source, rank):
 	return NDBAnswer(answer=urllib.quote(answer), \
 					 definition=urllib.quote(definition), \
 					 source=source, rank=rank)
