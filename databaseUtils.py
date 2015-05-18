@@ -70,7 +70,9 @@ def text_to_database():
 def find_in_ndb(definition, guess):
 	'''Returns a list of Answers to definition that match guess'''
 	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(definition.encode('utf')))
-	return filter(lambda x: guess.match(x.answer), map(NDBAnswer_to_Answer, qry.fetch()))
+	answers = filter(lambda x: guess.match(x.answer),\
+					map(NDBAnswer_to_Answer, qry.fetch()))
+	return sorted(answers, key=lambda ans: -ans.rank)
     #qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(str(definition.encode('utf'))))
     # answers = [NDBAnswer_to_Answer(ndbanswer) for ndbanswer in qry.fetch(20)]
     # return qry

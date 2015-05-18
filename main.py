@@ -48,11 +48,12 @@ class ResultsHandler(webapp2.RequestHandler):
 
 class ResultActionHandler(webapp2.RequestHandler):
     def get(self):
+        
         definition = cgi.escape(self.request.get('definition'))
         answer = cgi.escape(self.request.get('answer'))
         action = cgi.escape(self.request.get('action'))
         pattern = cgi.escape(self.request.get('pattern'))
-
+        
         #check GET input
         if definition == '':
             self.response.write(missing_field_message % 'הגדרה')
@@ -69,18 +70,27 @@ class ResultActionHandler(webapp2.RequestHandler):
         if not databaseUtils.entry_exists(definition, answer):
             databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
-        
-        #call peleg's func
-        if (action == 'up'):
-            databaseUtils.upvote_to_ndb(definition, answer)
-        elif (action == 'down'):
-            databaseUtils.downvote_to_ndb(definition, answer)
-        elif (action == 'add'):
+       
+
+        answer_object = databaseUtils.Answer(answer.encode('utf'), definition.encode('utf'), '', 0)
+        if cookiesUtils.canVote(self, answer_object):
+            if action == 'up':
+                databaseUtils.upvote_to_ndb(definition, answer)
+                cookiesUtils.add_to_cookies(self, answer_object)
+            elif action == 'down':
+                databaseUtils.downvote_to_ndb(definition, answer)
+                cookiesUtils.add_to_cookies(self, answer_object)
+
+        if action == 'add':
             source = cgi.escape(self.request.get('source'))
+            if source == '':
+                source = 'אנונימי'
             databaseUtils.add_to_ndb(definition, answer, source, 0)
             return self.response.write('תודה על תרמתך')
 
         search_pattern_definition(self)
+        
+
 
 
 
@@ -126,11 +136,11 @@ def search_pattern_definition(this):
     #each element in results is of class Answer defined in databaseUtils.py
     results = solver.find(definition, regex)
     #convert it to 
-    for item in results:
-        item.clickable = cookiesUtils.canVote(this,item)
+
+    results = [(result, cookiesUtils.canVote(this, result)) for result in results]
     #render page with results of the computation
     template_values= {
-        'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
+        'results_list' : results,
         'definition' : definition,
         'pattern' : pattern
     }

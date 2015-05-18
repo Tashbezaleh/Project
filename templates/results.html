@@ -8,11 +8,11 @@
     	}, searchDone);
     }
 </script>
-<table class="peleg" style="width:80%">
-    {% for entry in results_list %}
+<table class="peleg">
+    {% for entry, clickable in results_list %}
     <tr>
         <td>
-            {% if entry.clickable %}
+            {% if clickable %}
             <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
                 <img src="graphics/plus.png" />
             </a>
