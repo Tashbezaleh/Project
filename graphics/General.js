@@ -74,7 +74,6 @@ function searchDone(data) {
     //the other is:
     $("#results").empty().append(data);
     fixCSSIssues();
-    appear($("#results").children());
 }
 function searchDoneAppear(data) {
     searchDone(data);

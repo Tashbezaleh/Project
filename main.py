@@ -23,6 +23,7 @@ import webapp2, solver, cgi, re, time
 import jinja2
 import os
 import databaseUtils
+import cookiesUtils
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
@@ -40,30 +41,6 @@ class MainHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)
         self.response.write(in_text)
-
-def search_pattern_definition(this):
-    definition = cgi.escape(this.request.get('definition'))
-    pattern = cgi.escape(this.request.get('pattern'))
-    
-    #check GET input
-    if definition == '':
-        this.response.write(missing_field_message % 'הגדרה')
-        return
-    elif pattern == '':
-        this.response.write(missing_field_message % 'תבנית')
-        return
-
-    regex = solver.user_pat_to_regex(pattern)
-    #each element in results is of class Answer defined in databaseUtils.py
-    results = solver.find(definition, regex)
-    #render page with results of the computation
-    template_values= {
-        'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
-        'definition' : definition,
-        'pattern' : pattern
-    }
-    template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
-    this.response.write(template.render(template_values))
 
 class ResultsHandler(webapp2.RequestHandler):
     def get(self):
@@ -103,27 +80,7 @@ class ResultActionHandler(webapp2.RequestHandler):
 
         search_pattern_definition(self)
 
-    def canVote(self,id):
-        '''
-        input: an integer named id, output: whether the id is in the cookies, meaning whether the user already upvoted or downvoted the id
-        '''
-        return not ((self.request.cookies).has_key(str(id)))
 
-    def add_to_cookies(self, id):
-        '''
-        input: and integer named id
-        output: adds the id to the cookies
-        Remark: if the the id already is the cookies does not raises an error
-        '''
-        self.response.set_cookie(str(id), 'yes', max_age = None, path='/',domain=None, secure=False)
-
-    def del_from_cookies(self, id):
-        '''
-        input: and integer named id
-        output: deletes the id to the cookies
-        Remark: if the the id isn't in the cookies raises an error
-        '''
-        self.response.delete_cookie(str(id))
 
 class ResetDBHandler(webapp2.RequestHandler):
     def get(self):
@@ -148,3 +105,31 @@ app = webapp2.WSGIApplication([
    # ('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
 ], debug=True)
+
+
+
+def search_pattern_definition(this):
+    definition = cgi.escape(this.request.get('definition'))
+    pattern = cgi.escape(this.request.get('pattern'))
+    
+    #check GET input
+    if definition == '':
+        this.response.write(missing_field_message % 'הגדרה')
+        return
+    elif pattern == '':
+        this.response.write(missing_field_message % 'תבנית')
+        return
+
+    regex = solver.user_pat_to_regex(pattern)
+    #each element in results is of class Answer defined in databaseUtils.py
+    results = solver.find(definition, regex)
+    for item in results:
+        item.clickable = cookiesUtils.canVote(this,cookiesUtils.convert_Answer_to_id(item))
+    #render page with results of the computation
+    template_values= {
+        'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
+        'definition' : definition,
+        'pattern' : pattern
+    }
+    template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
+    this.response.write(template.render(template_values))
