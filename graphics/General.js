@@ -66,21 +66,29 @@ function setPopups() {
 function ajaxFail() {
     alert("Whoops... something went wront... blah blah info blah blah ignore blah");
 }
+function searchDone(data) {
+    //do something with server data!
+    //one option is:
+    // we don't want popup
+    //showPopup(data);
+    //the other is:
+    $("#results").empty().append(data);
+    fixCSSIssues();
+    appear($("#results").children());
+}
+function searchDoneAppear(data) {
+    searchDone(data);
+    appear($("#results").children());
+}
+function submitAForm (addr, values, doneFunc) {
+    $.get(addr, values)
+    .done(doneFunc)
+    .fail(ajaxFail);
+}
 function expirementWithForms() {
     $(document).on("submit","form", function (e) {
         e.preventDefault();
-        $.get($(this).attr("action"), $(this).serialize())
-        .done(function (data) {
-            //do something with server data!
-            //one option is:
-            // we don't want popup
-            //showPopup(data);
-            //the other is:
-            $("#results").empty().append(data);
-            fixCSSIssues();
-            appear($("#results").children());
-        })
-        .fail(ajaxFail);
+        submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
     });
 }
 $(document).ready(function () {

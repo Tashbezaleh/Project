@@ -1,28 +1,34 @@
 <script type="text/javascript">
-    function submitVote(definition, answer, action) {
-    	img=$(this);
-    	$.get("result_action", {
+    function submitVote(definition, answer, pattern, action, link) {
+    	submitAForm("result_action", {
     		"definition" : definition,
     		"answer" : answer,
-    		"action" : action
-    	})
-    	.done(function (data) {
-    		img.outerHTML="thank you."
-    	})
-        .fail(ajaxFail);
+    		"action" : action,
+            "pattern": pattern
+    	}, searchDone);
     }
 </script>
-<table>
+<table class="peleg" style="width:80%">
     {% for entry in results_list %}
     <tr>
         <td>
-            <img href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', 'up');" src="graphics/plus.png" />
-        </td>
-        <td>
+            {% if entry.clickable %}
+            <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
+                <img src="graphics/plus.png" />
+            </a>
+        <!--</td>
+        <td>-->
             {{ entry.rank }}
-        </td>
-        <td>
-            <img href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', 'down')" src="graphics/minus.png" />
+        <!--</td>
+        <td>-->
+            <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
+                <img src="graphics/minus.png" />
+            </a>
+            {% else %}
+                <img src="graphics/thumb.png" width='17' height='17' />
+            {{ entry.rank }}
+                <img src="graphics/thumb.png" width='17' height='17' />
+            {% endif %}
         </td>
         <td>
             {{ entry.answer.decode('utf') }}

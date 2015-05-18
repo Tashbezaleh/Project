@@ -41,35 +41,40 @@ class MainHandler(webapp2.RequestHandler):
         in_text = template.render(template_values)
         self.response.write(in_text)
 
+def search_pattern_definition(this):
+    definition = cgi.escape(this.request.get('definition'))
+    pattern = cgi.escape(this.request.get('pattern'))
+    
+    #check GET input
+    if definition == '':
+        this.response.write(missing_field_message % 'הגדרה')
+        return
+    elif pattern == '':
+        this.response.write(missing_field_message % 'תבנית')
+        return
+
+    regex = solver.user_pat_to_regex(pattern)
+    #each element in results is of class Answer defined in databaseUtils.py
+    results = solver.find(definition, regex)
+    #render page with results of the computation
+    template_values= {
+        'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
+        'definition' : definition,
+        'pattern' : pattern
+    }
+    template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
+    this.response.write(template.render(template_values))
+
 class ResultsHandler(webapp2.RequestHandler):
     def get(self):
-        definition = cgi.escape(self.request.get('definition'))
-        pattern = cgi.escape(self.request.get('pattern'))
-        
-        #check GET input
-        if definition == '':
-            self.response.write(missing_field_message % 'הגדרה')
-            return
-        elif pattern == '':
-            self.response.write(missing_field_message % 'תבנית')
-            return
-
-        regex = solver.user_pat_to_regex(pattern)
-        results = solver.find(definition, regex)
-        #render page with results of the computation
-        template_values= {
-            'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
-            'definition' : definition,
-            'pattern' : pattern
-        }
-        template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
-        self.response.write(template.render(template_values))
+        search_pattern_definition(self)
 
 class ResultActionHandler(webapp2.RequestHandler):
     def get(self):
         definition = cgi.escape(self.request.get('definition'))
         answer = cgi.escape(self.request.get('answer'))
         action = cgi.escape(self.request.get('action'))
+        pattern = cgi.escape(self.request.get('pattern'))
 
         #check GET input
         if definition == '':
@@ -81,6 +86,8 @@ class ResultActionHandler(webapp2.RequestHandler):
         elif action == '':
             self.response.write(red_font % 'פעולה לא נתמכת')
             return
+        elif pattern == '':
+            self.response.write(missing_field_message % 'תבנית')
 
         if not databaseUtils.entry_exists(definition, answer):
             databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
@@ -94,7 +101,29 @@ class ResultActionHandler(webapp2.RequestHandler):
             source = cgi.escape(self.request.get('source'))
             databaseUtils.add_to_ndb(definition, answer, source, 0)
 
-        self.response.write(action)
+        search_pattern_definition(self)
+
+    def canVote(self,id):
+        '''
+        input: an integer named id, output: whether the id is in the cookies, meaning whether the user already upvoted or downvoted the id
+        '''
+        return not ((self.request.cookies).has_key(str(id)))
+
+    def add_to_cookies(self, id):
+        '''
+        input: and integer named id
+        output: adds the id to the cookies
+        Remark: if the the id already is the cookies does not raises an error
+        '''
+        self.response.set_cookie(str(id), 'yes', max_age = None, path='/',domain=None, secure=False)
+
+    def del_from_cookies(self, id):
+        '''
+        input: and integer named id
+        output: deletes the id to the cookies
+        Remark: if the the id isn't in the cookies raises an error
+        '''
+        self.response.delete_cookie(str(id))
 
 class ResetDBHandler(webapp2.RequestHandler):
     def get(self):
