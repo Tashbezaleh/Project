@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 from google.appengine.api import users
+from google.appengine.ext import ndb
 
 import urllib
 import webapp2, solver, cgi, re, time
@@ -32,17 +33,21 @@ missing_field_message = red_font % 'אנא הכנס %s'
 class MainHandler(webapp2.RequestHandler):
     def get(self):      
         template_values = {}
+        # begin probably bad 
+        #ndb.delete_multi(databaseUtils.NDBAnswer.query().fetch(keys_only = True))
+       # databaseUtils.initialize_ndb()
+        # end probably bad
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)
         self.response.write(in_text)
 
 class ResultsHandler(webapp2.RequestHandler):
     def get(self):
-        intext = cgi.escape(self.request.get('definition'))
+        definition = cgi.escape(self.request.get('definition'))
         pattern = cgi.escape(self.request.get('pattern'))
         
         #check GET input
-        if intext == '':
+        if definition == '':
             self.response.write(missing_field_message % 'הגדרה')
             return
         elif pattern == '':
@@ -50,29 +55,15 @@ class ResultsHandler(webapp2.RequestHandler):
             return
 
         regex = solver.user_pat_to_regex(pattern)
-            
-        # cooldown control
-        app = webapp2.get_app()
-        if 'num calls' not in app.registry:
-            app.registry['num calls'] = 0
-        if 'last call' not in app.registry:
-            app.registry['last call'] = time.time()
-        if (time.time() - app.registry['last call']) / 60 > 5:
-            app.registry['num calls'] = 0
-        results, online = solver.find(intext.encode('utf'), regex, app.registry['num calls'] < 20)
-        if online:
-            app.registry['num calls'] += 1
-            app.registry['last call'] = time.time()
-
+        results = solver.find(definition, regex)
         #render page with results of the computation
         template_values= {
-            'results_list' : map(lambda answer: answer.answer, results),#map(lambda s: s[0].decode('utf'), results),
-            'definition' : intext,
+            'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
+            'definition' : definition,
             'pattern' : pattern
         }
         template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
-        in_text = template.render(template_values)
-        self.response.write(in_text)
+        self.response.write(template.render(template_values))
 
 class ResultActionHandler(webapp2.RequestHandler):
     def get(self):
@@ -91,20 +82,27 @@ class ResultActionHandler(webapp2.RequestHandler):
             self.response.write(red_font % 'פעולה לא נתמכת')
             return
 
-        if not entry_exits(definition,answer):
-            add_to_ndb(definition,answer, "אונליין", 0)
-        
+        if not databaseUtils.entry_exists(definition, answer):
+            databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
         #call peleg's func
         if (action == 'up'):
-            upvote_to_ndb(definition, answer)
+            databaseUtils.upvote_to_ndb(definition, answer)
         elif (action == 'down'):
-            downvote_to_ndb(definition, answer)
+            databaseUtils.downvote_to_ndb(definition, answer)
         elif (action == 'add'):
             source = cgi.escape(self.request.get('source'))
-            add_to_ndb(definition, answer, source, 0)
+            databaseUtils.add_to_ndb(definition, answer, source, 0)
 
         self.response.write(action)
+
+class ResetDBHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.write("START WORKING <br>")
+        ndb.delete_multi(databaseUtils.NDBAnswer.query().fetch(keys_only = True))
+        self.response.write("DONE DELETING <br>")
+        databaseUtils.initialize_ndb()
+        self.response.write("GREAT SUCCESS")
 
 # class TestHandler(webapp2.RequestHandler):
 #     def get(self):
@@ -117,6 +115,7 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/results_action.html', ResultActionHandler) #,
+    ('/result_action', ResultActionHandler) #,
+   # ('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
-], debug=debug)
+], debug=True)

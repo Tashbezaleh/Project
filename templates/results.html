@@ -12,10 +12,24 @@
         .fail(ajaxFail);
     }
 </script>
-{% for answer in results_list %}
-<li>
-	<img href="#" onclick="submitVote({{ definition }}, {{ answer }}, 'up');" src="graphics/plus.png" />
-	{{ answer }}
-	<img href="#" onclick="submitVote({{ definition }}, {{ answer }}, 'down')" src="graphics/minus.png" />
-</li>
-{% endfor %}
+<table>
+    {% for entry in results_list %}
+    <tr>
+        <td>
+            <img href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', 'up');" src="graphics/plus.png" />
+        </td>
+        <td>
+            {{ entry.rank }}
+        </td>
+        <td>
+            <img href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', 'down')" src="graphics/minus.png" />
+        </td>
+        <td>
+            {{ entry.answer.decode('utf') }}
+        </td>
+        <td>
+            (מאת {{ entry.source.decode('utf') }})
+        </td>
+    </tr>
+    {% endfor %}
+</table>

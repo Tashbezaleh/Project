@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import urllib, json, re
-import databaseUtils
+import databaseUtils, webapp2, time
+
+MINUTES_TO_WAIT = 5
+MAX_CALLS = 20
+
 
 #
 # methods for online search
@@ -27,14 +31,38 @@ def style(hist):
     n_matches = sum(t[1] for t in items)
     return [(k, 100.0 * v / n_matches) for (k, v) in items]
         
+def can_search_online():
+    app = webapp2.get_app()
+    if 'num calls' not in app.registry:
+        return True
+    if 'last call' not in app.registry:
+        return True
+    if (time.time() - app.registry['last call']) / 60 > MINUTES_TO_WAIT:
+        app.registry['num calls'] = 0
+        return True
+    if app.registry['num calls'] <= MAX_CALLS:
+        return True
+    return False
+
+def search_performed():
+    app = webapp2.get_app()
+    if 'num calls' not in app.registry:
+        app.registry['num calls'] = 0
+    app.registry['num calls'] += 1
+    app.registry['last call'] = time.time()
+
+
 def find_online(definition, guess):
     '''Searches for 'definition' in google and then scans for 'guess' (compiled regex).'''
-    query = urllib.urlencode({u'q': definition})
+    if not can_search_online():
+        return []
+    query = urllib.urlencode({u'q': definition.encode('utf')})
     url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % query
     search_response = urllib.urlopen(url)
     search_results = search_response.read()
     results = json.loads(search_results)
     data = results['responseData']
+    search_performed()
     if data == None:
         return 'Failure'
     hits = data['results']
@@ -42,11 +70,10 @@ def find_online(definition, guess):
     for h in hits:
         res = urllib.urlopen(urllib.unquote(h['url'])).read()
         add_to_hist(histogram, res, guess)
-    #return style(histogram)
 
     # removing the freqs
     answers = map(lambda t: t[0], style(histogram))
-    return [databaseUtils.Answer(answer, definition, 'הפותר האוטומטי', 0) for answer in answers]
+    return [databaseUtils.Answer(answer, definition, databaseUtils.SOLVER_NAME, 0) for answer in answers]
 
 
 ##def deep_online_search(definition, guess):
@@ -69,20 +96,11 @@ def find_online(definition, guess):
 #         return filter(lambda w: guess.match(w), defs_to_sols[definition])
 #     return []
 
-def find(definition, guess, search_online):
+def find(definition, guess):
     lst = databaseUtils.find_in_ndb(definition, guess)
-    if lst:
-        return lst, False#[(w, 100.0 / len(lst)) for w in lst], False
-    if search_online:
-        return find_online(definition, guess), True
-    return [], search_online
-
-# def html_solve(definition , guess, search_online=True):
-#     '''Solves 'definition' using 'guess' (compiled regex) and returns embeddable html.'''
-#     results, online = find(definition, guess, search_online)
-#     if results and results != 'Failure':
-#         return '</br>'.join(map(lambda t: '%s: %.2f%%' % t, results)), online
-#     return 'לא נמצאו תוצאות', online
+    if len(lst) > 0:
+        return lst
+    return find_online(definition, guess)
 
 def user_pat_to_regex(pat):
     return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
