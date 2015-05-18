@@ -21,6 +21,7 @@ from google.appengine.ext import ndb
 import urllib
 import webapp2, solver, cgi, re, time
 import jinja2, os, databaseUtils, cookiesUtils
+from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
@@ -31,10 +32,6 @@ missing_field_message = red_font % 'אנא הכנס %s'
 class MainHandler(webapp2.RequestHandler):
     def get(self):      
         template_values = {}
-        # begin probably bad 
-        #ndb.delete_multi(databaseUtils.NDBAnswer.query().fetch(keys_only = True))
-       # databaseUtils.initialize_ndb()
-        # end probably bad
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)
         self.response.write(in_text)
@@ -70,13 +67,13 @@ class ResultActionHandler(webapp2.RequestHandler):
        
 
         answer_object = databaseUtils.Answer(answer.encode('utf'), definition.encode('utf'), '', 0)
-        if cookiesUtils.canVote(self, answer_object):
-            if action == 'up':
-                databaseUtils.upvote_to_ndb(definition, answer)
-                cookiesUtils.add_to_cookies(self, answer_object)
-            elif action == 'down':
-                databaseUtils.downvote_to_ndb(definition, answer)
-                cookiesUtils.add_to_cookies(self, answer_object)
+        if action in ['up', 'down'] and cookiesUtils.can_vote(self, answer_object, action):
+            databaseUtils.vote_to_ndb(definition, answer, action)
+            # if is here to allow users change their votes
+            if not cookiesUtils.can_vote(self, answer_object, 'down' if action == 'up' else 'up'):
+                cookiesUtils.del_from_cookies(self, answer_object)
+            else:
+                cookiesUtils.vote_cookie(self, answer_object, action)
 
         if action == 'add':
             source = cgi.escape(self.request.get('source'))
@@ -90,7 +87,7 @@ class ResultActionHandler(webapp2.RequestHandler):
 
 
 
-
+# for admins only, please only enable when testing and db reset is needed
 class ResetDBHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write("START WORKING <br>")
@@ -110,8 +107,8 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/result_action', ResultActionHandler) #,
-   # ('/reset_db.html', ResetDBHandler) #,
+    ('/result_action', ResultActionHandler)# ,
+    #('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
 ], debug=True)
 
@@ -130,11 +127,10 @@ def search_pattern_definition(this):
         return
 
     regex = solver.user_pat_to_regex(pattern)
-    #each element in results is of class Answer defined in databaseUtils.py
-    results = solver.find(definition, regex)
-    #convert it to 
+    #each element in results is of class Answer defined in databaseUtils
+    results = solver.find(fix_encoding(definition), regex)
 
-    results = [(result, cookiesUtils.canVote(this, result)) for result in results]
+    results = [(result, cookiesUtils.can_vote(this, result, 'up'), cookiesUtils.can_vote(this, result, 'down')) for result in results]
     #render page with results of the computation
     template_values= {
         'results_list' : results,

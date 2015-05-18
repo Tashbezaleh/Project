@@ -2,6 +2,7 @@
 
 import urllib, json, re
 import databaseUtils, webapp2, time
+from encodingUtils import fix_encoding 
 
 MINUTES_TO_WAIT = 5
 MAX_CALLS = 20
@@ -56,7 +57,7 @@ def find_online(definition, guess):
     '''Searches for 'definition' in google and then scans for 'guess' (compiled regex).'''
     if not can_search_online():
         return []
-    query = urllib.urlencode({u'q': definition.encode('utf')})
+    query = urllib.urlencode({u'q': fix_encoding(definition)})
     url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % query
     search_response = urllib.urlopen(url)
     search_results = search_response.read()
@@ -85,16 +86,6 @@ def find_online(definition, guess):
 ##        lst += [(w, sum(sub_hist.values()))]
 ##    total = sum(f for (w, f) in lst)
 ##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t: -t[1])
-        
-# def search_guess_in_sols(regex):
-#     hist = dict()
-#     add_to_hist(hist, defs, regex)
-#     return hist
-
-# def find_offline(definition, guess):
-#     if definition in defs_to_sols:
-#         return filter(lambda w: guess.match(w), defs_to_sols[definition])
-#     return []
 
 def find(definition, guess):
     lst = databaseUtils.find_in_ndb(definition, guess)

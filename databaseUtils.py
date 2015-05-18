@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 
 import webapp2, cgi, re
 import urllib
+from encodingUtils import fix_encoding
 
 SOLVER_NAME = 'הפותר האוטומטי'
 
@@ -42,15 +43,10 @@ def initialize_ndb():
 		text_to_database()
 		app.registry['ndb initialized'] = 1	
 
-def f(s):
-	if s == '':
-		return s
-	return s if s[0] == '\xd7' else s.encode('utf')
-
 def create_NDBAnswer(answer, definition, source, rank):
-	return NDBAnswer(answer=urllib.quote(f(answer)), \
-					 definition=urllib.quote(f(definition)), \
-					 source=urllib.quote(f(source)), \
+	return NDBAnswer(answer=urllib.quote(fix_encoding(answer)), \
+					 definition=urllib.quote(fix_encoding(definition)), \
+					 source=urllib.quote(fix_encoding(source)), \
 					 rank=rank)
     
 def add_to_ndb(definition, answer, source, rank):
@@ -74,7 +70,7 @@ def text_to_database():
 
 def find_in_ndb(definition, guess):
 	'''Returns a list of Answers to definition that match guess'''
-	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(definition.encode('utf')))
+	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(fix_encoding(definition)))
 	answers = filter(lambda x: guess.match(x.answer),\
 					map(NDBAnswer_to_Answer, qry.fetch()))
 	return sorted(answers, key=lambda ans: -ans.rank)
@@ -105,6 +101,13 @@ def downvote_to_ndb(definition, answer):
 	entity.rank = entity.rank - 1
 	entity.put()
 
+def vote_to_ndb(definition, answer, action):
+    '''action in ['up', 'down']'''
+    if action == 'up':
+        upvote_to_ndb(definition, answer)
+    elif action == 'down':
+        downvote_to_ndb(definition, answer)
+    
 def entry_exists(definition, answer):
 	tmp_answer = create_NDBAnswer(answer.encode('utf'), definition.encode('utf'), '', 0)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
