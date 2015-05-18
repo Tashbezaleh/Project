@@ -69,6 +69,7 @@ class ResultActionHandler(webapp2.RequestHandler):
         if not databaseUtils.entry_exists(definition, answer):
             databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
+        
         #call peleg's func
         if (action == 'up'):
             databaseUtils.upvote_to_ndb(definition, answer)
@@ -77,6 +78,7 @@ class ResultActionHandler(webapp2.RequestHandler):
         elif (action == 'add'):
             source = cgi.escape(self.request.get('source'))
             databaseUtils.add_to_ndb(definition, answer, source, 0)
+            return self.response.write('תודה על תרמתך')
 
         search_pattern_definition(self)
 
@@ -123,8 +125,9 @@ def search_pattern_definition(this):
     regex = solver.user_pat_to_regex(pattern)
     #each element in results is of class Answer defined in databaseUtils.py
     results = solver.find(definition, regex)
+    #convert it to 
     for item in results:
-        item.clickable = cookiesUtils.canVote(this,cookiesUtils.convert_Answer_to_id(item))
+        item.clickable = cookiesUtils.canVote(this,item)
     #render page with results of the computation
     template_values= {
         'results_list' : results, #map(lambda answer: answer.answer.decode('utf'), results),#map(lambda s: s[0].decode('utf'), results),
