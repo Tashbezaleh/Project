@@ -79,10 +79,19 @@ class Result_ActionHandler(webapp2.RequestHandler):
 
 class TestHandler(webapp2.RequestHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
-        output = template.render({})
-        self.response.write(output)
+        # Saves a cookie in the client.
+        self.response.set_cookie('some_key', 'value', max_age=360, path='/',
+                    domain=None, secure=False)
 
+        #Deletes a cookie previously set in the client.
+        self.response.delete_cookie('some_key')
+
+        # Cancels a cookie previously set in the response.
+        #self.response.unset_cookie('some_key')
+        cookies = self.request.cookies
+        #cookies['tal'] = 17 
+
+        self.response.write(str(cookies))
 
 
 
