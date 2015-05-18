@@ -20,10 +20,7 @@ from google.appengine.ext import ndb
 
 import urllib
 import webapp2, solver, cgi, re, time
-import jinja2
-import os
-import databaseUtils
-import cookiesUtils
+import jinja2, os, databaseUtils, cookiesUtils
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
@@ -67,8 +64,8 @@ class ResultActionHandler(webapp2.RequestHandler):
         elif pattern == '':
             self.response.write(missing_field_message % 'תבנית')
 
-        if not databaseUtils.entry_exists(definition, answer):
-            databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
+        # if not databaseUtils.entry_exists(definition, answer):
+        #     databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
        
 

@@ -85,9 +85,14 @@ function submitAForm (addr, values, doneFunc) {
     .fail(ajaxFail);
 }
 function expirementWithForms() {
-    $(document).on("submit","form", function (e) {
+    $("#main_search form").submit(function (e) {
         e.preventDefault();
         submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
+    });
+    $(document).on("submit", "#add_defi", function (e) {
+        e.preventDefault();
+        showPopup("תודה על תרומתך לתשבצל'ה!");
+        submitAForm($(this).attr("action"), $(this).serialize(), function (data) { });
     });
 }
 $(document).ready(function () {

@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from urllib import quote, unquote
 
-def canVote(this,answer):
+def canVote(this, answer):
     '''
     input: an integer named identifier, output: whether the identifier is in the cookies, meaning whether the user already upvoted or downvoted the identifier
     '''
@@ -28,5 +30,10 @@ def del_from_cookies(this, answer):
     this.response.delete_cookie(identifier)
     # this.request.cookies.remove(identifier)
 
+def f(s):
+    if s == '':
+        return s
+    return s if s[0] == '\xd7' else s.encode('utf')
+    
 def convert_Answer_to_identifier(answer):
-    return quote(answer.definition) + '+' + quote(answer.answer)
+    return quote(f(answer.definition)) + '+' + quote(f(answer.answer))

@@ -42,10 +42,15 @@ def initialize_ndb():
 		text_to_database()
 		app.registry['ndb initialized'] = 1	
 
+def f(s):
+	if s == '':
+		return s
+	return s if s[0] == '\xd7' else s.encode('utf')
+
 def create_NDBAnswer(answer, definition, source, rank):
-	return NDBAnswer(answer=urllib.quote(answer), \
-					 definition=urllib.quote(definition), \
-					 source=urllib.quote(source), \
+	return NDBAnswer(answer=urllib.quote(f(answer)), \
+					 definition=urllib.quote(f(definition)), \
+					 source=urllib.quote(f(source)), \
 					 rank=rank)
     
 def add_to_ndb(definition, answer, source, rank):
