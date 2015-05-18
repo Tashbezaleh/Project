@@ -21,12 +21,12 @@ import urllib
 import webapp2, solver, cgi, re, time
 import jinja2
 import os
+import databaseUtils
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
 red_font = '<font color="red">%s</font>'
 missing_field_message = red_font % 'אנא הכנס %s'
-
 
 #main page, "/"
 class MainHandler(webapp2.RequestHandler):
@@ -106,18 +106,17 @@ class ResultActionHandler(webapp2.RequestHandler):
 
         self.response.write(action)
 
-class TestHandler(webapp2.RequestHandler):
-    def get(self):
-        template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
-        output = template.render({})
-        self.response.write(output)
+# class TestHandler(webapp2.RequestHandler):
+#     def get(self):
+#         template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
+#         output = template.render({})
+#         self.response.write(output)
 
-
-
+debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/results_action.html', ResultActionHandler),
-    ('/test.html', TestHandler)
-], debug=True)
+    ('/results_action.html', ResultActionHandler) #,
+    # ('/test.html', TestHandler)
+], debug=debug)
