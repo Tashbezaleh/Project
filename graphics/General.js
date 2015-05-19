@@ -77,8 +77,8 @@ function setPopups() {
         showPopup($($(this).attr('href')).clone());
     });
 }
-function ajaxFail() {
-    alert("Whoops... something went wront... blah blah info blah blah ignore blah");
+function ajaxFail(request, error) {
+    alert("אופס! קרתה שגיאה, אנא נסה/י שוב מאוחר יותר");
 }
 function searchDone(data) {
     //do something with server data!

@@ -68,7 +68,7 @@ def text_to_database():
 		defs = f.read()
 
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
-	if entry_exists(*defs_to_sols.items()[0]):
+	if entry_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
 		return
 
 	for definition in defs_to_sols:
@@ -118,7 +118,7 @@ def vote_to_ndb(definition, answer, action):
         downvote_to_ndb(definition, answer)
     
 def entry_exists(definition, answer):
-	tmp_answer = create_NDBAnswer(answer.encode('utf'), definition.encode('utf'), '', 0)
+	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
 									 NDBAnswer.definition == tmp_answer.definition))
 	return entities.get() != None

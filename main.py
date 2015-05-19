@@ -103,8 +103,8 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/result_action', ResultActionHandler)#,
-    #('/reset_db.html', ResetDBHandler) #,
+    ('/result_action', ResultActionHandler),
+    ('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
 ], debug=True)
 
