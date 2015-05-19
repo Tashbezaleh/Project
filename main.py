@@ -38,7 +38,7 @@ class MainHandler(webapp2.RequestHandler):
 
 class ResultsHandler(webapp2.RequestHandler):
     def get(self):
-        search_pattern_definition(self)
+        get_results(self)
 
 class ResultActionHandler(webapp2.RequestHandler):
     def get(self):
@@ -61,10 +61,10 @@ class ResultActionHandler(webapp2.RequestHandler):
         #     databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
        
-
+        was_voted = False
         answer_object = databaseUtils.Answer(answer.encode('utf'), definition.encode('utf'), '', 0)
         if action in ['up', 'down'] and cookiesUtils.can_vote(self, answer_object, action):
-            databaseUtils.vote_to_ndb(definition, answer, action)
+            was_voted = databaseUtils.vote_to_ndb(definition, answer, action)
             # if is here to allow users change their votes
             if not cookiesUtils.can_vote(self, answer_object, 'down' if action == 'up' else 'up'):
                 cookiesUtils.del_from_cookies(self, answer_object)
@@ -78,7 +78,7 @@ class ResultActionHandler(webapp2.RequestHandler):
             databaseUtils.add_to_ndb(definition, answer, source, 0)
             return self.response.write('תודה על תרומתך')
 
-        search_pattern_definition(self)
+        get_results(self, was_voted, definition, answer, action)
         
 
 
@@ -110,7 +110,7 @@ app = webapp2.WSGIApplication([
 
 
 
-def search_pattern_definition(this):
+def get_results(this, was_voted=False, changed_definition='', answer='', action=''):
     definition = cgi.escape(this.request.get('definition'))
     pattern = cgi.escape(this.request.get('pattern'))
     
@@ -126,12 +126,22 @@ def search_pattern_definition(this):
     #each element in results is of class Answer defined in databaseUtils
     results = solver.find(fix_encoding(definition), regex)
 
+    if was_voted:
+        for result in results:
+            if fix_encoding(result.definition) == fix_encoding(changed_definition) and \
+             fix_encoding(result.answer) == fix_encoding(answer):
+                if action == 'up':
+                    result.rank += 1
+                elif action == 'down':
+                    result.rank -= 1
+
     results = [(result, cookiesUtils.can_vote(this, result, 'up'), cookiesUtils.can_vote(this, result, 'down')) for result in results]
     #render page with results of the computation
     template_values= {
         'results_list' : results,
         'definition' : definition,
-        'pattern' : pattern
+        'pattern' : pattern,
+        'result_list_len' : len(results)
     }
     template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
     this.response.write(template.render(template_values))

@@ -29,21 +29,21 @@
         </tr>
         {% for entry, can_upvote, can_downvote in results_list %}
         <tr>
-            <td>
-                {% if can_upvote %}
-                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
-                    <img src="graphics/plus.png" />
-                </a>
-                {% else %}
-                <img src="graphics/disabled_plus.png" />
-                {% endif %}
-                {{ entry.rank }}
+            <td style="direction:ltr;">
                 {% if can_downvote %}
                 <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
                     <img src="graphics/minus.png" />
                 </a>
                 {% else %}
                 <img src="graphics/disabled_minus.png" />
+                {% endif %}
+                {{ entry.rank }}
+                {% if can_upvote %}
+                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
+                    <img src="graphics/plus.png" />
+                </a>
+                {% else %}
+                <img src="graphics/disabled_plus.png" />
                 {% endif %}
             </td>
             <td>

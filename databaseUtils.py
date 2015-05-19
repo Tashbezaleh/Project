@@ -83,40 +83,22 @@ def find_in_ndb(definition, guess):
 	answers = filter(lambda x: guess.match(x.answer),\
 					map(NDBAnswer_to_Answer, qry.fetch()))
 	return sorted(list(set(answers)), key=lambda ans: ans.rank, reverse=True)
-    #qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(str(definition.encode('utf'))))
-    # answers = [NDBAnswer_to_Answer(ndbanswer) for ndbanswer in qry.fetch(20)]
-    # return qry
-    #return filter(lambda x: guess.match(x.answer) and x.rank > -10, answers)
-
-def upvote_to_ndb(definition, answer):
-	tmp_answer = create_NDBAnswer(answer.encode('utf'), definition.encode('utf'), '', 0)
-	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
-									 NDBAnswer.definition == tmp_answer.definition))
-	if (entities.get() == None):
-		add_to_ndb(definition, answer, SOLVER_NAME, 1)
-		return
-	entity = entities.get()
-	entity.rank = entity.rank + 1
-	entity.put()
-
-def downvote_to_ndb(definition, answer):
-	tmp_answer = create_NDBAnswer(answer.encode('utf'), definition.encode('utf'), '', 0)
-	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
-									 NDBAnswer.definition == tmp_answer.definition))
-	if (entities.get() == None):
-		add_to_ndb(definition, answer, SOLVER_NAME, -1)
-		return
-	entity = entities.get()
-	entity.rank = entity.rank - 1
-	entity.put()
-
+    
 def vote_to_ndb(definition, answer, action):
     '''action in ['up', 'down']'''
-    if action == 'up':
-        upvote_to_ndb(definition, answer)
-    elif action == 'down':
-        downvote_to_ndb(definition, answer)
-    
+    if action not in ['up', 'down']:
+        return False
+    tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0)
+    entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, NDBAnswer.definition == tmp_answer.definition))
+    vote = 1 if action == 'up' else -1
+    if entities.get() == None:
+        add_to_ndb(definition, answer, SOLVER_NAME, vote)
+        return True
+    entity = entities.get()
+    entity.rank = entity.rank + vote
+    entity.put()
+    return False
+        
 def entry_exists(definition, answer):
 	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \

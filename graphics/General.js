@@ -39,12 +39,20 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
             $(navigation_id).animate({ "paddingTop": "-=" + (menuScroll - menuScrollTop - limit) }, 1000, "elasout"); //bounceout?
     });
 }*/
+function checkPatternValid(patternStr){
+    // return true if pattern is valid and not empty(!)
+    // use $.trim(patternStr)=='' to check if patternStr is empty.
+    return !/[^אבגדהוזחטיכלמנסעפצקרשתךםןףץ ?]/.test(patternStr);
+}
 function isFormValid(self){
     inputs=[self.definition, self.answer, self.pattern]
     out=true;
     for(i=0; i<inputs.length; i++){
+        $(inputs[i]).val($.trim($(inputs[i]).val()));
         if(inputs[i])
-            if($.trim($(inputs[i]).val())==''){
+            if($(inputs[i]).val()=='' ||
+                (inputs[i]==self.pattern &&
+                    !checkPatternValid($(inputs[i]).val()))){
                 out=false;
                 $(inputs[i]).addClass("angryPeleg");
             }
