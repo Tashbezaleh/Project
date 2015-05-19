@@ -3,7 +3,7 @@
 import urllib, json, re
 import databaseUtils, webapp2, time
 from encodingUtils import fix_encoding 
-
+NUM_OF_SOLS_TO_SHOW = 7
 MINUTES_TO_WAIT = 5
 MAX_CALLS = 20
 
@@ -89,9 +89,8 @@ def find_online(definition, guess):
 
 def find(definition, guess):
     lst = databaseUtils.find_in_ndb(definition, guess)
-    if len(lst) > 0:
-        return lst
-    return find_online(definition, guess)
+    if len(lst) >= NUM_OF_SOLS_TO_SHOW:
+        return lst[:NUM_OF_SOLS_TO_SHOW]
 
 def user_pat_to_regex(pat):
     return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
