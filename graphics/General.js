@@ -39,6 +39,20 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
             $(navigation_id).animate({ "paddingTop": "-=" + (menuScroll - menuScrollTop - limit) }, 1000, "elasout"); //bounceout?
     });
 }*/
+function isFormValid(self){
+    inputs=[self.definition, self.answer, self.pattern]
+    out=true;
+    for(i=0; i<inputs.length; i++){
+        if(inputs[i])
+            if($.trim($(inputs[i]).val())==''){
+                out=false;
+                $(inputs[i]).addClass("angryPeleg");
+            }
+            else
+                $(inputs[i]).removeClass("angryPeleg");
+    }
+    return out;
+}
 function closePopup() {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
@@ -87,12 +101,21 @@ function submitAForm (addr, values, doneFunc) {
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
-        submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
+        if(isFormValid(this))
+            submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
     });
     $(document).on("submit", "#add_defi", function (e) {
         e.preventDefault();
-        showPopup("תודה על תרומתך לתשבצל'ה!");
-        submitAForm($(this).attr("action"), $(this).serialize(), function (data) { });
+        if(!isFormValid(this)) return;
+        $("#popupContentHolder").fadeOut(500);
+        submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
+            $("#popupContentHolder").fadeIn({
+                duration: 500,
+                start: function(){
+                    $(this).empty().html("<h3>"+data+"</h3>");
+                }
+            });
+        });
     });
 }
 $(document).ready(function () {
@@ -100,6 +123,9 @@ $(document).ready(function () {
     slide("#slidingNavigation", 17, 900, 150);
     setPopups();
     expirementWithForms();
+    $(document).on("focus","input",function () {
+        $(this).removeClass("angryPeleg");
+    });
 });
 
 window.onload = function(){ 

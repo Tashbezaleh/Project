@@ -46,7 +46,6 @@ class ResultActionHandler(webapp2.RequestHandler):
         definition = cgi.escape(self.request.get('definition'))
         answer = cgi.escape(self.request.get('answer'))
         action = cgi.escape(self.request.get('action'))
-        pattern = cgi.escape(self.request.get('pattern'))
         
         #check GET input
         if definition == '':
@@ -58,9 +57,6 @@ class ResultActionHandler(webapp2.RequestHandler):
         elif action == '':
             self.response.write(red_font % 'פעולה לא נתמכת')
             return
-        elif pattern == '':
-            self.response.write(missing_field_message % 'תבנית')
-
         # if not databaseUtils.entry_exists(definition, answer):
         #     databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
 
@@ -80,7 +76,7 @@ class ResultActionHandler(webapp2.RequestHandler):
             if source == '':
                 source = 'אנונימי'
             databaseUtils.add_to_ndb(definition, answer, source, 0)
-            return self.response.write('תודה על תרמתך')
+            return self.response.write('תודה על תרומתך')
 
         search_pattern_definition(self)
         
@@ -107,7 +103,7 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/result_action', ResultActionHandler)# ,
+    ('/result_action', ResultActionHandler)#,
     #('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
 ], debug=True)
