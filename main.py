@@ -22,6 +22,7 @@ import urllib
 import webapp2, solver, cgi, re, time
 import jinja2, os, databaseUtils, cookiesUtils
 from encodingUtils import fix_encoding
+import logging #enables debugging
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
 
@@ -111,7 +112,7 @@ app = webapp2.WSGIApplication([
     ('/reset_db.html', ResetDBHandler) #,
     # ('/test.html', TestHandler)
 ], debug=True)
-
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 def search_pattern_definition(this):
@@ -126,6 +127,9 @@ def search_pattern_definition(this):
         this.response.write(missing_field_message % 'תבנית')
         return
 
+    logging.error('Finish guestbook signing')
+
+
     regex = solver.user_pat_to_regex(pattern)
     #each element in results is of class Answer defined in databaseUtils
     results = solver.find(fix_encoding(definition), regex)
@@ -135,7 +139,8 @@ def search_pattern_definition(this):
     template_values= {
         'results_list' : results,
         'definition' : definition,
-        'pattern' : pattern
+        'pattern' : pattern,
+        'result_list_len' : len(results)
     }
     template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
     this.response.write(template.render(template_values))
