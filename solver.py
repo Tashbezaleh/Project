@@ -72,6 +72,10 @@ def find_online(definition, guess):
         res = urllib.urlopen(urllib.unquote(h['url'])).read()
         add_to_hist(histogram, res, guess)
 
+    for w in definition.split():
+        if w in histogram:
+            del histogram[w]
+
     # removing the freqs
     answers = map(lambda t: t[0], style(histogram))
     return [databaseUtils.Answer(answer, definition, databaseUtils.SOLVER_NAME, 0) for answer in answers]
@@ -88,10 +92,13 @@ def find_online(definition, guess):
 ##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t: -t[1])
 
 def find(definition, guess):
-    lst = databaseUtils.find_in_ndb(definition, guess)
-    if len(lst) >= NUM_OF_SOLS_TO_SHOW:
-        return lst[:NUM_OF_SOLS_TO_SHOW]
-    return sorted(lst+find_online(definition, guess), key=lambda answer: answer.rank, reverse=True)[:NUM_OF_SOLS_TO_SHOW]
+    off_lst = databaseUtils.find_in_ndb(definition, guess)
+    if len(off_lst) >= NUM_OF_SOLS_TO_SHOW:
+        return off_lst[:NUM_OF_SOLS_TO_SHOW]
+    on_lst = find_online(definition, guess)
+    on_lst = filter(lambda r: r not in off_lst, on_lst)
+    lst = off_lst + on_lst[:NUM_OF_SOLS_TO_SHOW - len(off_lst)]
+    return sorted(lst, key=lambda answer: answer.rank, reverse=True)
 
 def user_pat_to_regex(pat):
     return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)

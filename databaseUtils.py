@@ -15,6 +15,12 @@ class Answer:
 		self.source = source
 		self.rank = rank
 
+	def __hash__(self):
+		return hash((self.answer, self.definition))
+
+	def __eq__(self, other):
+		return (self.answer, self.definition) == (other.answer, other.definition)
+
 class NDBAnswer(ndb.Model):
     # """Models an individual answer entry with ranking and source"""
     answer = ndb.StringProperty()
@@ -76,7 +82,7 @@ def find_in_ndb(definition, guess):
 	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(fix_encoding(definition)))
 	answers = filter(lambda x: guess.match(x.answer),\
 					map(NDBAnswer_to_Answer, qry.fetch()))
-	return sorted(answers, key=lambda ans: -ans.rank)
+	return sorted(list(set(answers)), key=lambda ans: ans.rank, reverse=True)
     #qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(str(definition.encode('utf'))))
     # answers = [NDBAnswer_to_Answer(ndbanswer) for ndbanswer in qry.fetch(20)]
     # return qry
