@@ -62,6 +62,9 @@ def text_to_database():
 		defs = f.read()
 
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
+	if entry_exists(*defs_to_sols.items()[0]):
+		return
+
 	for definition in defs_to_sols:
 		for sol in defs_to_sols[definition]:
 			entry = create_NDBAnswer(sol, definition, "תשבצל'ה", 100)
