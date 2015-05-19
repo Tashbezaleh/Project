@@ -9,32 +9,50 @@
     	}, searchDone);
     }
 </script>
-<table class="peleg">
-    {% for entry, can_upvote, can_downvote in results_list %}
-    <tr>
-        <td>
-            {% if can_upvote %}
-            <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
-                <img src="graphics/plus.png" />
-            </a>
-            {% else %}
-            <img src="graphics/disabled_plus.png" />
-            {% endif %}
-            {{ entry.rank }}
-            {% if can_downvote %}
-            <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
-                <img src="graphics/minus.png" />
-            </a>
-            {% else %}
-            <img src="graphics/disabled_minus.png" />
-            {% endif %}
-        </td>
-        <td>
-            {{ entry.answer.decode('utf') }}
-        </td>
-        <td>
-            (מאת {{ entry.source.decode('utf') }})
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+
+
+
+{% if result_list_len == 0 %}
+    <b> <h3>לא נמצאו תוצאות</h3> </b>
+{% else %}
+    <table class="peleg" style="text-align: center">
+        <tr>
+            <td width="100relative_length">
+                דירוג:
+            </td>
+            <td width="200relative_length">
+                פתרון:
+            </td> 
+            <td width="50relative_length">
+                מקור:
+            </td>  
+        </tr>
+        {% for entry, can_upvote, can_downvote in results_list %}
+        <tr>
+            <td>
+                {% if can_upvote %}
+                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
+                    <img src="graphics/plus.png" />
+                </a>
+                {% else %}
+                <img src="graphics/disabled_plus.png" />
+                {% endif %}
+                {{ entry.rank }}
+                {% if can_downvote %}
+                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
+                    <img src="graphics/minus.png" />
+                </a>
+                {% else %}
+                <img src="graphics/disabled_minus.png" />
+                {% endif %}
+            </td>
+            <td>
+                {{ entry.answer.decode('utf') }}
+            </td>
+            <td>
+                (מאת {{ entry.source.decode('utf') }})
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
