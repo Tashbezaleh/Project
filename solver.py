@@ -65,7 +65,7 @@ def find_online(definition, guess):
     data = results['responseData']
     search_performed()
     if data == None:
-        return 'Failure'
+        return []
     hits = data['results']
     histogram = dict()
     for h in hits:
