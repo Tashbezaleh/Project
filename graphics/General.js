@@ -109,8 +109,11 @@ function submitAForm (addr, values, doneFunc) {
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
-        if(isFormValid(this))
+        if(isFormValid(this)) {
+            $("#results").empty().append('<img src="graphics/spinner.gif" />');
+            appear($("#results").children());
             submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
+        }
     });
     $(document).on("submit", "#add_defi", function (e) {
         e.preventDefault();
