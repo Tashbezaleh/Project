@@ -12,11 +12,9 @@
     function setAddButton() {
         $("#add_defi").click(function (e) {
         e.preventDefault();
-        var defi_textbox = document.getElementsByName('definition')[1];
-        defi_textbox.value = '{{ definition }}';
+        $("#one [name='definition']").val("{{ definition }}");
         showPopup($($(this).attr('href')).clone());
-        defi_textbox.value = '';
-
+        $("#one [name='definition']").val("");
         });
     }
     
