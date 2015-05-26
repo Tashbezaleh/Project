@@ -6,7 +6,7 @@ import webapp2, cgi, re
 import urllib
 from encodingUtils import fix_encoding
 
-SOLVER_NAME = 'הפותר האוטומטי'
+SOLVER_NAME = "תשבצל'ה"
 
 class Answer:
 	def __init__(self, answer, definition, source, rank):
