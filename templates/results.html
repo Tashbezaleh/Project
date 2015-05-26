@@ -13,7 +13,7 @@
         $("#add_defi").click(function (e) {
         e.preventDefault();
         $("#one [name='definition']").val("{{ definition }}");
-        showPopup($($(this).attr('href')).clone());
+        showPopup($($(this).attr('href')).clone(), 1);
         $("#one [name='definition']").val("");
         });
     }

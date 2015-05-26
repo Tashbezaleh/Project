@@ -66,8 +66,11 @@ function closePopup() {
         $("#currentPopup").empty();
     });
 }
-function showPopup(content) {
+
+function showPopup(content, focusIndex) {
     closePopup();
+    // focusIndex is a default parameter that indicates which textbox should be focused
+    focusIndex = typeof focusIndex !== 'undefined' ? focusIndex : 0;
     $("#currentPopup").append("<div id='blackblock'></div>");
     $("#blackblock").click(closePopup).fadeIn(500, function () {
         $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
@@ -77,6 +80,7 @@ function showPopup(content) {
                 .children().fadeIn(0);
         });
         fixCSSIssues();
+        $("#currentPopup input:text").eq(focusIndex).focus();
     });
 }
 function setPopups() {
