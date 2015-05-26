@@ -8,6 +8,21 @@
             "pattern": pattern
     	}, searchDone);
     }
+
+    function setAddButton() {
+        $("#add_defi").click(function (e) {
+        e.preventDefault();
+        var defi_textbox = document.getElementsByName('definition')[1];
+        defi_textbox.value = '{{ definition }}';
+        showPopup($($(this).attr('href')).clone());
+        defi_textbox.value = '';
+
+        });
+    }
+
+    $(document).ready(function () {
+        setAddButton();
+    });
 </script>
 
 
@@ -56,3 +71,8 @@
         {% endfor %}
     </table>
 {% endif %}
+
+</br>
+
+ <input id="add_defi" href="#one" type="submit" value="יודע את התשובה ורוצה לעזור?" class = "peleg"/>
+
