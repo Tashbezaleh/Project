@@ -123,25 +123,19 @@ def get_results(this, was_voted=False, changed_definition='', answer='', action=
         return
 
     regex = solver.user_pat_to_regex(pattern)
+    results = []
     #each element in results is of class Answer defined in databaseUtils
-    results = solver.find(fix_encoding(definition), regex)
-
-    if was_voted:
-        for result in results:
-            if fix_encoding(result.definition) == fix_encoding(changed_definition) and \
-             fix_encoding(result.answer) == fix_encoding(answer):
-                if action == 'up':
-                    result.rank += 1
-                elif action == 'down':
-                    result.rank -= 1
-
-    results = [(result, cookiesUtils.can_vote(this, result, 'up'), cookiesUtils.can_vote(this, result, 'down')) for result in results]
-    #render page with results of the computation
+    for result in solver.find(fix_encoding(definition), regex):
+        if was_voted and fix_encoding(result.definition) == fix_encoding(changed_definition) and \
+             fix_encoding(result.answer) == fix_encoding(answer): # getting over ndb being "eventually" consistent
+                result.rank += 1 if action == 'up' else -1
+        results += [(result, cookiesUtils.can_vote(this, result, 'up'), cookiesUtils.can_vote(this, result, 'down'))]
+    # rendering the page with the results
     template_values= {
-        'results_list' : results,
-        'definition' : definition,
-        'pattern' : pattern,
-        'result_list_len' : len(results)
+    'results_list' : results,
+    'definition' : definition,
+    'pattern' : pattern,
+    'result_list_len' : len(results)
     }
     template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
     this.response.write(template.render(template_values))

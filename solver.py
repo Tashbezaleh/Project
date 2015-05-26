@@ -93,12 +93,15 @@ def find_online(definition, guess):
 
 def find(definition, guess):
     off_lst = databaseUtils.find_in_ndb(definition, guess)
+    for e in off_lst[:NUM_OF_SOLS_TO_SHOW]:
+        yield e
     if len(off_lst) >= NUM_OF_SOLS_TO_SHOW:
-        return off_lst[:NUM_OF_SOLS_TO_SHOW]
+        return
     on_lst = find_online(definition, guess)
     on_lst = filter(lambda r: r not in off_lst, on_lst)
     lst = off_lst + on_lst[:NUM_OF_SOLS_TO_SHOW - len(off_lst)]
-    return sorted(lst, key=lambda answer: answer.rank, reverse=True)
+    for e in sorted(lst, key=lambda answer: answer.rank, reverse=True):
+        yield e
 
 def user_pat_to_regex(pat):
     return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
