@@ -40,22 +40,15 @@
         </tr>
         {% for entry, can_upvote, can_downvote in results_list %}
         <tr>
-            <td style="direction:ltr;">
-                {% if can_downvote %}
-                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
-                    <img src="graphics/minus.png" />
-                </a>
-                {% else %}
-                <img src="graphics/disabled_minus.png" />
-                {% endif %}
-                {{ entry.rank }}
-                {% if can_upvote %}
-                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
-                    <img src="graphics/plus.png" />
-                </a>
-                {% else %}
-                <img src="graphics/disabled_plus.png" />
-                {% endif %}
+            <td>
+                <form method="get" action="result_action" id="rate_{{ entry.answer.decode('utf') }}">
+                    <fieldset class="rating">
+                        {% for i in range(1,6) %}
+                            <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating" value="{{ i }}"/>
+                            <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}"></label>
+                        {% endfor %}
+                    </fieldset>
+                </form>
             </td>
             <td>
                 {{ entry.answer.decode('utf') }}
