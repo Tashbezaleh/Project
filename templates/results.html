@@ -1,10 +1,9 @@
 <script type="text/javascript">
-    function submitVote(definition, answer, pattern, action, link) {
-        $(link).attr('onclick', '');
+    function submitRate(definition, answer, pattern, button) {
     	submitAForm("result_action", {
     		"definition" : definition,
     		"answer" : answer,
-    		"action" : action,
+    		"action" : button.value,
             "pattern": pattern
     	}, searchDone);
     }
@@ -38,17 +37,16 @@
                 מקור:
             </td>  
         </tr>
-        {% for entry, can_upvote, can_downvote in results_list %}
+        {% for entry, stars, int_stars in results_list %}
         <tr>
             <td>
-                <form method="get" action="result_action" id="rate_{{ entry.answer.decode('utf') }}">
-                    <fieldset class="rating">
-                        {% for i in range(1,6) %}
-                            <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating" value="{{ i }}"/>
-                            <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}"></label>
-                        {% endfor %}
-                    </fieldset>
-                </form>
+                <fieldset class="rating">
+                    {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
+                        <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating_{{ entry.answer.decode('utf') }}" value="rate{{ i }}" 
+                        onchange="submitRate('{{ entry.definition.decode('utf') }}', '{{ entry.answer.decode('utf') }}', '{{ pattern }}', this)" {% if int_stars == i %} checked {% endif %}/>
+                        <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
+                    {% endfor %}
+                </fieldset>
             </td>
             <td>
                 {{ entry.answer.decode('utf') }}

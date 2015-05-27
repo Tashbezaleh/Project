@@ -57,20 +57,15 @@ class ResultActionHandler(webapp2.RequestHandler):
         elif action == '':
             self.response.write(red_font % 'פעולה לא נתמכת')
             return
-        # if not databaseUtils.entry_exists(definition, answer):
-        #     databaseUtils.add_to_ndb(definition, answer, databaseUtils.SOLVER_NAME, 0)
-
-       
-        was_voted = False
-        answer_object = databaseUtils.Answer(answer.encode('utf'), definition.encode('utf'), '', 0)
-        if action in ['up', 'down'] and cookiesUtils.can_vote(self, answer_object, action):
-            was_voted = databaseUtils.vote_to_ndb(definition, answer, action)
-            # if is here to allow users change their votes
-            if not cookiesUtils.can_vote(self, answer_object, 'down' if action == 'up' else 'up'):
+            
+        answer_object = databaseUtils.Answer(answer.encode('utf'), definition.encode('utf'), '', 0, 1)
+        new_rate = 0
+        if re.match(r'rate\d', action) and int(action[-1]) in xrange(1, 6):
+            rate = int(action[-1])
+            new_rate = rate if databaseUtils.rate_to_ndb(definition, answer, rate, prev_rate=cookiesUtils.get_rate_from_cookie(self, answer_object)) else 0
+            if cookiesUtils.has_rated(self, answer_object):
                 cookiesUtils.del_from_cookies(self, answer_object)
-            else:
-                cookiesUtils.vote_cookie(self, answer_object, action)
-
+            cookiesUtils.rate_cookie(self, answer_object, rate)
         if action == 'add':
             source = cgi.escape(self.request.get('source'))
             if source == '':
@@ -78,7 +73,7 @@ class ResultActionHandler(webapp2.RequestHandler):
             databaseUtils.add_to_ndb(definition, answer, source, 0)
             return self.response.write('תודה על תרומתך')
 
-        get_results(self, was_voted, definition, answer, action)
+        get_results(self, new_rate, definition, answer,)
         
 
 
@@ -110,7 +105,7 @@ app = webapp2.WSGIApplication([
 
 
 
-def get_results(this, was_voted=False, changed_definition='', answer='', action=''):
+def get_results(this, new_rate=0, changed_definition='', answer=''):
     definition = cgi.escape(this.request.get('definition'))
     pattern = cgi.escape(this.request.get('pattern'))
     
@@ -126,10 +121,13 @@ def get_results(this, was_voted=False, changed_definition='', answer='', action=
     results = []
     #each element in results is of class Answer defined in databaseUtils
     for result in solver.find(fix_encoding(definition), regex):
-        if was_voted and fix_encoding(result.definition) == fix_encoding(changed_definition) and \
-             fix_encoding(result.answer) == fix_encoding(answer): # getting over ndb being "eventually" consistent
-                result.rank += 1 if action == 'up' else -1
-        results += [(result, cookiesUtils.can_vote(this, result, 'up'), cookiesUtils.can_vote(this, result, 'down'))]
+        if new_rate > 0 and fix_encoding(result.definition) == fix_encoding(changed_definition) and \
+             fix_encoding(result.answer) == fix_encoding(answer): 
+             # getting over ndb being "eventually" consistent, new_rate is 0 if the answer was already in the db and greater if it wasn't (and then it's the actual rate)
+                result.total_stars = new_rate
+                result.raters_count = 1
+        stars = result.total_stars /  result.raters_count if result.raters_count != 0 else 0
+        results += [(result, round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point), second stars are integer for presenting
     # rendering the page with the results
     template_values= {
     'results_list' : results,

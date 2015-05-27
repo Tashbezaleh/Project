@@ -9,11 +9,12 @@ from encodingUtils import fix_encoding
 SOLVER_NAME = "תשבצל'ה"
 
 class Answer:
-	def __init__(self, answer, definition, source, rank):
+	def __init__(self, answer, definition, source, total_stars, raters_count):
 		self.answer = answer
 		self.definition = definition
 		self.source = source
-		self.rank = rank
+		self.total_stars = total_stars
+		self.raters_count = raters_count
 
 	def __hash__(self):
 		return hash((self.answer, self.definition))
@@ -26,22 +27,24 @@ class NDBAnswer(ndb.Model):
     answer = ndb.StringProperty()
     definition = ndb.StringProperty()
     source = ndb.StringProperty()
-    rank = ndb.IntegerProperty()
+    total_stars = ndb.IntegerProperty()
+    raters_count = ndb.IntegerProperty()
 
     @classmethod
     def query_answer(cls, new_definition):
     	# """returns the query in which definition is as given"""
-    	return cls.query(cls.definition == urllib.quote(new_definition.encode('utf'))).order(-cls.rank)
+    	return cls.query(cls.definition == urllib.quote(new_definition.encode('utf'))).order(-cls.total_stars * 1.0 / cls.raters_count)
 
 def NDBAnswer_to_Answer(ndb_answer):
 	return Answer(urllib.unquote(str(ndb_answer.answer)), \
 				  urllib.unquote(str(ndb_answer.definition)), \
 				  urllib.unquote(str(ndb_answer.source)), \
-				  ndb_answer.rank)
+				  ndb_answer.total_stars, \
+                  ndb_answer.raters_count)
 
 def Answer_to_NDBAnswer(answer):
 	return create_NDBAnswer(answer.answer, answer.definition, \
-								answer.source, answer.rank)
+								answer.source, answer.total_stars, answer.raters_count)
 
 def initialize_ndb():
 	app = webapp2.get_app()
@@ -49,15 +52,16 @@ def initialize_ndb():
 		text_to_database()
 		app.registry['ndb initialized'] = 1	
 
-def create_NDBAnswer(answer, definition, source, rank):
+def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
 	return NDBAnswer(answer=urllib.quote(fix_encoding(answer)), \
 					 definition=urllib.quote(fix_encoding(definition)), \
 					 source=urllib.quote(fix_encoding(source)), \
-					 rank=rank)
+					 total_stars=total_stars, \
+                     raters_count=raters_count)
     
-def add_to_ndb(definition, answer, source, rank):
+def add_to_ndb(definition, answer, source, total_stars, raters_count):
 	if not entry_exists(definition, answer):
-		entry = create_NDBAnswer(answer, definition, source, rank)
+		entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
 		entry.put()
 
 def text_to_database():
@@ -73,7 +77,7 @@ def text_to_database():
 
 	for definition in defs_to_sols:
 		for sol in defs_to_sols[definition]:
-			entry = create_NDBAnswer(sol, definition, "תשבצל'ה", 100)
+			entry = create_NDBAnswer(sol, definition, "תשבצל'ה", 5, 1)
 			ls.append(entry)
  	ndb.put_multi(ls)
 
@@ -82,25 +86,27 @@ def find_in_ndb(definition, guess):
 	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(fix_encoding(definition)))
 	answers = filter(lambda x: guess.match(x.answer),\
 					map(NDBAnswer_to_Answer, qry.fetch()))
-	return sorted(list(set(answers)), key=lambda ans: ans.rank, reverse=True)
-    
-def vote_to_ndb(definition, answer, action):
-    '''action in ['up', 'down']'''
-    if action not in ['up', 'down']:
+	return sorted(list(set(answers)), key=lambda ans: 1.0 * ans.total_stars / ans.raters_count, reverse=True)
+
+def rate_to_ndb(definition, answer, rate, prev_rate=0, source=SOLVER_NAME):
+    if rate not in xrange(1, 6):
         return False
-    tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0)
+    tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0, 1)
     entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, NDBAnswer.definition == tmp_answer.definition))
-    vote = 1 if action == 'up' else -1
     if entities.get() == None:
-        add_to_ndb(definition, answer, SOLVER_NAME, vote)
+        add_to_ndb(definition, answer, source, rate, 1)
         return True
     entity = entities.get()
-    entity.rank = entity.rank + vote
+    if prev_rate > 0:
+        entity.total_stars -= prev_rate
+        entity.raters_count -= 1
+    entity.total_stars += rate
+    entity.raters_count += 1
     entity.put()
     return False
-        
+    
 def entry_exists(definition, answer):
-	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0)
+	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0, 1)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
 									 NDBAnswer.definition == tmp_answer.definition))
 	return entities.get() != None

@@ -184,7 +184,7 @@ input[type="radio"] + label {
 }
 
 .rating > label:before {
-  margin: 5px;
+  margin: 2.5px;
   font-size: 1.25em;
   font-family: FontAwesome;
   display: inline-block;
