@@ -46,6 +46,7 @@ def Answer_to_NDBAnswer(answer):
 def initialize_ndb():
 	app = webapp2.get_app()
 	if 'ndb initialized' not in app.registry:
+		clean_db()
 		text_to_database()
 		app.registry['ndb initialized'] = 1	
 
@@ -104,3 +105,7 @@ def entry_exists(definition, answer):
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
 									 NDBAnswer.definition == tmp_answer.definition))
 	return entities.get() != None
+
+def clean_db():
+	#''' not fully checked, may cause problems'''
+	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
