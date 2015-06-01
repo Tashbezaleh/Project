@@ -90,7 +90,7 @@ class ResetDBHandler(webapp2.RequestHandler):
         part = cgi.escape(self.request.get('part'))
 
         if (operation == 'clean'):
-            #sometimes it takes 3 calls to accttually clean the db.
+            #sometimes it takes more than one call to accttually clean the db.
             self.response.write("START CLEANING <br>")
             app.registry['ready'] = "no"
             app.registry['part'] = "0"

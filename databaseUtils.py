@@ -107,14 +107,15 @@ def entry_exists(definition, answer):
 	return entities.get() != None
 
 def clean_db():
-	#''' not fully checked, may cause problems'''
+	# it has intentionally the same line twice
 	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
+	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
+
 
 def uploadPart(part):
 	# uploads part number the argument, receives an integer
 	# does it iff the last part uploaded was exactly the preceding one
-	#order part from 1 to N
-	# N is 5(can change)
+	#order part from 1 to NUMBER_OF_PARTS
 	#stores part in the registry as int
 	app = webapp2.get_app()
 	registry_dict= app.registry
@@ -123,9 +124,9 @@ def uploadPart(part):
 	if ('part' in registry_dict) and (int(registry_dict['part']) == (part - 1) ) :
 		#the first part or (is in the dict and the last one uploaded is the right one
 		text_to_database_part(part)
-		app.registry['part'] = str(part)
+		webapp2.get_app().registry['part'] = str(part)
 		if ( part == NUMBER_OF_PARTS):
-			app.registry['ready'] = "yes"
+			webapp2.get_app().registry['ready'] = "yes"
 		return True
 	return False
 
