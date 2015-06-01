@@ -86,17 +86,44 @@ class ResultActionHandler(webapp2.RequestHandler):
 # for admins only, please only enable when testing and db reset is needed
 class ResetDBHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write("START WORKING <br>")
-        ndb.delete_multi(databaseUtils.NDBAnswer.query().fetch(keys_only = True))
-        self.response.write("DONE DELETING <br>")
-        databaseUtils.initialize_ndb()
-        self.response.write("GREAT SUCCESS")
+        operation = cgi.escape(self.request.get('operation'))
+        part = cgi.escape(self.request.get('part'))
 
-# class TestHandler(webapp2.RequestHandler):
-#     def get(self):
-#         template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
-#         output = template.render({})
-#         self.response.write(output)
+        if (operation == 'clean'):
+            self.response.write("START CLEANING <br>")
+            databaseUtils.clean_db()
+            self.response.write("DONE CLEANING <br>")
+            self.response.write("GREAT SUCCESS")
+            return
+
+        if (operation == 'upload'):
+            self.response.write("START UPLOAD PART #%s <br>" % part)
+            if ( databaseUtils.uploadPart(part) == True):
+                self.response.write("DONE UPLOAD PART #%s <br>" % part)
+                self.response.write("GREAT SUCCESS")
+            else:
+                self.response.write("DONE UPLOAD PART #%s <br>" % part)
+                self.response.write("NO SUCCESS")
+            return 
+
+        if (operation == 'data'):
+            registry_dict= app.registry
+            self.response.write("DATA: <br>")
+            self.response.write("%s <br>" % part)
+            if (not ('ready' in registry_dict)) or registry_dict['ready'] != 'yes' :
+                self.response.write("IS READY: False <br>")
+            else:
+                self.response.write("IS READY: True <br>")
+
+            if 'part' in registry_dict :
+                self.response.write("Updated till PART NUMBER %s <br>" % registry_dict['part'])
+            else:
+                self.response.write("Updated till PART NUMBER: No part is ready")
+            return
+
+
+        self.response.write("NO SUCCESS, parameter is missing")
+
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
