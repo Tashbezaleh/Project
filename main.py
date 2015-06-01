@@ -90,7 +90,11 @@ class ResetDBHandler(webapp2.RequestHandler):
         part = cgi.escape(self.request.get('part'))
 
         if (operation == 'clean'):
+            #sometimes it takes 3 calls to accttually clean the db.
             self.response.write("START CLEANING <br>")
+            app.registry['ready'] = "no"
+            app.registry['part'] = "0"
+
             databaseUtils.clean_db()
             self.response.write("DONE CLEANING <br>")
             self.response.write("GREAT SUCCESS")
@@ -114,8 +118,8 @@ class ResetDBHandler(webapp2.RequestHandler):
                 self.response.write("IS READY: False <br>")
             else:
                 self.response.write("IS READY: True <br>")
-
-            if 'part' in registry_dict :
+                # and registry_dict['part'] != '0' 
+            if ('part' in registry_dict) :
                 self.response.write("Updated till PART NUMBER %s <br>" % registry_dict['part'])
             else:
                 self.response.write("Updated till PART NUMBER: No part is ready")

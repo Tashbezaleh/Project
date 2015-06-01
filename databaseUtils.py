@@ -7,7 +7,7 @@ import urllib
 from encodingUtils import fix_encoding
 
 SOLVER_NAME = "תשבצל'ה"
-NUMBER_OF_PARTS = 5
+NUMBER_OF_PARTS = 20
 DEFINTIONS_FILE_NUMBER_OF_LINES = 12810
 
 class Answer:
@@ -64,7 +64,7 @@ def text_to_database_part(part):
 	ls = []
 	with open( (r'definitions.txt' ), 'rb') as f:
 		part_size = (DEFINTIONS_FILE_NUMBER_OF_LINES / NUMBER_OF_PARTS) +1
-		defs = "".join(f.readlines()[ part*(part_size-1) : part*part_size] )
+		defs = "".join(f.readlines()[ (part-1)*(part_size) : part*part_size] )
 
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
 	
@@ -120,7 +120,7 @@ def uploadPart(part):
 	registry_dict= app.registry
 	part = int(part)
 
-	if (part == 1) or ( ('part' in registry_dict) and (int(registry_dict['part']) == (part - 1) ) ):
+	if ('part' in registry_dict) and (int(registry_dict['part']) == (part - 1) ) :
 		#the first part or (is in the dict and the last one uploaded is the right one
 		text_to_database_part(part)
 		app.registry['part'] = str(part)
