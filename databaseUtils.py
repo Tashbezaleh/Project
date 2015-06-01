@@ -7,6 +7,8 @@ import urllib
 from encodingUtils import fix_encoding
 
 SOLVER_NAME = "תשבצל'ה"
+NUMBER_OF_PARTS = 5
+DEFINTIONS_FILE_NUMBER_OF_LINES = 12810
 
 class Answer:
 	def __init__(self, answer, definition, source, rank):
@@ -25,8 +27,8 @@ class NDBAnswer(ndb.Model):
     # """Models an individual answer entry with ranking and source"""
     answer = ndb.StringProperty()
     definition = ndb.StringProperty()
-    source = ndb.StringProperty()
-    rank = ndb.IntegerProperty()
+    source = ndb.StringProperty(indexed = False)
+    rank = ndb.IntegerProperty(indexed = False)
 
     @classmethod
     def query_answer(cls, new_definition):
@@ -43,12 +45,6 @@ def Answer_to_NDBAnswer(answer):
 	return create_NDBAnswer(answer.answer, answer.definition, \
 								answer.source, answer.rank)
 
-def initialize_ndb():
-	app = webapp2.get_app()
-	if 'ndb initialized' not in app.registry:
-		clean_db()
-		text_to_database()
-		app.registry['ndb initialized'] = 1	
 
 def create_NDBAnswer(answer, definition, source, rank):
 	return NDBAnswer(answer=urllib.quote(fix_encoding(answer)), \
@@ -61,16 +57,20 @@ def add_to_ndb(definition, answer, source, rank):
 		entry = create_NDBAnswer(answer, definition, source, rank)
 		entry.put()
 
-def text_to_database():
+def text_to_database_part(part):
 	# """reads the entities from solver.defs_to_sols and store them in ndb"""
+	# the input indicated which part of the database to upload
 	defs = ''
 	ls = []
-	with open(r'definitions.txt', 'rb') as f:
-		defs = f.read()
+	with open( (r'definitions.txt' ), 'rb') as f:
+		part_size = (DEFINTIONS_FILE_NUMBER_OF_LINES / NUMBER_OF_PARTS) +1
+		defs = "".join(f.readlines()[ part*(part_size-1) : part*part_size] )
 
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
-	if entry_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
-		return
+	
+	# peleg's. maybe it checks if the first new entry is in the db, and if so it returns
+	# if entry_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
+	# 	return
 
 	for definition in defs_to_sols:
 		for sol in defs_to_sols[definition]:
@@ -109,3 +109,24 @@ def entry_exists(definition, answer):
 def clean_db():
 	#''' not fully checked, may cause problems'''
 	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
+
+def uploadPart(part):
+	# uploads part number the argument, receives an integer
+	# does it iff the last part uploaded was exactly the preceding one
+	#order part from 1 to N
+	# N is 5(can change)
+	#stores part in the registry as int
+	app = webapp2.get_app()
+	registry_dict= app.registry
+	part = int(part)
+
+	if (part == 1) or ( ('part' in registry_dict) and (int(registry_dict['part']) == (part - 1) ) ):
+		#the first part or (is in the dict and the last one uploaded is the right one
+		text_to_database_part(part)
+		app.registry['part'] = str(part)
+		if ( part == NUMBER_OF_PARTS):
+			app.registry['ready'] = "yes"
+		return True
+	return False
+
+			
