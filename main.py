@@ -78,6 +78,7 @@ class ResultActionHandler(webapp2.RequestHandler):
         
 class MinigamesHandler(webapp2.RequestHandler):
     def get(self):
+        pass
         
 
 
