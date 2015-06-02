@@ -78,7 +78,7 @@ def find_online(definition, guess):
 
     # removing the freqs
     answers = map(lambda t: t[0], style(histogram))
-    return [databaseUtils.Answer(answer, definition, databaseUtils.SOLVER_NAME, 0) for answer in answers]
+    return [databaseUtils.Answer(answer, definition, databaseUtils.SOLVER_NAME, 0, 0) for answer in answers]
 
 
 ##def deep_online_search(definition, guess):
@@ -99,8 +99,8 @@ def find(definition, guess):
         return
     on_lst = find_online(definition, guess)
     on_lst = filter(lambda r: r not in off_lst, on_lst)
-    lst = off_lst + on_lst[:NUM_OF_SOLS_TO_SHOW - len(off_lst)]
-    for e in sorted(lst, key=lambda answer: answer.rank, reverse=True):
+    lst = on_lst[:NUM_OF_SOLS_TO_SHOW - len(off_lst)]
+    for e in lst:
         yield e
 
 def user_pat_to_regex(pat):

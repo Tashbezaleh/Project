@@ -1,12 +1,12 @@
 <script type="text/javascript">
-    function submitVote(definition, answer, pattern, action, link) {
-        $(link).attr('onclick', '');
+    function submitRate(definition, answer, pattern, button) {
     	submitAForm("result_action", {
     		"definition" : definition,
     		"answer" : answer,
-    		"action" : action,
+    		"action" : button.value,
             "pattern": pattern
     	}, searchDone);
+        button.checked = false;
     }
 
     function setAddButton() {
@@ -38,24 +38,16 @@
                 מקור:
             </td>  
         </tr>
-        {% for entry, can_upvote, can_downvote in results_list %}
+        {% for entry, stars, int_stars in results_list %}
         <tr>
-            <td style="direction:ltr;">
-                {% if can_downvote %}
-                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'down', this)">
-                    <img src="graphics/minus.png" />
-                </a>
-                {% else %}
-                <img src="graphics/disabled_minus.png" />
-                {% endif %}
-                {{ entry.rank }}
-                {% if can_upvote %}
-                <a href="#" onclick="submitVote('{{ definition }}', '{{ entry.answer.decode('utf')  }}', '{{ pattern }}', 'up', this);">
-                    <img src="graphics/plus.png" />
-                </a>
-                {% else %}
-                <img src="graphics/disabled_plus.png" />
-                {% endif %}
+            <td>
+                <fieldset class="rating">
+                    {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
+                        <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating_{{ entry.answer.decode('utf') }}" value="rate{{ i }}" onclick="return false;"
+                        onchange="submitRate('{{ entry.definition.decode('utf') }}', '{{ entry.answer.decode('utf') }}', '{{ pattern }}', this)" {% if int_stars == i %} checked {% endif %}/>
+                        <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
+                    {% endfor %}
+                </fieldset>
             </td>
             <td>
                 {{ entry.answer.decode('utf') }}
