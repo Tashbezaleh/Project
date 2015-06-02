@@ -89,6 +89,7 @@ class ResetDBHandler(webapp2.RequestHandler):
         part = cgi.escape(self.request.get('part'))
 
         if (operation == 'clean'):
+            #cleans the db and sets intial values for registry entries
             #sometimes it takes more than one call to accttually clean the db.
             self.response.write("START CLEANING <br>")
             app.registry['ready'] = "no"
@@ -100,6 +101,7 @@ class ResetDBHandler(webapp2.RequestHandler):
             return
 
         if (operation == 'upload'):
+            #upload parts. if all uploads part == all the parts at once
             self.response.write("START UPLOAD PART #%s <br>" % part)
             if (part == 'all'):
                 for i in xrange(1, 1 + databaseUtils.NUMBER_OF_PARTS):
@@ -119,6 +121,7 @@ class ResetDBHandler(webapp2.RequestHandler):
             return 
 
         if (operation == 'data'):
+            # shows in the respond registry values that indicate what's the db stat's
             registry_dict= app.registry
             self.response.write("DATA: <br>")
             self.response.write("%s <br>" % part)
@@ -131,6 +134,19 @@ class ResetDBHandler(webapp2.RequestHandler):
                 self.response.write("Updated till PART NUMBER %s <br>" % registry_dict['part'])
             else:
                 self.response.write("Updated till PART NUMBER: No part is ready")
+            return
+
+        if operation == 'update_registry' :
+            #update the registry part entry accotding to the input
+            # WARNING, no input check
+            # updates ready if needed
+            self.response.write("updating registy starts <br>")
+            app.registry['part'] = part
+            if ( part == databaseUtils.NUMBER_OF_PARTS):
+                app.registry['ready'] = 'yes'
+            else:
+                app.registry['ready'] = 'no'
+            self.response.write("done <br>")
             return
 
 
