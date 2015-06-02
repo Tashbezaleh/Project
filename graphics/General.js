@@ -74,19 +74,18 @@ function showPopup(content, focusIndex) {
     $("#currentPopup").append("<div id='blackblock'></div>");
     $("#blackblock").click(closePopup).fadeIn(500, function () {
         $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
-        $("#popupContentHolder").fadeIn(0, function () {
-            $(this)
-                .append(content)
-                .children().fadeIn(0);
-        });
+        $("#popupContentHolder").append(content);
         fixCSSIssues();
+	$("#popupContentHolder").fadeIn(500, function () {
+            $(this).children().fadeIn(500);
+        });
         $("#currentPopup input:text").eq(focusIndex).focus();
     });
 }
 function setPopups() {
     $(".popup").click(function (e) {
         e.preventDefault();
-        showPopup($($(this).attr('href')).clone());
+        showPopup($($(this).attr('href')).html());
     });
 }
 function ajaxFail(request, error) {
