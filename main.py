@@ -76,7 +76,9 @@ class ResultActionHandler(webapp2.RequestHandler):
 
         get_results(self, new_rate, definition, answer,)
         
-
+class MinigamesHandler(webapp2.RequestHandler):
+    def get(self):
+        
 
 
 # for admins only, please only enable when testing and db reset is needed
@@ -132,6 +134,8 @@ class ResetDBHandler(webapp2.RequestHandler):
 
 
         self.response.write("NO SUCCESS, parameter is missing")
+
+
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 

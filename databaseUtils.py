@@ -57,10 +57,11 @@ def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
                      raters_count=raters_count)
     
 def add_to_ndb(definition, answer, source, total_stars, raters_count):
-	if not entry_exists(definition, answer):
+	if not answer_exists(definition, answer):
 		entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
 		entry.put()
-
+		if udef_exists(definition):
+			udef_remove(definition)
 
 def text_to_database_part(part):
 	# """reads the entities from solver.defs_to_sols and store them in ndb"""
@@ -74,7 +75,7 @@ def text_to_database_part(part):
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
 	
 	# peleg's. maybe it checks if the first new entry is in the db, and if so it returns
-	# if entry_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
+	# if answer_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
 	# 	return
 
 	for definition in defs_to_sols:
@@ -107,7 +108,7 @@ def rate_to_ndb(definition, answer, rate, prev_rate=0, source=SOLVER_NAME):
     entity.put()
     return False
     
-def entry_exists(definition, answer):
+def answer_exists(definition, answer):
 	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0, 1)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
 									 NDBAnswer.definition == tmp_answer.definition))
