@@ -70,7 +70,8 @@ class ResultActionHandler(webapp2.RequestHandler):
             source = cgi.escape(self.request.get('source'))
             if source == '':
                 source = 'אנונימי'
-            databaseUtils.add_to_ndb(definition, answer, source, 0)
+            if databaseUtils.add_to_ndb(definition, answer, source, 5, 1):
+                cookiesUtils.rate_cookie(self, answer_object, 5)
             return self.response.write('תודה על תרומתך')
 
         get_results(self, new_rate, definition, answer,)
@@ -80,18 +81,57 @@ class ResultActionHandler(webapp2.RequestHandler):
 
 # for admins only, please only enable when testing and db reset is needed
 class ResetDBHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write("START WORKING <br>")
-        ndb.delete_multi(databaseUtils.NDBAnswer.query().fetch(keys_only = True))
-        self.response.write("DONE DELETING <br>")
-        databaseUtils.initialize_ndb()
-        self.response.write("GREAT SUCCESS")
+     def get(self):
+        operation = cgi.escape(self.request.get('operation'))
+        part = cgi.escape(self.request.get('part'))
 
-# class TestHandler(webapp2.RequestHandler):
-#     def get(self):
-#         template = JINJA_ENVIRONMENT.get_template('/templates/test.html')
-#         output = template.render({})
-#         self.response.write(output)
+        if (operation == 'clean'):
+            #sometimes it takes more than one call to accttually clean the db.
+            self.response.write("START CLEANING <br>")
+            app.registry['ready'] = "no"
+            app.registry['part'] = "0"
+
+            databaseUtils.clean_db()
+            self.response.write("DONE CLEANING <br>")
+            self.response.write("GREAT SUCCESS")
+            return
+
+        if (operation == 'upload'):
+            self.response.write("START UPLOAD PART #%s <br>" % part)
+            if (part == 'all'):
+                for i in xrange(1, 1 + databaseUtils.NUMBER_OF_PARTS):
+                    self.response.write('PART %d: ' % i)
+                    if databaseUtils.uploadPart(str(i)):
+                        self.response.write('SUCCESS<br>')
+                    else:
+                        self.response.write('FAIL<br>')
+                return
+
+            if ( databaseUtils.uploadPart(part) == True):
+                self.response.write("DONE UPLOAD PART #%s <br>" % part)
+                self.response.write("GREAT SUCCESS")
+            else:
+                self.response.write("DONE UPLOAD PART #%s <br>" % part)
+                self.response.write("NO SUCCESS")
+            return 
+
+        if (operation == 'data'):
+            registry_dict= app.registry
+            self.response.write("DATA: <br>")
+            self.response.write("%s <br>" % part)
+            if (not ('ready' in registry_dict)) or registry_dict['ready'] != 'yes' :
+                self.response.write("IS READY: False <br>")
+            else:
+                self.response.write("IS READY: True <br>")
+                # and registry_dict['part'] != '0' 
+            if ('part' in registry_dict) :
+                self.response.write("Updated till PART NUMBER %s <br>" % registry_dict['part'])
+            else:
+                self.response.write("Updated till PART NUMBER: No part is ready")
+            return
+
+
+        self.response.write("NO SUCCESS, parameter is missing")
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
