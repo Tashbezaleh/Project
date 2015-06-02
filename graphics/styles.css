@@ -198,7 +198,7 @@ input[type="radio"] + label {
 
 .rating > label {
   color: #ddd;
-  text-shadow: 0px 0px 5px #ddd;
+  -webkit-text-stroke: 1px #ddd;
   float: right;
 }
 
@@ -206,12 +206,12 @@ input[type="radio"] + label {
 
 .rating > input:checked ~ label {
   color: #FFD700;
-  text-shadow: 0px 0px 5px #FFD700;
+  -webkit-text-stroke: 1px #FFD700;
 }
 .rating > label:hover ~ label,
 .rating > label:hover,
 .rating > input:checked ~ label:hover ~ label,
 .rating > input:checked ~ label:hover {
   color: #FF8000;
-  text-shadow: 0px 0px 5px #FF8000;
+  -webkit-text-stroke: 1px #FF8000;
 }
