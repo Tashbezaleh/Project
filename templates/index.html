@@ -48,17 +48,40 @@
 				    <img src="graphics/logo.jpg" alt="logo" id="logo">
 				    <br/>
 				    <br/>
-				    <label>הכנס הגדרה:
+                    <label for="definition">
+				    הכנס הגדרה:
+                    </label>
 				    <br/>
+                    <a href="#" id="definitionHelp">
+                    <img src="graphics/question_mark.jpg">
+                    </a>
 				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="למשל: עוף דורס" />
-				    </label>
+                    <br/>
+                    <!-- <div id = "definitionError">
+                        ההגדרה אותה אנו רוצים לחפש. <br/>
+                        למשל עבור: <img src="graphics/pattern-help.bmp"> <br/>
+                        ההגדרה: עוף דורס <br/>
+                    </div> -->
 				    <br/>
 				    <br/>
-				    <label>הכנס תבנית:
+                    <label for = "pattern">
+				    הכנס תבנית:
+                    </label>
 				    <br/>
-				    <input type="text" id="pattern" name="pattern" class = "peleg" placeholder="למשל: ת????"/>
-				    </label>
-				    <br/>
+                    <a href="#" id="patternHelp">
+                    <img src="graphics/question_mark.jpg">
+                    </a>
+                    <input type="text" id="pattern" name="pattern" class = "peleg" placeholder="למשל: ת????"/>
+
+				    <!-- <div id="patternHelp">
+                        הקלד סימן שאלה עבור האות החסרה בתשבץ. <br/>
+                        למשל עבור: <img src="graphics/pattern-help.bmp"> <br/>
+                        התבנית המתאימה: ת?ש??
+                    </div> --> 
+                    <br/>
+                    <br/>
+                    <div id="errorMessage" class="error">
+                    </div>                    
 				    <br/>
 				    <input id="submit_button" type="submit" value="חפש!" class = "peleg"/>
 				</form>

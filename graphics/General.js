@@ -47,17 +47,44 @@ function checkPatternValid(patternStr){
 function isFormValid(self){
     inputs=[self.definition, self.answer, self.pattern]
     out=true;
+    hasError = false;
+    $("#errorMessage").empty();
     for(i=0; i<inputs.length; i++){
         $(inputs[i]).val($.trim($(inputs[i]).val()));
-        if(inputs[i])
-            if($(inputs[i]).val()=='' ||
+        if(inputs[i]) {
+            if($(inputs[i]).val()==''  ||
                 (inputs[i]==self.pattern &&
-                    !checkPatternValid($(inputs[i]).val()))){
+                    !checkPatternValid($(inputs[i]).val()))) {
                 out=false;
                 $(inputs[i]).addClass("angryPeleg");
+                if (!hasError) {
+                    if ($(inputs[i]).val()=='') {
+                        if (i == 0) {
+                            $("#errorMessage").append("אנא הכנס הגדרה")
+                            hasError = true;
+                        }
+                        if (i == 2) {
+                            $("#errorMessage").append("אנא הכנס תבנית")
+                            hasError = true;
+                        }
+                    }
+                    if ((inputs[i]==self.pattern &&
+                        !checkPatternValid($(inputs[i]).val()))) {
+                         $("#errorMessage").append("אנא הכנס תבנית חוקית")
+                        hasError = true;
+                    }
+                }
+                else {
+                    $(inputs[i]).removeClass("angryPeleg");
+                }
             }
-            else
-                $(inputs[i]).removeClass("angryPeleg");
+        }
+    }
+    if (!hasError) {
+        $("#errorMessage").hide();
+    }
+    else {
+        $("#errorMessage").show();
     }
     return out;
 }

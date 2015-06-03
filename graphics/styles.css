@@ -215,3 +215,10 @@ input[type="radio"] + label {
   color: #FF8000;
   -webkit-text-stroke: 1px #FF8000;
 }
+
+.error {
+  font-size: 0.75em;
+  font-family: arial;
+  color: red;
+  display: none;
+}
