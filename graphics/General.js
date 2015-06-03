@@ -81,7 +81,7 @@ function isFormValid(self){
         }
     }
     if (!hasError) {
-        $("#errorMessage").hide();
+        $("#errorMessage").html("</br>");
     }
     else {
         $("#errorMessage").show();
@@ -113,6 +113,14 @@ function setPopups() {
     $(".popup").click(function (e) {
         e.preventDefault();
         showPopup($($(this).attr('href')).html());
+    });
+}
+function setHelpButtons() {
+    $("#definitionHelp").click(function() {
+
+    });
+    $("#patternHelp").click(function() {
+
     });
 }
 function ajaxFail(request, error) {
@@ -163,6 +171,7 @@ $(document).ready(function () {
     $(window).resize(fixCSSIssues);
     slide("#slidingNavigation", 17, 900, 150);
     setPopups();
+    setHelpButtons();
     expirementWithForms();
     $(document).on("focus","input",function () {
         $(this).removeClass("angryPeleg");
