@@ -200,6 +200,7 @@ input[type="radio"] + label {
   color: #ddd;
   -webkit-text-stroke: 1px #ddd;
   float: right;
+  cursor: pointer;
 }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
