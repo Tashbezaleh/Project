@@ -52,7 +52,7 @@
 				    הכנס הגדרה:
                     </label>
                     <p>
-                    <a href="#" id="definitionHelp">
+                    <a href="#definitionHelp" class="popup">
                     <img src="graphics/question_mark.jpg" style="
                         margin: 0px -30px -8 0;
                         width: 30px;
@@ -62,18 +62,13 @@
 				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="למשל: עוף דורס" />
                     </p>
                     <br/>
-                    <!-- <div id = "definitionError">
-                        ההגדרה אותה אנו רוצים לחפש. <br/>
-                        למשל עבור: <img src="graphics/pattern-help.bmp"> <br/>
-                        ההגדרה: עוף דורס <br/>
-                    </div> -->
 				    <br/>
                     <p>
                     <label for = "pattern">
 				    הכנס תבנית:
                     </label>
 				    <br/>
-                    <a href="#" id="patternHelp">
+                    <a href="#patternHelp" class="popup">
                     <img src="graphics/question_mark.jpg" style="
                         margin: 0px -30px -8 0;
                         width: 30px;
@@ -82,11 +77,6 @@
                     </a>
                     <input type="text" id="pattern" name="pattern" class = "peleg" placeholder="למשל: ת????"/>
                     </p>
-				    <!-- <div id="patternHelp">
-                        הקלד סימן שאלה עבור האות החסרה בתשבץ. <br/>
-                        למשל עבור: <img src="graphics/pattern-help.bmp"> <br/>
-                        התבנית המתאימה: ת?ש??
-                    </div> --> 
                     <br/>
                     <div id="errorMessage" class="error">
                         </br>
@@ -120,6 +110,20 @@
         </div>
         <div id="five" class="popupContent">
             תכונה זאת לא נתמכת עדיין
+        </div>
+        <div id="definitionHelp" class="popupContent">
+            <b><u>הגדרה</u></b><br/>
+            ההגדרה אותה אנו רוצים לחפש. <br/>
+            למשל עבור: <br/>
+            <img src="graphics/pattern-help.bmp" width="200px"> <br/>
+            ההגדרה המתאימה: עוף דורס <br/>
+        </div>
+        <div id="patternHelp" class="popupContent">
+            <b><u>תבנית</u></b><br/>
+            הקלד סימן שאלה עבור האות החסרה בתשבץ. <br/>
+            למשל עבור: <br/>
+            <img src="graphics/pattern-help.bmp" width="200px"> <br/>
+            התבנית המתאימה: ת?ש??
         </div>
         <div id="currentPopup"></div>
 	</body>

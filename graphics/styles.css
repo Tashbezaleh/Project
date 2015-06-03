@@ -129,7 +129,7 @@ input:focus:-moz-placeholder { color:transparent; }
     background-color: White;
     padding: 20px;
     top: 120px;
-    width: 300px;
+    min-width: 300px;
     display: none;
     -webkit-border-radius: 75px 0px;
     -moz-border-radius: 75px 0px;
