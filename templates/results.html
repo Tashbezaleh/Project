@@ -1,24 +1,10 @@
 <script type="text/javascript">
-    function submitRate(definition, answer, pattern, button) {
-    	submitAForm("result_action", {
-    		"definition" : definition,
-    		"answer" : answer,
-    		"action" : button.value,
-            "pattern": pattern
-    	}, searchDone);
-        button.checked = false;
-    }
-
-    function setAddButton() {
-        $("#add_defi_results").click(function (e) {
-            showPopup($($(this).attr('href')).html(), function () {
-                $(this).find("#definition").val("{{ definition }}");
-                $(this).find("#answer").focus();
-            });
+    $("#add_defi_results").click(function (e) {
+        showPopup($($(this).attr('href')).html(), function () {
+            $(this).find("#definition").val("{{ definition }}");
+            $(this).find("#answer").focus();
         });
-    }
-    
-    setAddButton();
+    });
 </script>
 
 
@@ -26,7 +12,7 @@
 {% if result_list_len == 0 %}
     <h3>לא נמצאו תוצאות</h3>
 {% else %}
-    <table class="peleg" style="text-align: center;white-space: nowrap;">
+    <table class="pelegTable" style="text-align: center;white-space: nowrap;">
         <tr>
             <td width="100relative_length">
                 דירוג:
@@ -39,7 +25,7 @@
             </td>  
         </tr>
         {% for entry, stars, int_stars in results_list %}
-        <tr>
+        <tr style="height:31px;min-width: 120px;">
             <td>
                 <fieldset class="rating">
                     {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->

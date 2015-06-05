@@ -147,6 +147,7 @@ function submitAForm(addr, values, doneFunc) {
     .done(doneFunc)
     .fail(ajaxFail);
 }
+
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
@@ -170,6 +171,18 @@ function expirementWithForms() {
             });
         });
     });
+}
+function submitRate(definition, answer, pattern, button) {
+    submitAForm("result_action", {
+        "definition": definition,
+        "answer": answer,
+        "action": button.value,
+        "pattern": pattern
+    }, searchDone);
+    button.checked = false;
+
+    // user 'thank you':
+    $(button).closest("td").html("<b style='color: LimeGreen;'>תודה על תרומתך!</b>");
 }
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
