@@ -69,8 +69,12 @@ def find_online(definition, guess):
     hits = data['results']
     histogram = dict()
     for h in hits:
-        res = urllib.urlopen(urllib.unquote(h['url'])).read()
-        add_to_hist(histogram, res, guess)
+        try:
+            res = urllib.urlopen(urllib.unquote(h['url'])).read()
+            add_to_hist(histogram, res, guess)
+        except:
+            pass # need to decide what exactly we want to do, but that seems to patch the bug
+            
 
     for w in definition.split():
         if w in histogram:
