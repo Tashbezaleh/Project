@@ -187,7 +187,7 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
              # getting over ndb being "eventually" consistent, new_rate is 0 if the answer was already in the db and greater if it wasn't (and then it's the actual rate)
                 result.total_stars = new_rate
                 result.raters_count = 1
-        stars = result.total_stars /  result.raters_count if result.raters_count != 0 else 0
+        stars = 1.0 * result.total_stars /  result.raters_count if result.raters_count != 0 else 0
         results += [(result, round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point), second stars are integer for presenting
     # rendering the page with the results
     template_values= {
