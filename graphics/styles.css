@@ -1,12 +1,10 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
     direction: rtl;
 }
 
-body
-{
+body {
     margin: 0 !important;
     padding: 0 !important;
     position: relative;
@@ -17,79 +15,69 @@ body
     background-color: #fff;
 }
 
-a
-{
+a {
     text-decoration: none;
 }
 
-h3
-{
+h3 {
     font-size: x-large;
 }
 
-#rightColumn 
-{
+#rightColumn {
     text-align: right;
     float: right;
-    margin-right:-15px;
-    margin-top:15%;
+    margin-right: -15px;
+    margin-top: 15%;
     font-size: 100%;
-    width:200px;
+    width: 200px;
 }
 
-#slidingNavigation li
-{
+#slidingNavigation li {
     margin-bottom: 5px;
     list-style: none;
     list-style-type: none;
 }
 
-#slidingNavigation li:first-of-type *
-{
-    padding: 5px 40px 5px 30px;
-    color: #fff;
-    background-color: #333;
-    font-weight:normal;
-    margin-bottom: 2px;
-    font-size: 1.17em;
+    #slidingNavigation li:first-of-type * {
+        padding: 5px 40px 5px 30px;
+        color: #fff;
+        background-color: #333;
+        font-weight: normal;
+        margin-bottom: 2px;
+        font-size: 1.17em;
+    }
+
+    #slidingNavigation li * {
+        display: inline-block;
+        width: 150px;
+        padding: 3px 30px 3px 20px;
+        color: GrayText;
+        text-decoration: none;
+        background-color: #222;
+        border: 1px solid #1a1a1a;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+    }
+
+    #slidingNavigation li a:hover {
+        color: Orange;
+        font-style: italic;
+    }
+
+#main_search {
+    display: inline-block;
+    margin: 0 auto;
+    margin-top: 10%;
 }
 
-#slidingNavigation li *
-{
-    display:inline-block;
-    width: 150px;
-    padding: 3px 30px 3px 20px;
-    color: GrayText;
-    text-decoration: none;
-    background-color: #222;
-    border: 1px solid #1a1a1a;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-}
-
-#slidingNavigation li a:hover
-{
-    color: Orange;
-    font-style: italic;
-}
-
-#main_search
-{
-    display:inline-block;
-    margin:0 auto;
-    margin-top:10%;
-}
-
-#logo
-{
+#logo {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 30px 0px 30px 0px;
 }
 
-.peleg, .angryPeleg:focus
-{
+.peleg, .angryPeleg:focus {
     text-align: center;
     padding: 10px;
     -webkit-border-radius: 10px;
@@ -99,32 +87,32 @@ h3
     box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
 }
 
-input:focus::-webkit-input-placeholder { color:transparent; }
-input:focus:-moz-placeholder { color:transparent; }
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
 
-.peleg:hover, .peleg:focus
-{
+input:focus:-moz-placeholder {
+    color: transparent;
+}
+
+.peleg:hover, .peleg:focus {
     box-shadow: inset 0px 0px 5px 0.1px Grey, 0px 0px 5px 0.1px Grey;
 }
 
-.angryPeleg
-{
+.angryPeleg {
     box-shadow: inset 0px 0px 3px 0.7px Red, 0px 0px 3px 0.7px Red;
 }
 
-.angryPeleg:hover
-{
-    box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
+    .angryPeleg:hover {
+        box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
+    }
+
+.popupContent {
+    display: none;
 }
 
-.popupContent
-{
-    display:none;
-}
-
-#popupContentHolder
-{
-    z-index:10;
+#popupContentHolder {
+    z-index: 10;
     position: fixed;
     background-color: White;
     padding: 20px;
@@ -139,8 +127,7 @@ input:focus:-moz-placeholder { color:transparent; }
     box-shadow: 0px 0px 15px 15px White;
 }
 
-#blackblock
-{
+#blackblock {
     display: none;
     position: fixed;
     top: 0px;
@@ -153,8 +140,7 @@ input:focus:-moz-placeholder { color:transparent; }
     filter: alpha(opacity=80);
 }
 
-#small_x
-{
+#small_x {
     position: absolute;
     right: -30px;
     top: -30px;
@@ -164,62 +150,65 @@ input:focus:-moz-placeholder { color:transparent; }
 /**** Stars magic ****/
 fieldset,
 input[type="radio"] + label {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 /****** Style Star Rating Widget *****/
 
 .rating {
-  border: none;
-  float: right;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    border: none;
+    float: right;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 31px;
+    min-width: 110px;
 }
 
 .rating > input {
-  display: none;
+    display: none;
 }
 
 .rating > label:before {
-  margin: 2.5px;
-  font-size: 1.25em;
-  font-family: arial;
-  display: inline-block;
-  font-weight: bolder;
-  content: "★";
+    margin: 2.5px;
+    font-size: 1.25em;
+    font-family: arial;
+    display: inline-block;
+    font-weight: bolder;
+    content: "★";
 }
 
 .rating > .half:before {
-  content: "\f089";
-  position: absolute;
+    content: "\f089";
+    position: absolute;
 }
 
 .rating > label {
-  color: #ddd;
-  -webkit-text-stroke: 1px #ddd;
-  float: right;
-  cursor: pointer;
+    color: #ddd;
+    -webkit-text-stroke: 1px #ddd;
+    float: right;
+    cursor: pointer;
 }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
 
 .rating > input:checked ~ label {
-  color: #FFD700;
-  -webkit-text-stroke: 1px #FFD700;
+    color: #FFD700;
+    -webkit-text-stroke: 1px #FFD700;
 }
+
 .rating > label:hover ~ label,
 .rating > label:hover,
 .rating > input:checked ~ label:hover ~ label,
 .rating > input:checked ~ label:hover {
-  color: #FF8000;
-  -webkit-text-stroke: 1px #FF8000;
+    color: #FF8000;
+    -webkit-text-stroke: 1px #FF8000;
 }
 
 .error {
-  font-size: 0.75em;
-  font-family: arial;
-  color: red;
-  display: none;
+    font-size: 0.75em;
+    font-family: arial;
+    color: red;
+    display: none;
 }

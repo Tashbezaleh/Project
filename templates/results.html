@@ -10,11 +10,11 @@
     }
 
     function setAddButton() {
-        $("#add_defi").click(function (e) {
-        e.preventDefault();
-        $("#one [name='definition']").val("{{ definition }}");
-        showPopup($($(this).attr('href')).clone(), 1);
-        $("#one [name='definition']").val("");
+        $("#add_defi_results").click(function (e) {
+            showPopup($($(this).attr('href')).html(), function () {
+                $(this).find("#definition").val("{{ definition }}");
+                $(this).find("#answer").focus();
+            });
         });
     }
     
@@ -24,9 +24,9 @@
 
 
 {% if result_list_len == 0 %}
-    <b> <h3>לא נמצאו תוצאות</h3> </b>
+    <h3>לא נמצאו תוצאות</h3>
 {% else %}
-    <table class="peleg" style="text-align: center">
+    <table class="peleg" style="text-align: center;white-space: nowrap;">
         <tr>
             <td width="100relative_length">
                 דירוג:
@@ -60,7 +60,9 @@
     </table>
 {% endif %}
 
-</br>
+<br />
 
- <input id="add_defi" href="#one" type="submit" value="יודע את התשובה ורוצה לעזור?" class = "peleg"/>
+ <input id="add_defi_results" href="#one" type="button" value="יודע את התשובה ורוצה לעזור?" class = "peleg"/>
 
+<br />
+<br />
