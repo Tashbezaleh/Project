@@ -1,130 +1,135 @@
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>תשבצל'ה</title>
-		<link rel="stylesheet" type="text/css" href="graphics/styles.css">
-		<script type="text/javascript" src="graphics/jquery-2.1.4.min.js" ></script>
-        <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
-		<script type="text/javascript" src="graphics/General.js"></script>
-	</head>
-	<body>
-        <div id="rightColumn">
-                <ul id="slidingNavigation">
-                    <li><h3>אפשרויות</h3></li>
-                    <li>
-                        <a href="/">
-                            חפש הגדרה
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#one" class="popup" >
-                            הוסף הגדרה
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#two" class="popup" >
-                            פורום
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#three" class="popup" >
-                            משחקונים
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#four" class="popup" >
-                            צור קשר
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#five" class="popup" >
-                            אודות
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        <center>
-			<div id="main_search">
-				<form method="GET" action="results.html" >
-				    <img src="graphics/logo.jpg" alt="logo" id="logo">
-				    <br/>
-				    <br/>
-                    <label for="definition">
-				    הכנס הגדרה:
-                    </label>
-                    <p>
-                    <a href="#definitionHelp" class="popup">
-                    <img src="graphics/question_mark.jpg" style="
-                        margin: 0px -30px -8 0;
-                        width: 30px;
-                        height: 30px;
-                    ">
-                    </a>
-				    <input type="text" id="definition" name="definition" class = "peleg" placeholder="למשל: עוף דורס" />
-                    </p>
-                    <br/>
-				    <br/>
-                    <p>
-                    <label for = "pattern">
-				    הכנס תבנית:
-                    </label>
-				    <br/>
-                    <a href="#patternHelp" class="popup">
-                    <img src="graphics/question_mark.jpg" style="
-                        margin: 0px -30px -8 0;
-                        width: 30px;
-                        height: 30px;
-                    ">
-                    </a>
-                    <input type="text" id="pattern" name="pattern" class = "peleg" placeholder="למשל: ת?ש??"/>
-                    </p>
-                    <br/>
-                    <div id="errorMessage" class="error">
-                        </br>
-                    </div>                    
-				    <br/>
-				    <input id="submit_button" type="submit" value="חפש!" class = "peleg"/>
-				</form>
+<head>
+    <title>תשבצל'ה</title>
+    <link rel="stylesheet" type="text/css" href="graphics/styles.css">
+    <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+    <script type="text/javascript" src="graphics/General.js"></script>
+</head>
+<body>
+    <div id="rightColumn">
+        <ul id="slidingNavigation">
+            <li><h3>אפשרויות</h3></li>
+            <li>
+                <a href="/">
+                    חפש הגדרה
+                </a>
+            </li>
+            <li>
+                <a href="#one" class="popup">
+                    הוסף הגדרה
+                </a>
+            </li>
+            <li>
+                <a href="#two" class="popup">
+                    פורום
+                </a>
+            </li>
+            <li>
+                <a href="#three" class="popup">
+                    משחקונים
+                </a>
+            </li>
+            <li>
+                <a href="#four" class="popup">
+                    צור קשר
+                </a>
+            </li>
+            <li>
+                <a href="#five" class="popup">
+                    אודות
+                </a>
+            </li>
+        </ul>
+    </div>
+    <center>
+        <div id="main_search">
+            <form method="GET" action="results.html">
                 <br />
-                <ul id="results"></ul>
-			</div>
-		</center>
-
-        <div id="one" class="popupContent">
-            <form method="get" action="result_action" id="add_defi">
-                <h3>הוסף הגדרה</h3><br/>
-                הגדרה: <br/><input type="text" name="definition" class="peleg" value=""/><br/><br/>
-                פתרון: <br/><input type="text" id="answer" name="answer" class="peleg" value=""/><br/><br/>
-                שמך (לא חובה): <br/><input type="text" name="source" class="peleg" value=""/><br/><br/>
-                <input type="hidden" name="action" value="add"/>
-                <input type="submit" class="peleg" value="הוסף!" />
+                <br />
+                <img src="graphics/logo.jpg" alt="logo" id="logo">
+                <br />
+                <br />
+                <label for="definition">
+                    הכנס הגדרה:
+                </label>
+                <p>
+                    <a href="#definitionHelp" class="popup">
+                        <img src="graphics/question_mark.jpg" style="
+                        margin: 0px -30px -8px 0;
+                        width: 30px;
+                        height: 30px;
+                    ">
+                    </a>
+                    <input type="text" id="definition" name="definition" class="peleg" placeholder="למשל: עוף דורס" />
+                </p>
+                <br />
+                <br />
+                <p>
+                    <label for="pattern">
+                        הכנס תבנית:
+                    </label>
+                    <br />
+                    <a href="#patternHelp" class="popup">
+                        <img src="graphics/question_mark.jpg" style="
+                        margin: 0px -30px -8px 0;
+                        width: 30px;
+                        height: 30px;
+                    ">
+                    </a>
+                    <input type="text" id="pattern" name="pattern" class="peleg" placeholder="למשל: ת?ש??" />
+                </p>
+                <br />
+                <div id="errorMessage" class="error">
+                    <br />
+                </div>
+                <br />
+                <input id="submit_button" type="submit" value="חפש!" class="peleg" />
             </form>
+            <br />
+            <ul id="results"></ul>
         </div>
-        <div id="two" class="popupContent">
-            תכונה זאת לא נתמכת עדיין
-        </div>
-        <div id="three" class="popupContent">
-            תכונה זאת לא נתמכת עדיין
-        </div>
-        <div id="four" class="popupContent">
-            תכונה זאת לא נתמכת עדיין
-        </div>
-        <div id="five" class="popupContent">
-            תכונה זאת לא נתמכת עדיין
-        </div>
-        <div id="definitionHelp" class="popupContent">
-            <b><u>הגדרה</u></b><br/>
-            ההגדרה אותה אנו רוצים לחפש. <br/>
-            למשל עבור: <br/>
-            <img src="graphics/pattern-help.bmp" width="200px"> <br/>
-            ההגדרה המתאימה: עוף דורס <br/>
-        </div>
-        <div id="patternHelp" class="popupContent">
-            <b><u>תבנית</u></b><br/>
-            הקלד סימן שאלה עבור האות החסרה בתשבץ. <br/>
-            למשל עבור: <br/>
-            <img src="graphics/pattern-help.bmp" width="200px"> <br/>
-            התבנית המתאימה: ת?ש??
-        </div>
-        <div id="currentPopup"></div>
-	</body>
+    </center>
+
+    <div id="one" class="popupContent">
+        <form method="get" action="result_action" id="add_defi">
+            <h3>הוסף הגדרה</h3><br />
+            הגדרה: <br /><input type="text" id="definition" name="definition" class="peleg" value="" /><br /><br />
+            פתרון: <br /><input type="text" id="answer" name="answer" class="peleg" value="" /><br /><br />
+            שמך (לא חובה): <br /><input type="text" name="source" class="peleg" value="" /><br /><br />
+            <input type="hidden" name="action" value="add" />
+            <input type="submit" class="peleg" value="הוסף!" />
+        </form>
+    </div>
+    <div id="two" class="popupContent">
+        תכונה זאת לא נתמכת עדיין
+    </div>
+    <div id="three" class="popupContent">
+        תכונה זאת לא נתמכת עדיין
+    </div>
+    <div id="four" class="popupContent">
+        תכונה זאת לא נתמכת עדיין
+    </div>
+    <div id="five" class="popupContent">
+        תכונה זאת לא נתמכת עדיין
+    </div>
+    <div id="definitionHelp" class="popupContent">
+        <b><u>הגדרה</u></b><br />
+        ההגדרה אותה אנו רוצים לחפש. <br />
+        למשל עבור: <br />
+        <img src="graphics/pattern-help.bmp" width="200px"> <br />
+        ההגדרה המתאימה: עוף דורס <br />
+    </div>
+    <div id="patternHelp" class="popupContent">
+        <b><u>תבנית</u></b><br />
+        הקלד סימן שאלה עבור האות החסרה בתשבץ. <br />
+        למשל עבור: <br />
+        <img src="graphics/pattern-help.bmp" width="200px"> <br />
+        התבנית המתאימה: ת?ש??
+    </div>
+    <div id="currentPopup"></div>
+    <br />
+    <br />
+</body>
 </html>
