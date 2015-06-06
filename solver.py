@@ -2,28 +2,34 @@
 
 import urllib, json, re
 import databaseUtils, webapp2, time
-from encodingUtils import fix_encoding 
+from encodingUtils import fix_encoding
+from threading import Thread, Lock
 
 MINUTES_TO_WAIT = 5
 MAX_CALLS = 20
 NUM_OF_SOLS_TO_SHOW = 7
-
 #
 # methods for online search
 #
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
-    res=res.split()
-    res=map(lambda i: ''.join([x for x in i if x in r'אבגדהוזחטיכלמנסעפצקרשתץףםךן']), res)
-    res=filter(lambda x: len(x.strip()) > 0, res)
-    res = filter(lambda x: regex.match(x), res)
-    return res
+    # res=res.split()
+    # res = ''.join([x for x in res if x in r'אבגדהוזחטיכלמנסעפצקרשתץףםךן' or re.match(r'\s', x)])
+    res = fix_encoding(res)
+    res = res.replace('\r', '')
+    res = res.replace('\n', '')
+    res = ''.join(c if c in r'אבגדהוזחטיכלמנסעפצקרשתךםןףץ' else ' ' for c in res)
+    res = ' '.join(res.split())
+    matches = regex.findall(res)
+    return [(m[1], res.count(m[1])) for m in matches]
 
 def add_to_hist(hist, res, regex):
     '''Adds the matches of 'regex' in 'res' to the histogram 'hist'.'''
-    res = get_matches(res, regex)
-    for r in res:
-        hist[r] = 1 + (hist[r] if r in hist else 0)
+    matches = get_matches(res, regex)
+    for match, count in matches:
+        if match not in hist:
+            hist[match] = 0
+        hist[match] += count
 
 def style(hist):
     '''Return a sorted list of the 10 most frequent occurences in 'hist'.'''
@@ -68,14 +74,25 @@ def find_online(definition, guess):
         return []
     hits = data['results']
     histogram = dict()
-    for h in hits:
+    lock = Lock()
+    def fill_hist(url_arg):
         try:
-            res = urllib.urlopen(urllib.unquote(h['url'])).read()
+            res = urllib.urlopen(url_arg).read()
+            lock.acquire()
             add_to_hist(histogram, res, guess)
+            lock.release()
         except:
             pass # need to decide what exactly we want to do, but that seems to patch the bug
-            
-
+    threads = []
+    for h in hits:
+        t = Thread(target=fill_hist, args=(urllib.unquote(h['url']),))
+        t.daemon = True
+        threads += [t]
+        t.start()
+    
+    for t in threads:
+        t.join()
+        
     for w in definition.split():
         if w in histogram:
             del histogram[w]
@@ -108,4 +125,4 @@ def find(definition, guess):
         yield e
 
 def user_pat_to_regex(pat):
-    return re.compile('^' + pat.replace('?', '..').encode('utf') + '$', re.UNICODE)
+    return re.compile('(^| )(' + pat.replace('?', r'[^ ]{2}').encode('utf') + ')($| )', re.UNICODE)
