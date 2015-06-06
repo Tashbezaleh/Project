@@ -8,20 +8,19 @@ from threading import Thread, Lock
 MINUTES_TO_WAIT = 5
 MAX_CALLS = 20
 NUM_OF_SOLS_TO_SHOW = 7
+
 #
 # methods for online search
 #
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
-    # res=res.split()
-    # res = ''.join([x for x in res if x in r'אבגדהוזחטיכלמנסעפצקרשתץףםךן' or re.match(r'\s', x)])
     res = fix_encoding(res)
     res = res.replace('\r', '')
     res = res.replace('\n', '')
     res = ''.join(c if c in r'אבגדהוזחטיכלמנסעפצקרשתךםןףץ' else ' ' for c in res)
     res = ' '.join(res.split())
     matches = regex.findall(res)
-    return [(m[1], res.count(m[1])) for m in matches]
+    return [(m, res.count(m)) for m in matches]
 
 def add_to_hist(hist, res, regex):
     '''Adds the matches of 'regex' in 'res' to the histogram 'hist'.'''
@@ -75,25 +74,28 @@ def find_online(definition, guess):
     hits = data['results']
     histogram = dict()
     lock = Lock()
+    # a function to download the webpages and add them to hist in parallel
     def fill_hist(url_arg):
         try:
             res = urllib.urlopen(url_arg).read()
             lock.acquire()
             add_to_hist(histogram, res, guess)
-            lock.release()
         except:
             pass # need to decide what exactly we want to do, but that seems to patch the bug
+        finally:
+            if lock.locked():
+                lock.release()
     threads = []
     for h in hits:
         t = Thread(target=fill_hist, args=(urllib.unquote(h['url']),))
-        t.daemon = True
+        t.daemon = True # won't hold the program running if the main thread stops
         threads += [t]
         t.start()
     
-    for t in threads:
+    for t in threads: # wait for all threads to finish
         t.join()
         
-    for w in definition.split():
+    for w in definition.split(): # removes the definition words from the possible answers
         if w in histogram:
             del histogram[w]
 
@@ -125,4 +127,5 @@ def find(definition, guess):
         yield e
 
 def user_pat_to_regex(pat):
-    return re.compile('(^| )(' + pat.replace('?', r'[^ ]{2}').encode('utf') + ')($| )', re.UNICODE)
+    # regex magic, please do not change without asking and testing
+    return re.compile('(?:^| )(' + pat.replace('?', r'[^ ]{2}').encode('utf') + ')(?:$| )', re.UNICODE)
