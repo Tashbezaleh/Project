@@ -29,8 +29,8 @@
             <td>
                 <fieldset class="rating">
                     {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
-                        <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating_{{ entry.answer.decode('utf') }}" value="rate{{ i }}" onclick="return false;"
-                        onchange="submitRate('{{ entry.definition.decode('utf') }}', '{{ entry.answer.decode('utf') }}', '{{ pattern }}', this)" {% if int_stars == i %} checked {% endif %}/>
+                        <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating_{{ entry.answer.decode('utf') }}" value="rate{{ i }}" 
+                        onclick="submitRate('{{ entry.definition.decode('utf') }}', '{{ entry.answer.decode('utf') }}', '{{ pattern }}', this); return false;" {% if int_stars == i %} checked {% endif %}/>
                         <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
                     {% endfor %}
                 </fieldset>
