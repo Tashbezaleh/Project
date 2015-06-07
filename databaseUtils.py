@@ -60,8 +60,6 @@ def add_to_ndb(definition, answer, source, total_stars, raters_count):
 	if not answer_exists(definition, answer):
 		entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
 		entry.put()
-		if udef_exists(definition):
-			udef_remove(definition)
 
 def text_to_database_part(part):
 	# """reads the entities from solver.defs_to_sols and store them in ndb"""
