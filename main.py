@@ -156,11 +156,12 @@ class ResetDBHandler(webapp2.RequestHandler):
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
+# please enable reset_db only on localhost, don't deploy it unless needed!
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
-    ('/result_action', ResultActionHandler),
-    ('/reset_db.html', ResetDBHandler) #,
+    ('/result_action', ResultActionHandler), 
+    ('/reset_db.html', ResetDBHandler)
     # ('/test.html', TestHandler)
 ], debug=True)
 
