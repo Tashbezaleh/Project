@@ -23,6 +23,17 @@ h3 {
     font-size: x-large;
 }
 
+td {
+    padding: 0px 16px;
+}
+
+tr td:first-child {
+    padding-right: 4px;
+}
+tr td:last-child {
+    padding-left: 4px;
+}
+
 #rightColumn {
     text-align: right;
     float: right;
@@ -210,4 +221,10 @@ input[type="radio"] + label {
     font-family: arial;
     color: red;
     display: none;
+}
+
+.info_icon {
+    width: 24px;
+    height: 24px;
+    margin: 0px 2px;
 }

@@ -188,7 +188,7 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
                 result.total_stars = new_rate
                 result.raters_count = 1
         stars = 1.0 * result.total_stars /  result.raters_count if result.raters_count != 0 else 0
-        results += [(result, round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point), second stars are integer for presenting
+        results += [(result, result.answer.decode('utf'), result.definition.decode('utf'), round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point), second stars are integer for presenting
     # rendering the page with the results
     template_values= {
     'results_list' : results,

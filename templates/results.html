@@ -14,32 +14,43 @@
 {% else %}
     <table class="pelegTable" style="text-align: center;white-space: nowrap;">
         <tr>
-            <td width="100relative_length">
-                דירוג:
+            <td>
+                דירוג
             </td>
-            <td width="200relative_length">
-                פתרון:
+            <td>
+                פתרון
             </td> 
-            <td width="50relative_length">
-                מקור:
+            <td>
+                מקור
             </td>  
+            <td>
+                מידע נוסף
+            </td>
         </tr>
-        {% for entry, stars, int_stars in results_list %}
+        {% for entry, answer, definition, stars, int_stars in results_list %}
         <tr style="height:31px;min-width: 120px;">
             <td>
                 <fieldset class="rating">
                     {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
-                        <input type="radio" id="star{{ i }}_{{ entry.answer.decode('utf') }}" name="rating_{{ entry.answer.decode('utf') }}" value="rate{{ i }}" 
-                        onclick="submitRate('{{ entry.definition.decode('utf') }}', '{{ entry.answer.decode('utf') }}', '{{ pattern }}', this); return false;" {% if int_stars == i %} checked {% endif %}/>
-                        <label class="full" for="star{{ i }}_{{ entry.answer.decode('utf') }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
+                        <input type="radio" id="star{{ i }}_{{ answer }}" name="rating_{{ answer }}" value="rate{{ i }}" 
+                        onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars == i %} checked {% endif %}/>
+                        <label class="full" for="star{{ i }}_{{ answer }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
                     {% endfor %}
                 </fieldset>
             </td>
             <td>
-                {{ entry.answer.decode('utf') }}
+                {{ answer }}
             </td>
             <td>
                 (מאת {{ entry.source.decode('utf') }})
+            </td>
+            <td>
+                <a href="http://www.google.co.il/search?q={{ '+'.join(answer.split()) }}" target="_blank">
+                    <img src="graphics/google_icon.jpg" class="info_icon" title='חפש על "{{ answer }}" בגוגל'/>
+                </a>
+                <a href="http://he.wikipedia.org/wiki/{{ '_'.join(answer.split()) }}" target="_blank">
+                    <img src="graphics/wiki_icon.jpg" class="info_icon" title='קרא על "{{ answer }}" בויקיפדיה'/>
+                </a>
             </td>
         </tr>
         {% endfor %}
