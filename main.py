@@ -20,7 +20,7 @@ from google.appengine.ext import ndb
 
 import urllib
 import webapp2, solver, cgi, re, time
-import jinja2, os, databaseUtils, cookiesUtils
+import jinja2, os, databaseUtils, cookiesUtils, minigamesUtils
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -78,7 +78,13 @@ class ResultActionHandler(webapp2.RequestHandler):
         
 class MinigamesHandler(webapp2.RequestHandler):
     def get(self):
-        pass
+        # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
+
+        definitions_list = minigamesUtils.get_n_definitions()
+        template_values= {'definitions_list' : definitions_list}
+        template = JINJA_ENVIRONMENT.get_template('/templates/minigames.html')
+        self.response.write(template.render(template_values))
+
         
 
 
@@ -161,8 +167,8 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/results.html', ResultsHandler),
     ('/result_action', ResultActionHandler), 
-    ('/reset_db.html', ResetDBHandler)
-    # ('/test.html', TestHandler)
+    ('/reset_db.html', ResetDBHandler),
+    ('/minigames.html', MinigamesHandler)
 ], debug=True)
 
 

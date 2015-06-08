@@ -1,0 +1,7 @@
+{% for definition,answer_list in definitions_list %}
+    {% for answer in answer_list %}
+        definition:  {{ definition }} answer: {{answer}} <br>       
+    {% endfor %}
+    <br>
+    <br>
+{% endfor %}
