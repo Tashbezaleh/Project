@@ -128,4 +128,13 @@ def find(definition, guess):
 
 def user_pat_to_regex(pat):
     # regex magic, please do not change without asking and testing
-    return re.compile('(?:^| )(' + pat.replace('?', r'[^ ]{2}').encode('utf') + ')(?:$| )', re.UNICODE)
+    # to_final = {'כ': 'ך', 'מ': 'ם', 'נ': 'ן', 'פ': 'ף', 'צ': 'ץ'}
+    # if pat[-1] in to_final:
+    #     pat = pat[:-1] + to_final[pat[-1]]
+    pat = fix_encoding(pat)
+    letters_with_final_version = [u'כ', u'מ', u'נ', u'פ', u'צ']
+    first_byte = map(lambda c: c.encode('utf')[0], letters_with_final_version) # only 0xd7
+    second_byte = map(lambda c: c.encode('utf')[1], letters_with_final_version)
+    if len(pat) >= 2 and pat[-2] in first_byte and pat[-1] in second_byte:
+        pat = pat[:-1] + chr(ord(pat[-1]) - 1)
+    return re.compile('(?:^| )(' + pat.replace('?', r'[^ ]{2}') + ')(?:$| )', re.UNICODE)
