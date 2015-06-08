@@ -55,11 +55,13 @@ def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
 					 source=urllib.quote(fix_encoding(source)), \
 					 total_stars=total_stars, \
                      raters_count=raters_count)
-    
+
 def add_to_ndb(definition, answer, source, total_stars, raters_count):
-	if not answer_exists(definition, answer):
-		entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
-		entry.put()
+    if not answer_exists(definition, answer):
+        entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
+        entry.put()
+        return True
+    return False
 
 def text_to_database_part(part):
 	# """reads the entities from solver.defs_to_sols and store them in ndb"""

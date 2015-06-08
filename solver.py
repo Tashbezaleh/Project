@@ -127,10 +127,7 @@ def find(definition, guess):
         yield e
 
 def user_pat_to_regex(pat):
-    # regex magic, please do not change without asking and testing
-    # to_final = {'כ': 'ך', 'מ': 'ם', 'נ': 'ן', 'פ': 'ף', 'צ': 'ץ'}
-    # if pat[-1] in to_final:
-    #     pat = pat[:-1] + to_final[pat[-1]]
+    # regex and unicode magic, please do not change without asking and testing
     pat = fix_encoding(pat)
     letters_with_final_version = [u'כ', u'מ', u'נ', u'פ', u'צ']
     first_byte = map(lambda c: c.encode('utf')[0], letters_with_final_version) # only 0xd7
