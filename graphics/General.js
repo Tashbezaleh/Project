@@ -111,7 +111,7 @@ function showPopup(content, onPopupReady) {
     });
 }
 function setPopups() {
-    $(".popup").click(function (e) {
+    $(document).on("click", ".popup", function (e) {
         e.preventDefault();
         showPopup($($(this).attr('href')).html());
     });
