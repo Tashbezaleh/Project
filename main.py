@@ -68,7 +68,7 @@ class ResultActionHandler(webapp2.RequestHandler):
             cookiesUtils.rate_cookie(self, answer_object, rate)
         if action == 'add':
             source = cgi.escape(self.request.get('source'))
-            if source == '':
+            if source == '' or fix_encoding(source) == databaseUtils.SOLVER_NAME:
                 source = 'אנונימי'
             if databaseUtils.add_to_ndb(definition, answer, source, 5, 1):
                 cookiesUtils.rate_cookie(self, answer_object, 5)
