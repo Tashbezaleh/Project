@@ -1,7 +1,8 @@
 <script type="text/javascript">
     $("#add_defi_results").click(function (e) {
         showPopup($($(this).attr('href')).html(), function () {
-            $(this).find("#definition").val("{{ definition }}");
+            txt = $("<textarea/>").html("{{ definition }}").text();
+            $(this).find("#definition").val(txt);
             $(this).find("#answer").focus();
         });
     });
