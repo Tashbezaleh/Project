@@ -184,6 +184,15 @@ function submitRate(definition, answer, pattern, button) {
     // user 'thank you':
     $(button).closest("td").html("<b style='color: LimeGreen;'>תודה על תרומתך!</b>");
 }
+
+function allowOnly(id_string, allowed) {
+    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ "
+    $("#" + id_string).keypress(function(e) {
+        if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0)
+            return false;
+    });
+}
+
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
     slide("#slidingNavigation", 17, 900, 150);
@@ -195,6 +204,10 @@ $(document).ready(function () {
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`
     });
+    allowOnly("definition", ",'-;()\"");
+    allowOnly("answer", "");
+    allowOnly("pattern", "?");
+    allowOnly("source_name", "0123456789!,'-;()\"");
 });
 
 window.onload = function () {
