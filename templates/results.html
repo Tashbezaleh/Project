@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    setPopups();
     $("#add_defi_results").click(function (e) {
         showPopup($($(this).attr('href')).html(), function () {
             $(this).find("#definition").val("{{ definition }}");
@@ -58,8 +59,12 @@
 {% endif %}
 
 <br />
-
  <input id="add_defi_results" href="#one" type="button" value="יודע את התשובה ורוצה לעזור?" class = "peleg"/>
 
+<br />
+<br />
+<a href="#resultsHelp" class="popup">
+    <img src="graphics/question_mark.jpg" />
+</a>
 <br />
 <br />
