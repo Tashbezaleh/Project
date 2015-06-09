@@ -1,0 +1,4 @@
+https://docs.google.com/spreadsheets/d/1Sx7xbP7gTtXxRz40PNKaLUOISUjKYurkwWFMQy-3qo4/edit#gid=0
+https://developers.facebook.com/docs/javascript/quickstart/v2.3
+http://www.codedisqus.com/0xxgqVWVkX/how-to-post-to-page-wall-by-facebook-javascript-sdk-without-application.html
+https://developers.facebook.com/quickstarts/1433840120259278/?platform=web
