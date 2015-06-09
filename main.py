@@ -86,6 +86,13 @@ class MinigamesHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
         
+class facebookHandler(webapp2.RequestHandler):
+    def get(self):
+        # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
+        # make sure the facebook-app's url is matches the running one
+        template_values= {}
+        template = JINJA_ENVIRONMENT.get_template('/templates/facebook.html')
+        self.response.write(template.render(template_values))
 
 
 # for admins only, please only enable when testing and db reset is needed
@@ -168,9 +175,9 @@ app = webapp2.WSGIApplication([
     ('/results.html', ResultsHandler),
     ('/result_action', ResultActionHandler), 
     ('/reset_db.html', ResetDBHandler),
-    ('/minigames.html', MinigamesHandler)
+    ('/minigames.html', MinigamesHandler),
+    ('/facebook.html', facebookHandler)
 ], debug=True)
-
 
 
 def get_results(this, new_rate=0, changed_definition='', answer=''):

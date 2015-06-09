@@ -1,5 +1,3 @@
-
-
 <body>
 <script>
   window.fbAsyncInit = function() {
@@ -8,6 +6,24 @@
       xfbml      : true,
       version    : 'v2.3'
     });
+    
+
+    FB.ui({
+            method: 'feed', 
+            name: 'Facebook Dialogs',
+            link: 'https://developers.facebook.com/docs/reference/dialogs/',
+            picture: 'http://fbrell.com/f8.jpg',
+            caption: 'Reference Documentation',
+            description: 'Dialogs provide a simple, consistent interface for applications to interface with users.'
+        },
+        function(response) {
+          if (response && response.post_id) {
+            alert('Post was published.');
+          } else {
+            alert('Post was not published.');
+          }
+        });
+    
   };
 
   (function(d, s, id){
@@ -19,12 +35,14 @@
    }(document, 'script', 'facebook-jssdk'));
 </script>
 
-<div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
+
+<script >
+
+
+
+</script> 
+
+hello
 
 
 
