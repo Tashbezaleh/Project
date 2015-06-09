@@ -186,7 +186,7 @@ function submitRate(definition, answer, pattern, button) {
 }
 
 function allowOnly(id_string, allowed) {
-    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ "
+    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     $("#" + id_string).keypress(function(e) {
         if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0)
             return false;
