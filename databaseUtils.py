@@ -59,6 +59,7 @@ def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
 def add_to_ndb(definition, answer, source, total_stars, raters_count):
     if not answer_exists(definition, answer):
         entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
+        recentActivityUtils.add_activity(recentActivityUtils.ADD_DEFI_TYPE, [definition, answer, source])
         entry.put()
         return True
     return False
