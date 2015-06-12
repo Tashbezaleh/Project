@@ -86,7 +86,7 @@ function isFormValid(self) {
                 (inputs[i] == self.pattern &&
                     !checkPatternValid($(inputs[i]).val()))) {
                 out = false;
-                $(inputs[i]).addClass("angryPeleg");
+                $(inputs[i]).addClass("niceInvalidInput");
                 if (!hasError) {
                     if ($(inputs[i]).val() == '') {
                         if (i == 0) {
@@ -105,7 +105,7 @@ function isFormValid(self) {
                     }
                 }
                 else {
-                    $(inputs[i]).removeClass("angryPeleg");
+                    $(inputs[i]).removeClass("niceInvalidInput");
                 }
             }
         }
@@ -235,7 +235,7 @@ $(document).ready(function () {
     setPopups();
     expirementWithForms();
     $(document).on("focus", "input", function () {
-        $(this).removeClass("angryPeleg");
+        $(this).removeClass("niceInvalidInput");
     });
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`

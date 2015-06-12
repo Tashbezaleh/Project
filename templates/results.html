@@ -13,7 +13,7 @@
 {% if result_list_len == 0 %}
     <h3>לא נמצאו תוצאות</h3>
 {% else %}
-    <table class="pelegTable" style="text-align: center;white-space: nowrap;">
+    <table class="niceTable" style="text-align: center;white-space: nowrap;">
         <tr>
             <td>
                 דירוג
@@ -47,10 +47,10 @@
             </td>
             <td>
                 <a href="http://www.google.co.il/search?q={{ '+'.join(answer.split()) }}" target="_blank">
-                    <img src="graphics/google_icon.jpg" class="info_icon" title='חפש את "{{ answer }}" בגוגל'/>
+                    <img src="graphics/google_icon.jpg" class="infoIcon" title='חפש את "{{ answer }}" בגוגל'/>
                 </a>
                 <a href="http://he.wikipedia.org/wiki/{{ '_'.join(answer.split()) }}" target="_blank">
-                    <img src="graphics/wiki_icon.jpg" class="info_icon" title='קרא על "{{ answer }}" בויקיפדיה'/>
+                    <img src="graphics/wiki_icon.jpg" class="infoIcon" title='קרא על "{{ answer }}" בויקיפדיה'/>
                 </a>
             </td>
         </tr>
@@ -59,7 +59,7 @@
 {% endif %}
 
 <br />
- <input id="add_defi_results" href="#one" type="button" value="יודע את התשובה ורוצה לעזור?" class = "peleg"/>
+ <input id="add_defi_results" href="#one" type="button" value="יודע את התשובה ורוצה לעזור?" class = "nice"/>
 
 <br />
 <br />
