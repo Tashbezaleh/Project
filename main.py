@@ -20,7 +20,8 @@ from google.appengine.ext import ndb
 
 import urllib
 import webapp2, solver, cgi, re, time
-import jinja2, os, databaseUtils, cookiesUtils, minigamesUtils
+import jinja2, os
+import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -31,7 +32,9 @@ missing_field_message = red_font % 'אנא הכנס %s'
 #main page, "/"
 class MainHandler(webapp2.RequestHandler):
     def get(self):      
-        template_values = {}
+        template_values = {
+        'activities_list' : recentActivityUtils.get_ra_strings()
+        }
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)
         self.response.write(in_text)

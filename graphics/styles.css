@@ -75,6 +75,38 @@ tr td:last-child {
         font-style: italic;
     }
 
+#recentActivities {
+    text-align: right;
+    float: left;
+    margin-left: -15px;
+    margin-top: 15px;
+    
+    display: inline-block;
+    width: 250px;
+    padding: 3px 30px 3px 20px;
+    color: black;
+    text-decoration: none;
+    background-color: #F0F0F0;
+    border: 1px solid #B8B8B8;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.news {
+
+    border: 0px solid #B8B8B8;
+    padding: 3px 30px 3px 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+
+}
+
+.news:hover {
+    background-color:#D4D4D4;
+}
+
 #main_search {
     display: inline-block;
     margin: 0 auto;
