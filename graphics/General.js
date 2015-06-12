@@ -39,6 +39,36 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
             $(navigation_id).animate({ "paddingTop": "-=" + (menuScroll - menuScrollTop - limit) }, 1000, "elasout"); //bounceout?
     });
 }*/
+
+// zooming functions
+var scale_factor = 1.5;
+function zoomImage(ind, elem) {
+    w = parseFloat($(elem).css("width"));
+    h = parseFloat($(elem).css("height"));
+    if (w != 0)
+        $(elem).css("width", scale_factor * w);
+    if (h != 0)
+        $(elem).css("height", scale_factor * h);
+}
+function zoomFont(ind, elem) {
+    $(elem).css("font-size", scale_factor * parseFloat($(elem).css("font-size")));
+}
+function zoom() {
+    $("body, input").each(zoomFont);
+    $("img").each(zoomImage);
+    fixCSSIssues();
+    scale_factor = 1 / scale_factor;
+}
+function zoomResults() {
+    if(scale_factor > 1)
+        return;
+    scale_factor = 1 / scale_factor;
+    $("#results input").each(zoomFont);
+    $("#results img").each(zoomImage);
+    scale_factor = 1 / scale_factor;
+    fixCSSIssues();
+}
+
 function checkPatternValid(patternStr) {
     // return true if pattern is valid and not empty(!)
     // use $.trim(patternStr)=='' to check if patternStr is empty.
@@ -98,7 +128,12 @@ function showPopup(content, onPopupReady) {
     closePopup();
     $("#currentPopup").append("<div id='blackblock'></div>");
     $("#blackblock").click(closePopup).fadeIn(500, function () {
-        $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' alt='' onclick='closePopup()' /></div>");
+        $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /></div>");
+        if (scale_factor < 1) {
+            scale_factor = 1 / scale_factor;
+            $("#small_x").each(zoomImage);
+            scale_factor = 1 / scale_factor;
+        }
         $("#popupContentHolder").append(content);
         fixCSSIssues();
         $("#popupContentHolder").css("top", "-=30").fadeIn({ queue: false, duration: 500 }).animate({ top: "+=30" }, 500, function () {
@@ -129,6 +164,7 @@ function setPopups() {
 function ajaxFail(request, error) {
     alert("אופס! קרתה שגיאה, אנא נסה/י שוב מאוחר יותר");
 }
+
 function searchDone(data) {
     //do something with server data!
     //one option is:
@@ -136,7 +172,7 @@ function searchDone(data) {
     //showPopup(data);
     //the other is:
     $("#results").empty().append(data);
-    fixCSSIssues();
+    zoomResults();
 }
 function searchDoneAppear(data) {
     searchDone(data);
