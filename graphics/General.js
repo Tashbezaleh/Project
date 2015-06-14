@@ -20,10 +20,10 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
         if (ind != 0)
             $(elem).hover(
         	    function () {
-        	        $(this).animate({ "paddingRight": pad_hover }, 150, "swing");
+        	        $(this).animate({ "paddingRight": pad_hover }, 150);
         	    },
 	            function () {
-	                $(this).animate({ "paddingRight": "0" }, 150, "swing");
+	                $(this).animate({ "paddingRight": "0" }, 150);
 	            });
     });
 }

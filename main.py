@@ -21,7 +21,7 @@ from google.appengine.ext import ndb
 import urllib
 import webapp2, solver, cgi, re, time
 import jinja2, os
-import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils
+import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils, scorringBoardUtils
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -79,19 +79,37 @@ class ResultActionHandler(webapp2.RequestHandler):
 
         get_results(self, new_rate, definition, answer,)
         
-class MinigamesHandler(webapp2.RequestHandler):
+class MinigameDefinitionsHandler(webapp2.RequestHandler):
     def get(self):
         # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
-
-        definitions_list = minigamesUtils.get_n_definitions()
-        template_values= {'definitions_list' : definitions_list}
-        template = JINJA_ENVIRONMENT.get_template('/templates/minigames.html')
+        template_values= { 'json_string' : minigamesUtils.get_n_definitions_as_json() }
+        template = JINJA_ENVIRONMENT.get_template('/templates/minigamesdefinitions.html')
         self.response.write(template.render(template_values))
 
-        
-class facebookHandler(webapp2.RequestHandler):
+class MiniGameHandler(webapp2.RequestHandler):
     def get(self):
         # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
+        template_values= { }
+        template = JINJA_ENVIRONMENT.get_template('/templates/MiniGame.html')
+        self.response.write(template.render(template_values))
+
+class ScorringBoardHandler(webapp2.RequestHandler):
+    def get(self):
+        # uses /template/ScorringBoard.html template, needs to show a 15 winners table.
+        # TODO: complete 'scorringBoardUtils.add_sb'.
+        sb=None
+        name,score=cgi.escape(self.request.get('name')).strip(),cgi.escape(self.request.get('score'))
+        if(len(name)!=0 and len(score)!=0):
+            sb=scorringBoardUtils.add_sb(name,int(score))
+        else:
+            sb=scorringBoardUtils.get_sb()
+        template_values= { "scorring" : sb }
+        template = JINJA_ENVIRONMENT.get_template('/templates/ScorringBoard.html')
+        self.response.write(template.render(template_values))
+
+class facebookHandler(webapp2.RequestHandler):
+    def get(self):
+        # uses /template/facebook.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
         # make sure the facebook-app's url is matches the running one
         template_values= {}
         template = JINJA_ENVIRONMENT.get_template('/templates/facebook.html')
@@ -178,7 +196,9 @@ app = webapp2.WSGIApplication([
     ('/results.html', ResultsHandler),
     ('/result_action', ResultActionHandler), 
     ('/reset_db.html', ResetDBHandler),
-    ('/minigames.html', MinigamesHandler),
+    ('/getDefinitions.html', MinigameDefinitionsHandler),
+    ('/ScorringBoard.html', ScorringBoardHandler),
+    ('/MiniGame.html', MiniGameHandler),
     ('/facebook.html', facebookHandler)
 ], debug=True)
 

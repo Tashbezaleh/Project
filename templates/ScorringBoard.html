@@ -1,0 +1,14 @@
+﻿
+<br /><br />
+<table>
+    <tr>
+        <th>שם</th>
+        <th>ציון</th>
+    </tr>
+    {% for name,score in scorring %}
+    <tr>
+        <td>{{ name }}</td>
+        <td>{{ score }}</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,25 +1,86 @@
 * {
-	direction: rtl;
+    font-family: Tahoma;
+    direction: rtl;
+}
+
+input {
+    text-align: center;
+}
+
+a {
+    color: inherit;
+}
+
+td, th, tr {
+    padding: 7px 10px;
 }
 
 #logo {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 30px 0px 30px 0px;
+    box-shadow: 2px 3px 6px 0.1px Black;
+}
+
+#main > div {
+    display: inline-block;
 }
 
 .menu_button {
-	display: inline-block;
-	position: relative;
-	padding: 45px;
-	margin: 20px;
-	width: 90px;
-	height: 90px;
-	white-space: nowrap;
-    background-color: Green;
+    display: block;
+    float: right;
+    padding: 45px;
+    margin: 20px;
+    width: 90px;
+    height: 90px;
+    background-color: Purple;
     cursor: pointer;
+    font-size: larger;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-    box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
+    box-shadow: inset -3px -3px 25px 0.1px Black, 2px 3px 6px 0.1px Black;
+}
+
+    .menu_button:hover {
+        box-shadow: inset -3px -3px 40px 0.1px Gray, 2px 3px 6px 0.1px Gray;
+    }
+
+    .menu_button > img {
+        margin: 10px;
+    }
+
+#backButton {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+#timer {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    font-size: 60px;
+}
+
+.question {
+    display: inline-block;
+    padding: 20px;
+    margin: 20px;
+    font-size: larger;
+}
+
+    .question input {
+        font-size: inherit;
+    }
+
+.current {
+    font-size: x-large;
+}
+
+.lavalamp-object {
+    background-color: #ccc;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }

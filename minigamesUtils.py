@@ -3,7 +3,7 @@
 from google.appengine.ext import ndb
 
 import webapp2, cgi, re
-import urllib
+import urllib, json
 from encodingUtils import fix_encoding
 from random import randint
 from databaseUtils import DEFINTIONS_FILE_NUMBER_OF_LINES
@@ -25,9 +25,9 @@ def get_n_definitions():
 	for line_number in line_numbers_set:
 		relevant_lines.append(lines[line_number])
 
-	defs = "".join(lines)#relevant lines defs string
+	#defs = "".join(lines)#relevant lines defs string
 
-	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]} #extract from the relevant lines the solutions
+	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in relevant_lines} #extract from the relevant lines the solutions
 	
 	#make a list of 
 	definitions_list = []
@@ -40,8 +40,8 @@ def get_n_definitions():
 
 	return definitions_list
 
-
-
+def get_n_definitions_as_json():
+        return json.dumps(get_n_definitions())
 
 def generate_random_set():
 	#generates a random set in the size of NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN, each element is line number 
