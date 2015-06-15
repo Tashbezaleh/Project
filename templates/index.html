@@ -51,10 +51,10 @@
     <div id="recentActivitiesFather">
         <div id="recentActivities">
             <h3>מה חדש?</h3>
-            {% for s in activities_list %}
+            {% for string,func in activities_list %}
             <hr>
-            <div class="news">
-                {{ s.decode('utf')|safe }} </br>
+            <div class="news" onclick="{{ func.decode('utf') }}">
+                {{ string.decode('utf')|safe }} </br>
             </div>
         {% endfor %}
         </div>
@@ -158,7 +158,6 @@
         <strong>יודע את התשובה ורוצה לעזור?</strong><br />אם חיפשת הגדרה ולא מצאנו עבורה פתרון שאתה<br /> יודע שהוא נכון, תוכל להוסיף אותו באמצעות כפתור זה
     </div>
     <div id="currentPopup"></div>
-    <br />
     <br />
     <div id="magnif" onclick="zoom();">
         <img id="magnif_img" src="graphics/mag_glass.png" width="48px" /> <a>לחץ עלי להגדלה!</a>

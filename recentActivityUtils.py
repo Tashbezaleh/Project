@@ -10,6 +10,7 @@ ACTIVITIES_LIST = 'activities_list'
 
 ADD_DEFI_TYPE = 1 # args: [definition, answer, source]
 ADD_DEFI_TEMPLATE = "<h3 style='color: %s;'>%s</h3>	 המשתמש %s הוסיף להגדרה %s את הפתרון %s"
+ADD_DEFI_FUNC = "searchDefi('%s', '%s')"
 
 COLORS = ["rgb(255, 33,35)", "rgb(253, 165, 29)", "rgb(219, 217, 34)", "rgb(72, 182, 51)", "rgb(76, 31, 244)", "rgb(167, 71, 204)"]
 
@@ -42,10 +43,12 @@ def parse_ra_string(indexed_activity):
 	i, activity = indexed_activity
 	if activity[0] == 1:
 		# Add Definition
-		return fix_encoding(ADD_DEFI_TEMPLATE%(COLORS[i%len(COLORS)],fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
+		template = fix_encoding(ADD_DEFI_TEMPLATE%(COLORS[i%len(COLORS)],fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
+		func = fix_encoding(ADD_DEFI_FUNC%(fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
+		return (template, func)
 	if activity[0] == 9:
 		# String
-		return activity[1][0]
+		return (activity[1][0], "")
 
 def get_ra_strings():
 	ra = get_ra()
