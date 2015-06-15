@@ -222,11 +222,17 @@ function submitRate(definition, answer, pattern, button) {
     $(button).closest("td").html("<b style='color: LimeGreen;'>תודה על תרומתך!</b>");
 }
 
-function allowOnly(id_string, allowed) {
+function allowOnly(selector_string, allowed) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
-    $("#" + id_string).keypress(function(e) {
-        if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0)
+    $(selector_string).keypress(function(e) {
+        err = $("#errorMessage").empty();
+        if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
+            err.fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
             return false;
+        }
+        else {
+            err.html("<br />");
+        }
     });
 }
 
@@ -241,10 +247,10 @@ $(document).ready(function () {
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`
     });
-    allowOnly("definition", ",'-;()\"");
-    allowOnly("answer", "");
-    allowOnly("pattern", "?");
-    allowOnly("source_name", "0123456789!,'-;()\"");
+    allowOnly("#definition", ",'-;()\"");
+    allowOnly("#answer", "");
+    allowOnly("#pattern", "?");
+    allowOnly("#source_name", "0123456789!,'-;()\"");
 });
 
 window.onload = function () {
