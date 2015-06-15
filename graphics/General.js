@@ -3,7 +3,10 @@
     $("#popupContentHolder").css("top", ($(window).height() - $("#popupContentHolder").outerHeight()) / 2);
     $("#main_search").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
     $("#rightColumn").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
+
+    $("#recentActivities").css("max-height", ($(window).height()) * 0.8);
 }
+
 function appear(list) {
     list
     .not("br, script")
