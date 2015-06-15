@@ -45,7 +45,7 @@ function finishGame(data, div) {
     $("#Game").fadeOut(100, function () {
         $(this).html(table).prepend("<br/>").append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/>הגש ציונך לטבלת המנצחים:<br/>שמך: <input id='name'/>")
             .append($("<input type='submit'/>").click(function () {
-                SubmitScorring($.trim($("#name").val()), Score);
+                SubmitScoring($.trim($("#name").val()), Score);
                 $("#Game").fadeOut(300);
             })).append("<br /><br /><br />").fadeIn(fadeConst);
     });
@@ -126,10 +126,10 @@ function InitGame() {
         });
 }
 
-function SubmitScorring(name, score) {
-    $("#scorringBoard").html($("<h3/>").text("מוריד את טבלת המנצחים...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(fadeConst);
-    $.get("/ScorringBoard.html", { "name": name||"", "score": score||"" }).done(function (data) {
-        $("#scorringBoard").stop().fadeOut(300, function () {
+function SubmitScoring(name, score) {
+    $("#scoringBoard").html($("<h3/>").text("מוריד את טבלת המנצחים...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(fadeConst);
+    $.get("/ScoringBoard.html", { "name": name||"", "score": score||"" }).done(function (data) {
+        $("#scoringBoard").stop().fadeOut(300, function () {
             $(this).html(data).fadeIn(300);
         });
     }).fail(function (a, b) {
@@ -158,7 +158,7 @@ $(document).ready(function () {
                 case 1: f = function () {
                     $("#help").fadeIn(fadeConst);
                 }; break;
-                case 2: f = SubmitScorring; break;
+                case 2: f = SubmitScoring; break;
             }
             hideMain(function () {
                 $("#backButton").delay(200).fadeIn(fadeConst);

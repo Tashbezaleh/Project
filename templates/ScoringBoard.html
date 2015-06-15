@@ -1,14 +1,18 @@
 ﻿
 <br /><br />
+{% if scoring %}
 <table>
     <tr>
         <th>שם</th>
         <th>ציון</th>
     </tr>
-    {% for name,score in scorring %}
+    {% for name,score in scoring %}
     <tr>
         <td>{{ name }}</td>
         <td>{{ score }}</td>
     </tr>
     {% endfor %}
 </table>
+{% else %}
+טבלת המנצחים ריקה, היה הראשון להיכנס אליה!
+{% endif %}

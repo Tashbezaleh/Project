@@ -21,7 +21,7 @@ from google.appengine.ext import ndb
 import urllib
 import webapp2, solver, cgi, re, time
 import jinja2, os
-import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils, scorringBoardUtils
+import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils, scoringBoardUtils
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -90,22 +90,22 @@ class MinigameDefinitionsHandler(webapp2.RequestHandler):
 class MiniGameHandler(webapp2.RequestHandler):
     def get(self):
         # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
-        template_values= { }
+        template_values = { }
         template = JINJA_ENVIRONMENT.get_template('/templates/MiniGame.html')
         self.response.write(template.render(template_values))
 
-class ScorringBoardHandler(webapp2.RequestHandler):
+class ScoringBoardHandler(webapp2.RequestHandler):
     def get(self):
-        # uses /template/ScorringBoard.html template, needs to show a 15 winners table.
-        # TODO: complete 'scorringBoardUtils.add_sb'.
-        sb=None
-        name,score=cgi.escape(self.request.get('name')).strip(),cgi.escape(self.request.get('score'))
-        if(len(name)!=0 and len(score)!=0):
-            sb=scorringBoardUtils.add_sb(name,int(score))
+        # uses /template/ScoringBoard.html template, needs to show a 15 winners table.
+        # TODO: complete 'scoringBoardUtils.add_sb'.
+        sb = None
+        name, score = cgi.escape(self.request.get('name')).strip(), cgi.escape(self.request.get('score'))
+        if len(name) != 0 and len(score) != 0:
+            sb = scoringBoardUtils.add_sb(name, int(score))
         else:
-            sb=scorringBoardUtils.get_sb()
-        template_values= { "scorring" : sb }
-        template = JINJA_ENVIRONMENT.get_template('/templates/ScorringBoard.html')
+            sb = scoringBoardUtils.get_sb()
+        template_values = { "scoring" : sb }
+        template = JINJA_ENVIRONMENT.get_template('/templates/ScoringBoard.html')
         self.response.write(template.render(template_values))
 
 class facebookHandler(webapp2.RequestHandler):
@@ -198,7 +198,7 @@ app = webapp2.WSGIApplication([
     ('/result_action', ResultActionHandler), 
     ('/reset_db.html', ResetDBHandler),
     ('/getDefinitions.html', MinigameDefinitionsHandler),
-    ('/ScorringBoard.html', ScorringBoardHandler),
+    ('/ScoringBoard.html', ScoringBoardHandler),
     ('/MiniGame.html', MiniGameHandler),
     ('/facebook.html', facebookHandler)
 ], debug=True)
