@@ -9,7 +9,7 @@ from encodingUtils import fix_encoding
 ACTIVITIES_LIST = 'activities_list'
 
 ADD_DEFI_TYPE = 1 # args: [definition, answer, source]
-ADD_DEFI_TEMPLATE = "<h3 style='color: %s;'>%s</h3>	 המשתמש %s הוסיף להגדרה %s את הפתרון %s"
+ADD_DEFI_TEMPLATE = "<h3 style='color: %s;'>%s</h3>	 <i>%s</i> הוסיף להגדרה <i>%s</i> את הפתרון <i>%s</i>"
 
 COLORS = ["rgb(255, 33,35)", "rgb(253, 165, 29)", "rgb(219, 217, 34)", "rgb(72, 182, 51)", "rgb(76, 31, 244)", "rgb(167, 71, 204)"]
 

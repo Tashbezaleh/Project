@@ -15,8 +15,8 @@ NUM_OF_SOLS_TO_SHOW = 7
 def get_matches(res, regex):
     '''Returns a list of all possible matches of 'regex' in 'res'.'''
     res = fix_encoding(res)
-    res = res.replace('\r', '')
-    res = res.replace('\n', '')
+    res = res.replace('\r', '').replace('\n', '')
+    res = res.replace('"', '').replace("'", '')
     res = ''.join(c if c in r'אבגדהוזחטיכלמנסעפצקרשתךםןףץ' else ' ' for c in res)
     res = ' '.join(res.split())
     matches = regex.findall(res)

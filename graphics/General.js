@@ -224,7 +224,8 @@ function submitRate(definition, answer, pattern, button) {
 
 function allowOnly(selector_string, allowed) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
-    $(selector_string).keypress(function(e) {
+    // usual awesome gal hack
+    $(document).on("keypress", selector_string, function(e) {
         err = $("#errorMessage").empty();
         if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
             err.fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
@@ -250,13 +251,16 @@ $(document).ready(function () {
     $(document).on("focus", "input", function () {
         $(this).removeClass("niceInvalidInput");
     });
+    $(document).on("focus focusout", "input", function () {
+        $("#errorMessage").empty().html("<br/ >");
+    });
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`
     });
     allowOnly("#definition", ",'-;()\"");
     allowOnly("#answer", "");
-    allowOnly("#pattern", "?");
     allowOnly("#source_name", "0123456789!,'-;()\"");
+    allowOnly("#pattern", "?");
 });
 
 window.onload = function () {
