@@ -75,9 +75,10 @@ class ResultActionHandler(webapp2.RequestHandler):
                 source = 'אנונימי'
             if databaseUtils.add_to_ndb(definition, answer, source, 5, 1):
                 cookiesUtils.rate_cookie(self, answer_object, 5)
-            return self.response.write('תודה על תרומתך')
+                return self.response.write('תודה על תרומתך')
+            return self.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')
 
-        get_results(self, new_rate, definition, answer,)
+        get_results(self, new_rate, definition, answer)
         
 class MinigameDefinitionsHandler(webapp2.RequestHandler):
     def get(self):

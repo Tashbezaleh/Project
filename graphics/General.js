@@ -204,6 +204,7 @@ function expirementWithForms() {
                 duration: 500,
                 start: function () {
                     $(this).empty().html("<h3>" + data + "</h3>");
+                    fixCSSIssues();
                 }
             });
         });
