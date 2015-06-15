@@ -9,7 +9,9 @@ from encodingUtils import fix_encoding
 ACTIVITIES_LIST = 'activities_list'
 
 ADD_DEFI_TYPE = 1 # args: [definition, answer, source]
-ADD_DEFI_TEMPLATE = "<h3>%s</h3>	 המשתמש %s הוסיף להגדרה %s את הפתרון %s"
+ADD_DEFI_TEMPLATE = "<h3 style='color: %s;'>%s</h3>	 המשתמש %s הוסיף להגדרה %s את הפתרון %s"
+
+COLORS = ["rgb(255, 33,35)", "rgb(253, 165, 29)", "rgb(219, 217, 34)", "rgb(72, 182, 51)", "rgb(76, 31, 244)", "rgb(167, 71, 204)"]
 
 STRING_TYPE = 9 # just prints its args[0]
  
@@ -36,13 +38,16 @@ def add_ra(act_type, args):
 	activity = (act_type, args)
 	add_to_ra(activity)
 
-def parse_ra_string(activity):
+def parse_ra_string(indexed_activity):
+	i, activity = indexed_activity
 	if activity[0] == 1:
 		# Add Definition
-		return fix_encoding(ADD_DEFI_TEMPLATE%(fix_encoding(activity[1][0][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
+		return fix_encoding(ADD_DEFI_TEMPLATE%(COLORS[i%len(COLORS)],fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
 	if activity[0] == 9:
 		# String
 		return activity[1][0]
 
 def get_ra_strings():
-	return list(map(parse_ra_string, get_ra()))
+	ra = get_ra()
+	indexed_ra = [(i, ra[i]) for i in xrange(len(ra))]
+	return list(map(parse_ra_string, indexed_ra))
