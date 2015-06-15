@@ -61,12 +61,12 @@ function zoom() {
     scale_factor = 1 / scale_factor;
 }
 function zoomResults() {
-    if(scale_factor > 1)
-        return;
-    scale_factor = 1 / scale_factor;
-    $("#results input").each(zoomFont);
-    $("#results img").each(zoomImage);
-    scale_factor = 1 / scale_factor;
+    if(scale_factor <= 1) {
+        scale_factor = 1 / scale_factor;
+        $("#results input").each(zoomFont);
+        $("#results img").each(zoomImage);
+        scale_factor = 1 / scale_factor;
+    }
     fixCSSIssues();
 }
 

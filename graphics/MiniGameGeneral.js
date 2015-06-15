@@ -64,7 +64,7 @@ function addQuestionDiv(data, i, div) {
         cur = $(this).css("color","black").parents(".question");
         cur.addClass("current").stop().fadeTo(500, 1);
         div.data('active', cur).lavalamp('update');
-        $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 700);
+        $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 1000);
     }).keyup(function (e) {
         if (e.which == 13 || e.which == 38) {
             current = $(".current").prevAll(".question").first();

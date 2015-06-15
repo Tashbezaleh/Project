@@ -77,11 +77,9 @@ tr td:last-child {
 
 #recentActivities {
     text-align: right;
-    float: left;
     margin-left: -15px;
     margin-top: 15px;
     
-    display: inline-block;
     width: 250px;
     padding: 3px 30px 3px 20px;
     color: black;
@@ -91,6 +89,12 @@ tr td:last-child {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
+}
+
+#recentActivitiesFather{
+    display: inline-block;
+    float: left;
+    overflow: hidden;
 }
 
 .news {

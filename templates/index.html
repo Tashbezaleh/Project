@@ -48,17 +48,17 @@
             </li>
         </ul>
     </div>
-
-    <div id="recentActivities">
-        <h3>מה חדש?</h3>
-        {% for s in activities_list %}
-        <hr>
-        <div class="news">
-            {{ s.decode('utf')|safe }} </br>
-        </div>
+    <div id="recentActivitiesFather">
+        <div id="recentActivities">
+            <h3>מה חדש?</h3>
+            {% for s in activities_list %}
+            <hr>
+            <div class="news">
+                {{ s.decode('utf')|safe }} </br>
+            </div>
         {% endfor %}
+        </div>
     </div>
-    
     <center>
         <div id="main_search">
             <form method="GET" action="results.html">
