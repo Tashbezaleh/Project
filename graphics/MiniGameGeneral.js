@@ -149,7 +149,7 @@ $(document).ready(function () {
         $(this).animate({ "marginTop": 20, "bottom": "-=20" }, 150);
     });
     $("#main_menu .menu_button").css("background-color", function (ind, old) {
-        return ["Green", "Red", "Blue", "White"][ind];
+        return ["rgb(172, 232, 130)", "rgb(20, 156, 172)", "rgb(237, 210, 119)", "rgb(230, 123, 105)"][ind];
     }).hide().each(function (i) {
         $(this).click(i, function () {
             var f;

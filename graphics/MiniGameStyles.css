@@ -33,18 +33,14 @@ td, th, tr {
     margin: 20px;
     width: 90px;
     height: 90px;
-    background-color: Purple;
+    background-color: #D1D1D1;
     cursor: pointer;
     font-size: larger;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-    box-shadow: inset -3px -3px 25px 0.1px Black, 2px 3px 6px 0.1px Black;
+    box-shadow: inset 0px 0px 0px 1px White, 0px 0px 0px 2px Black;
 }
-
-    .menu_button:hover {
-        box-shadow: inset -3px -3px 40px 0.1px Gray, 2px 3px 6px 0.1px Gray;
-    }
 
     .menu_button > img {
         margin: 10px;
