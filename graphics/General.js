@@ -55,7 +55,8 @@ function zoomFont(ind, elem) {
 }
 function zoom() {
     $("body, input").each(zoomFont);
-    $("img").each(zoomImage);
+    $("img:not(#magnif_img)").each(zoomImage);
+    $("#magnif > a").text(scale_factor < 1 ? "לחץ עלי להגדלה!" : "לחץ עלי להקטנה!")
     fixCSSIssues();
     scale_factor = 1 / scale_factor;
 }
