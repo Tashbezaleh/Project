@@ -1,4 +1,4 @@
-﻿var waitConst = 150, fadeConst = 1000;
+﻿ var waitConst = 150, fadeConst = 1000;
 function showMain() {
     clearInterval(parseInt($("#timer").attr("timerID")));
     toFade = $("#main>div:not(#main_menu)");
@@ -57,16 +57,15 @@ function updateTimer(timer, time) {
 }
 function addQuestionDiv(data, i, div) {
     if (i >= data.length)
-        if (div.children().first().is(".menu_button")) return finishGame(data, div);
+        if (div.children().first().is("h3")) return finishGame(data, div);
         else return $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
     $("<div/>").attr("QuestionNumber", i).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append($("<input/>").focus(function () {
         $(".current").removeClass("current").stop().fadeTo(1000, 0.5);
-        cur = $(this).parents(".question");
+        cur = $(this).css("color","black").parents(".question");
         cur.addClass("current").stop().fadeTo(500, 1);
         div.data('active', cur).lavalamp('update');
         $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 700);
     }).keyup(function (e) {
-        $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
         if (e.which == 13 || e.which == 38) {
             current = $(".current").prevAll(".question").first();
             if (current.length == 0)
@@ -77,6 +76,8 @@ function addQuestionDiv(data, i, div) {
             current = $(".current").nextAll(".question").first();
             if (current.length > 0) current.find("input").focus();
         }
+    }).focusout(function(){
+        $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
     })).hide().show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active").find("input").focus();
     div.lavalamp('update');
 }
@@ -106,11 +107,11 @@ function InitGame() {
                 timer = $("<div id='timer'/>").hide().fadeIn(fadeConst).appendTo(divGame);
                 updateTimer(timer, 6000);
                 div = $("<div/>").appendTo(divGame);
-                $("<h1 style='color:Red;'/>").text('3...').appendTo(div.empty().fadeIn(300)).fadeOut(1500);
+                $("<h1 style='color:Red;'/>").text('3').appendTo(div.empty().fadeIn(300)).fadeOut(1500);
                 setTimeout(function () {
-                    $("<h1 style='color:Red;'/>").text('2...').appendTo(div.empty()).fadeOut(1500);
+                    $("<h1 style='color:Red;'/>").text('2').appendTo(div.empty()).fadeOut(1500);
                     setTimeout(function () {
-                        $("<h1 style='color:Red;'/>").text('1...').appendTo(div.empty()).fadeOut(1500);
+                        $("<h1 style='color:Red;'/>").text('1').appendTo(div.empty()).fadeOut(1500);
                         setTimeout(function () {
                             if (!divGame.is(':empty')) //this means 'return to main menu' called before ajax finished.
                                 StartGame(div.html("<br/>"), timer, JSON.parse(str));

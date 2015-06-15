@@ -254,3 +254,18 @@ input[type="radio"] + label {
     height: 24px;
     margin: 0px 2px;
 }
+
+#magnif {
+    font-size: 40px;
+    cursor: pointer;
+    position: fixed;
+    padding: 5px;
+    bottom: -5px;
+    right: -5px;
+    -webkit-border-radius: 20px 0px 0px 0px;
+    -moz-border-radius: 20px 0px 0px 0px;
+    border-radius: 20px 0px 0px 0px;
+    border: 1px;
+    background-color: #F0F0F0;
+    box-shadow: inset 0px 0px 5px 0.1px White, 0px 0px 5px 0.1px Black;
+}
