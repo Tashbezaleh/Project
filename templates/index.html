@@ -51,12 +51,14 @@
     <div id="recentActivitiesFather">
         <div id="recentActivities">
             <h3>מה חדש?</h3>
-            {% for string,func in activities_list %}
-            <hr>
-            <div class="news" onclick="{{ func.decode('utf') }}">
-                {{ string.decode('utf')|safe }} </br>
+            <div>
+                {% for string,func in activities_list %}
+                <hr>
+                <div class="news" onclick="{{ func.decode('utf') }}">
+                    {{ string.decode('utf')|safe }} </br>
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
         </div>
     </div>
     <center>
