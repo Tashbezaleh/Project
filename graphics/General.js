@@ -236,6 +236,12 @@ function allowOnly(selector_string, allowed) {
     });
 }
 
+function searchDefi(definition, pattern) {
+    $("#definition").val(definition);
+    $("#pattern").val(pattern);
+    $("#main_search form").submit();
+}
+
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
     slide("#slidingNavigation", 17, 900, 150);
