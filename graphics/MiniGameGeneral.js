@@ -28,7 +28,7 @@ function StopGame() {
 }
 function finishGame(data, div) {
     clearInterval(parseInt($("#timer").attr("timerID")));
-    table = $("<table/>").append("<th>הגדרה</th><th>תשובתך</th><th>תשובות אפשריות</th><th>ניקוד</th>");
+    table = $("<table class=\"niceTable\"/>").append("<th>הגדרה</th><th>תשובתך</th><th>תשובות אפשריות</th><th>ניקוד</th>");
     Score = 0;
     div.find(".question").each(function () {
         i = parseInt($(this).attr("QuestionNumber"));
@@ -70,11 +70,11 @@ function addQuestionDiv(data, i, div) {
             current = $(".current").prevAll(".question").first();
             if (current.length == 0)
                 addQuestionDiv(data, parseInt($(".current").attr("QuestionNumber")) + 1, div);
-            else current.find("input").focus();
+            else current.find("input").focus().select();
         }
         else if (e.which == 40) {
             current = $(".current").nextAll(".question").first();
-            if (current.length > 0) current.find("input").focus();
+            if (current.length > 0) current.find("input").focus().select();
         }
     }).focusout(function(){
         $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
@@ -138,6 +138,21 @@ function SubmitScoring(name, score) {
     });
 }
 
+function allowOnly(selector_string, allowed) {
+    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
+    // usual awesome gal hack
+    $(document).on("keypress", selector_string, function(e) {
+        //err = $("#errorMessage").empty();
+        if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
+            //err.fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
+            return false;
+        }
+        /*else {
+            err.html("<br />");
+        }*/
+    });
+}
+
 $(document).ready(function () {
     $("#main").hide().css({ "margin-top": $(window).height() * 1.0 / 4 });
     $("#main>div:not(#main_menu)").hide();
@@ -148,6 +163,8 @@ $(document).ready(function () {
     $(document).on("mouseleave", ".menu_button", function () {
         $(this).animate({ "marginTop": 20, "bottom": "-=20" }, 150);
     });
+    allowOnly("div[questionnumber] input", "");
+    allowOnly("#name", "0123456789!,'-;()\"");
     $("#main_menu .menu_button").css("background-color", function (ind, old) {
         return ["rgb(172, 232, 130)", "rgb(20, 156, 172)", "rgb(237, 210, 119)", "rgb(230, 123, 105)"][ind];
     }).hide().each(function (i) {

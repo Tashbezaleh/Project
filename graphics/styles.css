@@ -140,6 +140,12 @@ tr td:last-child {
     box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
 }
 
+.niceTabe {
+    background-color: white;
+    text-align: center;
+    white-space: nowrap;
+}
+
 input:focus::-webkit-input-placeholder {
     color: transparent;
 }
