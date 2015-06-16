@@ -91,20 +91,7 @@ body {
     border-radius: 20px;
 }
 
-.niceTable, #help{
-    text-align: center;
-    padding: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: 0;
-    box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
-    background-color: white;
-    text-align: center;
-    white-space: nowrap;
-}
-
-#help {
+#help{
     width: 60%;
     white-space: inherit;
 }

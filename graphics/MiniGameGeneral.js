@@ -14,6 +14,7 @@
     });
     toFade.fadeOut(500);
 }
+
 function hideMain(fun) {
     toHide = $("#main_menu .menu_button");
     toHide.stop(true).each(function (index, elem) {
@@ -26,6 +27,7 @@ function StopGame() {
     showMain();
     $("#Game").empty();
 }
+
 function finishGame(data, div) {
     if ($("#timer").attr("timerID")){
         clearInterval(parseInt($("#timer").attr("timerID")));
@@ -53,6 +55,7 @@ function finishGame(data, div) {
         })).append("<br /><br /><br />").fadeIn(fadeConst);
     });
 }
+
 function updateTimer(timer, time) {
     cetiSec = time % 100;
     if (cetiSec < 10) cetiSec = "0" + cetiSec;
@@ -60,6 +63,7 @@ function updateTimer(timer, time) {
     $(timer).children("sup").text(cetiSec);
     return timer;
 }
+
 function addQuestionDiv(data, i, div) {
     if (i >= data.length)
         if (div.children().first().is("h3")) 
@@ -89,6 +93,7 @@ function addQuestionDiv(data, i, div) {
         }
         div.lavalamp('update');
 }
+
 function StartGame(div, timer, data) {
     time = 6000;
     clearInterval(parseInt($("#timer").attr("timerID")));
@@ -103,6 +108,7 @@ function StartGame(div, timer, data) {
     addQuestionDiv(data, 0, div);
     div.data('active', $(".current").first()).lavalamp('update');
 }
+
 function InitGame() {
     divGame = $("#Game");
     divGame.html($("<h3/>").text("טוען את המשחק...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(300);
