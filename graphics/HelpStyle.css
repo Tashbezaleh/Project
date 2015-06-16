@@ -67,17 +67,23 @@ img {
 }
 
 .accordion-section-title.active, .accordion-section-title:hover {
-    background:#4c4c4c;
+    background: #4c4c4c;
     /* Type */
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .accordion-section:last-child .accordion-section-title {
-    border-bottom:none;
+    border-bottom: none;
 }
 
 /*----- Section Content -----*/
 .accordion-section-content {
     padding:15px;
     display:none;
+}
+
+#back {
+    width: 200px;
+    margin-top: 50px;
+    display: inline;
 }
