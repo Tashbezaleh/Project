@@ -48,8 +48,8 @@ function finishGame(data, div) {
         Score += userScore;
     });
     $("#Game").fadeOut(100, function () {
-        $(this).html(table).prepend("<br/>").prepend($("<div id='restartButton' class='menu_button'>שחק שוב!<br/><br/><img src='graphics/play.jpg' height='50'></div>").click(InitGame)).append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/>הגש ציונך לטבלת המנצחים:<br/>שמך: <input id='name'/>")
-        .append($("<input type='submit'/>").click(function () {
+        $(this).html(table).prepend("<br/>").prepend($("<div id='restartButton' class='menu_button'>שחק שוב!<br/><br/><img src='graphics/play.jpg' height='50'></div>").click(InitGame)).append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/><h4>הכנס את התוצאה שלך לטבלת המנצחים!</h4>שם:<br/><input id='name' class='nice'/>")
+        .append($("<br/><br/><input type='submit' class='nice'/>").click(function () {
             SubmitScoring($.trim($("#name").val()), Score);
             $("#Game").fadeOut(300);
         })).append("<br /><br /><br />").fadeIn(fadeConst);

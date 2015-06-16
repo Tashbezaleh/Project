@@ -9,4 +9,25 @@
     background-color: white;
     text-align: center;
     white-space: nowrap;
-}\
+}
+
+.nice, .niceInvalidInput:focus {
+    text-align: center;
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;
+    box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
+}
+
+.nice:hover, .nice:focus {
+    box-shadow: inset 0px 0px 5px 0.1px Grey, 0px 0px 5px 0.1px Grey;
+}
+
+.niceInvalidInput {
+    box-shadow: inset 0px 0px 3px 0.7px Red, 0px 0px 3px 0.7px Red;
+}    
+.niceInvalidInput:hover {
+    box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
+}
