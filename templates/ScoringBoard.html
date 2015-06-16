@@ -3,11 +3,19 @@
 {% if scoring %}
 <table class="niceTable">
     <tr>
+        <th></th>
+        <th>מיקום</th>
         <th>שם</th>
         <th>ציון</th>
     </tr>
-    {% for name,score in scoring %}
+    {% for index, name, score in scoring %}
     <tr>
+        <td>
+            {% if index <= 3 %}
+            <img src="graphics/medal_{{ index }}.png" class="medal">
+            {% endif %}
+        </td>
+        <td>{{ index }}</td>
         <td>{{ name }}</td>
         <td>{{ score }}</td>
     </tr>

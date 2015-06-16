@@ -85,7 +85,7 @@ body {
     border-radius: 20px;
 }
 
-.niceTable {
+.niceTable, #help{
     text-align: center;
     padding: 10px;
     -webkit-border-radius: 10px;
@@ -96,4 +96,14 @@ body {
     background-color: white;
     text-align: center;
     white-space: nowrap;
+}
+
+#help {
+    width: 60%;
+    white-space: inherit;
+}
+
+.medal {
+    width: 17px;
+    float: left;
 }

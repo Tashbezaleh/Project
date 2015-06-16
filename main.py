@@ -104,6 +104,7 @@ class ScoringBoardHandler(webapp2.RequestHandler):
             sb = scoringBoardUtils.add_sb(name, int(score))
         else:
             sb = scoringBoardUtils.get_sb()
+        sb = [(i + 1, t[0], t[1]) for i,t in enumerate(sb)]
         template_values = { "scoring" : sb }
         template = JINJA_ENVIRONMENT.get_template('/templates/ScoringBoard.html')
         self.response.write(template.render(template_values))
