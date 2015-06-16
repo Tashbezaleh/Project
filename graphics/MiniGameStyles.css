@@ -15,6 +15,10 @@ td, th, tr {
     padding: 7px 10px;
 }
 
+body {
+    background-image: url("swirl_pattern.png");
+}
+
 #logo {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
