@@ -11,7 +11,7 @@
     {% for index, name, score in scoring %}
     <tr>
         <td>
-            {% if index <= 3 %}
+            {% if 3 >= index %}
             <img src="graphics/medal_{{ index }}.png" class="medal">
             {% endif %}
         </td>

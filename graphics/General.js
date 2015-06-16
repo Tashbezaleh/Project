@@ -232,7 +232,7 @@ function allowOnly(selector_string, allowed) {
     $(document).on("keypress", selector_string, function(e) {
         err = $("#errorMessage").empty();
         if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
-            err.fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
+            err.stop(true, true).fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
             return false;
         }
         else {
