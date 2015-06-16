@@ -57,10 +57,16 @@ body {
 }
 
 #timer {
+    font-size: 45px;
+}
+#timer sup {
+    font-size: 25px;
+}
+
+#timerButton, #restartButton {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    font-size: 60px;
+    bottom: 10px;
+    right: 10px;
 }
 
 .question {

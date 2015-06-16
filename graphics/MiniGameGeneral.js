@@ -1,10 +1,11 @@
 ﻿ var waitConst = 150, fadeConst = 1000;
-function showMain() {
+ function showMain() {
     clearInterval(parseInt($("#timer").attr("timerID")));
     toFade = $("#main>div:not(#main_menu)");
     toFadeHeight = 0;
     toFade.each(function () {
-        toFadeHeight = Math.max(toFadeHeight, $(this).outerHeight());
+        if(!$(this).is(".menu_button") && $(this).is(":visible"))
+            toFadeHeight = Math.max(toFadeHeight, $(this).outerHeight());
     });
     $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight() + toFadeHeight) / 4, 0) }, 500, function () {
         $("#main_menu .menu_button").each(function (index, elem) {
@@ -23,11 +24,13 @@ function hideMain(fun) {
 
 function StopGame() {
     showMain();
-    clearInterval(parseInt($("#timer").attr("timerID")));
     $("#Game").empty();
 }
 function finishGame(data, div) {
-    clearInterval(parseInt($("#timer").attr("timerID")));
+    if ($("#timer").attr("timerID")){
+        clearInterval(parseInt($("#timer").attr("timerID")));
+        div.lavalamp('destroy'); 
+    }
     table = $("<table class=\"niceTable\"/>").append("<th>הגדרה</th><th>תשובתך</th><th>תשובות אפשריות</th><th>ניקוד</th>");
     Score = 0;
     div.find(".question").each(function () {
@@ -36,50 +39,55 @@ function finishGame(data, div) {
         userCorrect = data[i][1].indexOf(userAnswer) >= 0;
         userScore = userCorrect ? Math.floor(userAnswer.length * 10 / data[i][1].length) : 0;
         table.append(
-            $("<tr/>").append($("<td/>").text(data[i][0]))
+            $("<tr/>").append($("<td style='max-width:200px;white-space:initial;'/>").text(data[i][0]))
             .append($("<td/>").css("color", userCorrect ? "green" : "red").text(userAnswer))
-            .append($("<td/>").text(data[i][1]))
+            .append($("<td style='max-width:300px;white-space:initial;'/>").text(data[i][1]))
             .append($("<td/>").text(userScore)));
         Score += userScore;
     });
     $("#Game").fadeOut(100, function () {
-        $(this).html(table).prepend("<br/>").append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/>הגש ציונך לטבלת המנצחים:<br/>שמך: <input id='name'/>")
-            .append($("<input type='submit'/>").click(function () {
-                SubmitScoring($.trim($("#name").val()), Score);
-                $("#Game").fadeOut(300);
-            })).append("<br /><br /><br />").fadeIn(fadeConst);
+        $(this).html(table).prepend("<br/>").prepend($("<div id='restartButton' class='menu_button'>שחק שוב!<br/><br/><img src='graphics/play.jpg' height='50'></div>").click(InitGame)).append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/>הגש ציונך לטבלת המנצחים:<br/>שמך: <input id='name'/>")
+        .append($("<input type='submit'/>").click(function () {
+            SubmitScoring($.trim($("#name").val()), Score);
+            $("#Game").fadeOut(300);
+        })).append("<br /><br /><br />").fadeIn(fadeConst);
     });
 }
 function updateTimer(timer, time) {
     cetiSec = time % 100;
     if (cetiSec < 10) cetiSec = "0" + cetiSec;
-    return $(timer).html(Math.floor(time / 100) + "<sup style=''>" + cetiSec + "</sup>");
+    $(timer).children("b").text(Math.floor(time/100));
+    $(timer).children("sup").text(cetiSec);
+    return timer;
 }
 function addQuestionDiv(data, i, div) {
     if (i >= data.length)
-        if (div.children().first().is("h3")) return finishGame(data, div);
-        else return $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
-    $("<div/>").attr("QuestionNumber", i).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append($("<input/>").focus(function () {
-        $(".current").removeClass("current").stop().fadeTo(1000, 0.5);
-        cur = $(this).css("color","black").parents(".question");
-        cur.addClass("current").stop().fadeTo(500, 1);
-        div.data('active', cur).lavalamp('update');
-        $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 1000);
-    }).keyup(function (e) {
-        if (e.which == 13 || e.which == 38) {
-            current = $(".current").prevAll(".question").first();
-            if (current.length == 0)
-                addQuestionDiv(data, parseInt($(".current").attr("QuestionNumber")) + 1, div);
-            else current.find("input").focus().select();
+        if (div.children().first().is("h3")) 
+            return finishGame(data, div);
+        else $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
+        else {
+            $("<div/>").attr("QuestionNumber", i).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append($("<input/>").focus(function () {
+                $(".current").removeClass("current").stop().fadeTo(1000, 0.62);
+                cur = $(this).css("color","black").parents(".question");
+                cur.addClass("current").stop().fadeTo(500, 1);
+                div.data('active', cur).lavalamp('update');
+                $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 1000);
+            }).keyup(function (e) {
+                if (e.which == 13 || e.which == 38) {
+                    current = $(".current").prevAll(".question").first();
+                    if (current.length == 0)
+                        addQuestionDiv(data, parseInt($(".current").attr("QuestionNumber")) + 1, div);
+                    else current.find("input").focus().select();
+                }
+                else if (e.which == 40) {
+                    current = $(".current").nextAll(".question").first();
+                    if (current.length > 0) current.find("input").focus().select();
+                }
+            }).focusout(function(){
+                $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
+            })).hide().show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active").find("input").focus();
         }
-        else if (e.which == 40) {
-            current = $(".current").nextAll(".question").first();
-            if (current.length > 0) current.find("input").focus().select();
-        }
-    }).focusout(function(){
-        $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
-    })).hide().show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active").find("input").focus();
-    div.lavalamp('update');
+        div.lavalamp('update');
 }
 function StartGame(div, timer, data) {
     time = 6000;
@@ -99,31 +107,35 @@ function InitGame() {
     divGame = $("#Game");
     divGame.html($("<h3/>").text("טוען את המשחק...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(300);
     $.get("/getDefinitions.html")
-        .done(function (str) {
+    .done(function (str) {
             if (divGame.is(':empty')) return; //this means 'return to main menu' called before ajax finished.
             str = $("<div/>").html(str).text(); // important!
+            data = JSON.parse(str);
             divGame.stop().fadeOut(300, function () {
                 divGame.empty();
-                timer = $("<div id='timer'/>").hide().fadeIn(fadeConst).appendTo(divGame);
-                updateTimer(timer, 6000);
                 div = $("<div/>").appendTo(divGame);
+                timer = $("<div id='timer'/>").append("<b/>").append("<sup/>");
+                updateTimer(timer, 6000);
+                timerButton=$("<div id='timerButton' class='menu_button'/>").html("סיים משחק!<br/>").append(timer).appendTo(divGame).hide().fadeIn(fadeConst).click(function(e){
+                    finishGame(data,div);
+                });
                 $("<h1 style='color:Red;'/>").text('3').appendTo(div.empty().fadeIn(300)).fadeOut(1500);
                 setTimeout(function () {
                     $("<h1 style='color:Red;'/>").text('2').appendTo(div.empty()).fadeOut(1500);
                     setTimeout(function () {
                         $("<h1 style='color:Red;'/>").text('1').appendTo(div.empty()).fadeOut(1500);
                         setTimeout(function () {
-                            if (!divGame.is(':empty')) //this means 'return to main menu' called before ajax finished.
-                                StartGame(div.html("<br/>"), timer, JSON.parse(str));
+                            if (!jQuery.contains(document, div)) //this means 'return to main menu' called before ajax finished.
+                                StartGame(div.html("<br/>"), timer, data);
                         }, 1000);
                     }, 1000);
                 }, 1000);
                 divGame.fadeIn(100);
             });
-        }).fail(function (a, b) {
-            alert("אופס, קרתה טעות. קורה לטובים ביותר. הנה דברים שאין סיבה שתקרא:\n" + b);
-            showMain();
-        });
+    }).fail(function (a, b) {
+        alert("אופס, קרתה טעות. קורה לטובים ביותר. הנה דברים שאין סיבה שתקרא:\n" + b);
+        showMain();
+    });
 }
 
 function SubmitScoring(name, score) {
@@ -184,4 +196,4 @@ $(document).ready(function () {
         });
     });
 });
-window.onload = showMain;
+ window.onload = showMain;
