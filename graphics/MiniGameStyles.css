@@ -30,6 +30,10 @@ body {
     display: inline-block;
 }
 
+#Game {
+    width: 80%;
+}
+
 .menu_button {
     display: block;
     float: right;
