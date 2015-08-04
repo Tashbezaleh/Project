@@ -125,6 +125,13 @@ class helpHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('/templates/help.html')
         self.response.write(template.render(template_values))
 
+class forumsHandler(webapp2.RequestHandler):
+    def get(self):
+        
+        template_values= {}
+        template = JINJA_ENVIRONMENT.get_template('/templates/forums.html')
+        self.response.write(template.render(template_values))
+
 # for admins only, please only enable when testing and db reset is needed
 class ResetDBHandler(webapp2.RequestHandler):
      def get(self):
@@ -209,7 +216,8 @@ app = webapp2.WSGIApplication([
     ('/ScoringBoard.html', ScoringBoardHandler),
     ('/MiniGame.html', MiniGameHandler),
     ('/facebook.html', facebookHandler),
-    ('/help.html',helpHandler)
+    ('/help.html',helpHandler),
+    ('/forums.html',forumsHandler)
 ], debug=True)
 
 

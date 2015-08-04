@@ -1,0 +1,117 @@
+* {
+    direction: rtl;
+    font-family: arial;
+}
+
+body {
+    background-image: url("p5_pattern.png");
+}
+
+img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.qtext {
+    -webkit-box-sizing:border-box; 
+    -moz-box-sizing:border-box; 
+    box-sizing:border-box;
+    box-shadow:0px 0px 0px 2px gray;
+    border-radius:3px;
+    width: 75%;
+    padding: 10px;
+    background-color: white;
+}
+
+h4 {
+    color: #292929;
+    font-family: arial;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+Blocks-Input {
+    margin: 0px 0px -10px 0;
+}
+
+.inlined {
+    display: inline;
+    margin-right: 5px;
+}
+
+.accordion, .accordion * {
+    -webkit-box-sizing:border-box; 
+    -moz-box-sizing:border-box; 
+    box-sizing:border-box;
+}
+
+.accordion {
+    overflow:hidden;
+    box-shadow:0px 1px 3px rgba(0,0,0,0.25);
+    border-radius:3px;
+    background:#f7f7f7;
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/*----- Section Titles -----*/
+.accordion-section-title {
+    width:100%;
+    padding:15px;
+    display:inline-block;
+    border-bottom:1px solid #1a1a1a;
+    background:#9197a3  ;
+    transition:all linear 0.15s;
+    /* Type */
+    font-size:25px;
+    text-shadow:0px 1px 0px #1a1a1a;
+    color:#fff;
+    text-decoration: none;
+}
+
+.accordion-section-title.active, .accordion-section-title:hover {
+    /* Type */
+    text-decoration: none;
+}
+
+.accordion-section:nth-child(6n+0) > .accordion-section-title:hover, .accordion-section:nth-child(6n+0) > .accordion-section-title.active {
+    background: rgb(255, 33,35);
+}
+
+.accordion-section:nth-child(6n+1) > .accordion-section-title:hover, .accordion-section:nth-child(6n+1) > .accordion-section-title.active {
+    background: rgb(253, 165, 29);
+}
+
+.accordion-section:nth-child(6n+2) > .accordion-section-title:hover, .accordion-section:nth-child(6n+2) > .accordion-section-title.active {
+    background: rgb(219, 217, 34);
+}
+
+.accordion-section:nth-child(6n+3) > .accordion-section-title:hover, .accordion-section:nth-child(6n+3) > .accordion-section-title.active {
+    background: rgb(72, 182, 51);
+}
+
+.accordion-section:nth-child(6n+4) > .accordion-section-title:hover, .accordion-section:nth-child(6n+4) > .accordion-section-title.active {
+    background: rgb(76, 31, 244);
+}
+
+.accordion-section:nth-child(6n+5) > .accordion-section-title:hover, .accordion-section:nth-child(6n+5) > .accordion-section-title.active {
+    background: rgb(167, 71, 204);
+}
+
+.accordion-section:last-child .accordion-section-title {
+    border-bottom: none;
+}
+
+/*----- Section Content -----*/
+.accordion-section-content {
+    padding:15px;
+    display:none;
+}
+
+#back {
+    width: 200px;
+    margin-top: 50px;
+    display: inline;
+}

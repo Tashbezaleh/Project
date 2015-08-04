@@ -1,0 +1,28 @@
+Blocks-Input input, Blocks-Input button {
+    border: 1px solid black;
+    border-left: none;
+    height: 40px;
+    width: 40px;
+    padding: 10px;
+    font-size: 20px;
+    float: right;
+    font-weight: 700;
+    box-sizing: border-box;
+    margin:0;
+    text-align: center;
+}
+Blocks-Input input:last-child, BlocksInput button:last-child {
+    border-left: 1px solid black;
+}
+Blocks-Input button {
+    background-color: #6C6C6C;
+    color:#fff;
+}
+Blocks-Input {
+    display:inline-block;
+}
+#outer {
+    font: 15px arial, sans-serif;
+    direction:rtl;
+    float:right;
+}
