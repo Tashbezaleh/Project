@@ -9,16 +9,28 @@ from encodingUtils import fix_encoding
 ACTIVITIES_LIST = 'activities_list'
 
 ADD_DEFI_TYPE = 1 # args: [definition, answer, source]
-ADD_DEFI_TEMPLATE = "<h3 style='color: %s;'>%s</h3>	 <i>%s</i> הוסיף להגדרה <i>%s</i> את הפתרון <i>%s</i>"
+ADD_DEFI_TEMPLATE = "<h3>%s</h3>	 <i>%s</i> הוסיף להגדרה <i>%s</i> את הפתרון <i>%s</i>"
 ADD_DEFI_FUNC = "searchDefi('%s', '%s')"
-
-COLORS = ["rgb(255, 33,35)", "rgb(253, 165, 29)", "rgb(219, 217, 34)", "rgb(72, 182, 51)", "rgb(76, 31, 244)", "rgb(167, 71, 204)"]
 
 STRING_TYPE = 9 # just prints its args[0]
  
+MAX_ACTIVITIES = 10 # number of maximum activities shown
+
 # ra - recent activity
 # activity - tuple of activity type number and activity args.
 # every activity type has its own parser
+
+class Activity(ndb.Model):
+	id_num = ndb.IntegerProperty()
+	description = ndb.StringProperty(indexed=False)
+	onclick_func = ndb.StringProperty(indexed=False)
+
+	@staticmethod
+	def create(id_num, description, onclick_func):
+		return Activity(id_num=id_num, description=fix_encoding(description), onclick_func=fix_encoding(onclick_func))
+
+	def as_tuple(self):
+		return (self.id_num, self.description, self.onclick_func)
 
 def add_to_ra(activity):
 	app = webapp2.get_app()
@@ -26,7 +38,7 @@ def add_to_ra(activity):
 	if not ra_list:
 		app.registry[ACTIVITIES_LIST] = [activity]
 	else:
-		app.registry[ACTIVITIES_LIST] = ([activity] + ra_list)[:10]
+		app.registry[ACTIVITIES_LIST] = ([activity] + ra_list)[:MAX_ACTIVITIES]
 
 def get_ra():
 	app = webapp2.get_app()
@@ -43,7 +55,7 @@ def parse_ra_string(indexed_activity):
 	i, activity = indexed_activity
 	if activity[0] == 1:
 		# Add Definition
-		template = fix_encoding(ADD_DEFI_TEMPLATE%(COLORS[i%len(COLORS)],fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
+		template = fix_encoding(ADD_DEFI_TEMPLATE%(fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
 		func = fix_encoding(ADD_DEFI_FUNC%(fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
 		return (template, func)
 	if activity[0] == 9:

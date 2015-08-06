@@ -20,6 +20,31 @@ a {
     text-decoration: none;
 }
 
+.news:nth-child(12n+2) > h3 {
+    color: rgb(255, 33,35);
+}
+
+.news:nth-child(12n+4) > h3 {
+    color: rgb(253, 165, 29);
+}
+
+.news:nth-child(12n+6) > h3 {
+    color: rgb(219, 217, 34);
+}
+
+.news:nth-child(12n+8) > h3 {
+    color: rgb(72, 182, 51);
+}
+
+.news:nth-child(12n+10) > h3 {
+    color: rgb(76, 31, 244);
+}
+
+.news:nth-child(12n+12) > h3 {
+    color: rgb(167, 71, 204);
+}
+
+
 /*h3 {
     font-size: x-large;
 }*/
