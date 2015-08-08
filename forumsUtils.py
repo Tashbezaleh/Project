@@ -15,7 +15,7 @@ class Comment(ndb.Model):
     
     @staticmethod
     def create(name, answer, description, commentID):
-        return Question(name=fix_encoding(name),\
+        return Comment(name=fix_encoding(name),\
             answer=fix_encoding(answer),\
             description=fix_encoding(description),\
             commentID=commentID)
@@ -37,16 +37,24 @@ class Question(ndb.Model):
             comments = [],\
             questionID=questionID)
 
+    def get_question_comments(self):
+        return map(lambda x: (x.name,x.answer,x.description),self.comments)
+
 def get_raw_questions_feed():
     return Question.query().order(-Question.questionID).fetch()
     
 def get_questions_feed():
-    return map(lambda x:(x.name,x.question,x.pattern,x.description,x.questionID), get_raw_sb())
+    return map(lambda x:[x.name,
+                         x.question,
+                         x.pattern,
+                         x.description,
+                         x.get_question_comments(),
+                         x.key.urlsafe()], get_raw_questions_feed())
 
 def add_question(name, question, pattern, description):
     name = ' '.join(name.split())
     questions = get_raw_questions_feed()
-    new_question = Question.create(name, question, pattern, description, max(questions,key=lambda x:x.questionID)+1)
+    new_question = Question.create(name, question, pattern, description, 1 + max(map(lambda x:x.questionID,questions)) if questions else 0)
     new_question.put()
     return [new_question] + questions
 
@@ -54,6 +62,6 @@ def add_comment(QuestionURL, name, answer, description):
     name = ' '.join(name.split())
     question = ndb.Key(urlsafe=QuestionURL).get()
     comments = question.comments
-    new_comment=Comment.create(name,answer,description,max(comments,key=lambda x:x.commentID)+1)
+    new_comment = Comment.create(name,answer,description, 1 + max(map(lambda x:x.commentID,comments)) if comments else 0)
     question.comments.append(new_comment)
     question.put()

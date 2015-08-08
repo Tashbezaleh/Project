@@ -1,10 +1,10 @@
-* {
+﻿* {
     direction: rtl;
     font-family: arial;
 }
 
 body {
-    background-image: url("http://subtlepatterns.com/patterns/white_brick_wall.png");
+    background-image: url("white_brick_wall.png");
 }
 
 img {

@@ -19,9 +19,19 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 import urllib
-import webapp2, solver, cgi, re, time
-import jinja2, os
-import recentActivityUtils, databaseUtils, cookiesUtils, minigamesUtils, scoringBoardUtils
+import webapp2
+import solver
+import cgi
+import re
+import time
+import jinja2
+import os
+import recentActivityUtils
+import databaseUtils
+import cookiesUtils
+import minigamesUtils
+import scoringBoardUtils
+import forumsUtils
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -82,22 +92,30 @@ class ResultActionHandler(webapp2.RequestHandler):
         
 class MinigameDefinitionsHandler(webapp2.RequestHandler):
     def get(self):
-        # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
-        template_values= { 'json_string' : minigamesUtils.get_n_definitions_as_json() }
+        # uses /template/minigames.html template, and renders into it
+        # definitions_list which is a list of
+        # minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN
+        # definitions.  each element in the list is a pair of a definition and
+        # an array of possible answers
+        template_values = { 'json_string' : minigamesUtils.get_n_definitions_as_json() }
         template = JINJA_ENVIRONMENT.get_template('/templates/minigamesdefinitions.html')
         self.response.write(template.render(template_values))
 
 class MiniGameHandler(webapp2.RequestHandler):
     def get(self):
-        # uses /template/minigames.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
+        # uses /template/minigames.html template, and renders into it
+        # definitions_list which is a list of
+        # minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN
+        # definitions.  each element in the list is a pair of a definition and
+        # an array of possible answers
         template_values = { }
         template = JINJA_ENVIRONMENT.get_template('/templates/MiniGame.html')
         self.response.write(template.render(template_values))
-
+        
 class ScoringBoardHandler(webapp2.RequestHandler):
     def get(self):
-        # uses /template/ScoringBoard.html template, needs to show a 15 winners table.
-        # TODO: complete 'scoringBoardUtils.add_sb'.
+        # uses /template/ScoringBoard.html template, needs to show a 15 winners
+        # table.
         sb = None
         name, score = cgi.escape(self.request.get('name')).strip(), cgi.escape(self.request.get('score'))
         if len(name) != 0 and len(score) != 0:
@@ -111,26 +129,47 @@ class ScoringBoardHandler(webapp2.RequestHandler):
 
 class facebookHandler(webapp2.RequestHandler):
     def get(self):
-        # uses /template/facebook.html template, and renders into it definitions_list which is a list of minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN definitions. each element in the list is a pair of a definition and an array of possible answers
+        # uses /template/facebook.html template, and renders into it
+        # definitions_list which is a list of
+        # minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN
+        # definitions.  each element in the list is a pair of a definition and
+        # an array of possible answers
         # make sure the facebook-app's url is matches the running one
-        template_values= {}
+        template_values = {}
         template = JINJA_ENVIRONMENT.get_template('/templates/facebook.html')
         self.response.write(template.render(template_values))
-
 
 class helpHandler(webapp2.RequestHandler):
     def get(self):
         
-        template_values= {}
+        template_values = {}
         template = JINJA_ENVIRONMENT.get_template('/templates/help.html')
         self.response.write(template.render(template_values))
 
 class forumsHandler(webapp2.RequestHandler):
     def get(self):
-        
-        template_values= {}
+        template_values = { "feed" : forumsUtils.get_questions_feed(), "enumerate":enumerate }
         template = JINJA_ENVIRONMENT.get_template('/templates/forums.html')
         self.response.write(template.render(template_values))
+        
+class AddQuestionHandler(webapp2.RequestHandler):
+    def get(self):
+        name,question,pattern,description = map(cgi.escape, (self.request.get('name'),
+                                                             self.request.get('question'),
+                                                             self.request.get('pattern'),
+                                                             self.request.get('description')))
+        forumsUtils.add_question(name,question,pattern,description)
+        self.response.write("success")
+
+class AddCommentHandler(webapp2.RequestHandler):
+    def get(self):
+        questionID,name,answer,description = map(cgi.escape, (self.request.get('questionID'),
+                                                             self.request.get('name'),
+                                                             self.request.get('answer'),
+                                                             self.request.get('description')))
+        forumsUtils.add_comment(questionID,name,answer,description)
+        self.response.write("success")
+        
 
 # for admins only, please only enable when testing and db reset is needed
 class ResetDBHandler(webapp2.RequestHandler):
@@ -151,7 +190,7 @@ class ResetDBHandler(webapp2.RequestHandler):
             return
 
         if (operation == 'upload'):
-            #upload parts. if all uploads part == all the parts at once
+            #upload parts.  if all uploads part == all the parts at once
             self.response.write("START UPLOAD PART #%s <br>" % part)
             if (part == 'all'):
                 for i in xrange(1, 1 + databaseUtils.NUMBER_OF_PARTS):
@@ -162,7 +201,7 @@ class ResetDBHandler(webapp2.RequestHandler):
                         self.response.write('FAIL<br>')
                 return
 
-            if ( databaseUtils.uploadPart(part) == True):
+            if (databaseUtils.uploadPart(part) == True):
                 self.response.write("DONE UPLOAD PART #%s <br>" % part)
                 self.response.write("GREAT SUCCESS")
             else:
@@ -171,15 +210,16 @@ class ResetDBHandler(webapp2.RequestHandler):
             return 
 
         if (operation == 'data'):
-            # shows in the respond registry values that indicate what's the db stat's
-            registry_dict= app.registry
+            # shows in the respond registry values that indicate what's the db
+            # stat's
+            registry_dict = app.registry
             self.response.write("DATA: <br>")
             self.response.write("%s <br>" % part)
             if (not ('ready' in registry_dict)) or registry_dict['ready'] != 'yes' :
                 self.response.write("IS READY: False <br>")
             else:
                 self.response.write("IS READY: True <br>")
-                # and registry_dict['part'] != '0' 
+                # and registry_dict['part'] != '0'
             if ('part' in registry_dict) :
                 self.response.write("Updated till PART NUMBER %s <br>" % registry_dict['part'])
             else:
@@ -192,7 +232,7 @@ class ResetDBHandler(webapp2.RequestHandler):
             # updates ready if needed
             self.response.write("updating registy starts <br>")
             app.registry['part'] = part
-            if ( part == databaseUtils.NUMBER_OF_PARTS):
+            if (part == databaseUtils.NUMBER_OF_PARTS):
                 app.registry['ready'] = 'yes'
             else:
                 app.registry['ready'] = 'no'
@@ -207,8 +247,7 @@ class ResetDBHandler(webapp2.RequestHandler):
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
 # please enable reset_db only on localhost, don't deploy it unless needed!
-app = webapp2.WSGIApplication([
-    ('/', MainHandler),
+app = webapp2.WSGIApplication([('/', MainHandler),
     ('/results.html', ResultsHandler),
     ('/result_action', ResultActionHandler), 
     ('/reset_db.html', ResetDBHandler),
@@ -217,8 +256,9 @@ app = webapp2.WSGIApplication([
     ('/MiniGame.html', MiniGameHandler),
     ('/facebook.html', facebookHandler),
     ('/help.html',helpHandler),
-    ('/forums.html',forumsHandler)
-], debug=True)
+    ('/addQuestion.html',AddQuestionHandler),
+    ('/addComment.html',AddCommentHandler),
+    ('/forums.html',forumsHandler)], debug=True)
 
 
 def get_results(this, new_rate=0, changed_definition='', answer=''):
@@ -239,13 +279,16 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
     for result in solver.find(fix_encoding(definition), regex):
         if new_rate > 0 and fix_encoding(result.definition) == fix_encoding(changed_definition) and \
              fix_encoding(result.answer) == fix_encoding(answer): 
-             # getting over ndb being "eventually" consistent, new_rate is 0 if the answer was already in the db and greater if it wasn't (and then it's the actual rate)
+             # getting over ndb being "eventually" consistent, new_rate is 0 if
+             # the answer was already in the db and greater if it wasn't (and
+             # then it's the actual rate)
                 result.total_stars = new_rate
                 result.raters_count = 1
-        stars = 1.0 * result.total_stars /  result.raters_count if result.raters_count != 0 else 0
-        results += [(result, result.answer.decode('utf'), result.definition.decode('utf'), round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point), second stars are integer for presenting
+        stars = 1.0 * result.total_stars / result.raters_count if result.raters_count != 0 else 0
+        results += [(result, result.answer.decode('utf'), result.definition.decode('utf'), round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point),
+                                                                                                                                # second stars are integer for presenting
     # rendering the page with the results
-    template_values= {
+    template_values = {
     'results_list' : results,
     'definition' : definition,
     'pattern' : pattern,
