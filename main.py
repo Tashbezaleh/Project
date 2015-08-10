@@ -80,13 +80,8 @@ class ResultActionHandler(webapp2.RequestHandler):
                 cookiesUtils.del_from_cookies(self, answer_object)
             cookiesUtils.rate_cookie(self, answer_object, rate)
         if action == 'add':
-            source = cgi.escape(self.request.get('source'))
-            if source == '' or fix_encoding(source) == databaseUtils.SOLVER_NAME:
-                source = 'אנונימי'
-            if databaseUtils.add_to_ndb(definition, answer, source, 5, 1):
-                cookiesUtils.rate_cookie(self, answer_object, 5)
-                return self.response.write('תודה על תרומתך')
-            return self.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')
+            answer_object.source = cgi.escape(self.request.get('source'))
+            return AddToDB(self, answer_object)
 
         get_results(self, new_rate, definition, answer)
         
@@ -163,12 +158,10 @@ class AddQuestionHandler(webapp2.RequestHandler):
 
 class AddCommentHandler(webapp2.RequestHandler):
     def get(self):
-        questionID,name,answer,description = map(cgi.escape, (self.request.get('questionID'),
-                                                             self.request.get('name'),
-                                                             self.request.get('answer'),
-                                                             self.request.get('description')))
-        forumsUtils.add_comment(questionID,name,answer,description)
-        self.response.write("success")
+        questionID,name,answer,description = map(lambda x: cgi.escape(self.request.get(x)), ('questionID', 'name', 'answer', 'description'))        
+        if forumsUtils.add_comment(questionID,name,answer,description):
+            AddToDB(self, databaseUtils.Answer(answer.encode('utf'), ndb.Key(urlsafe=questionID).get().question, name, 0, 1))
+        else: self.response.write("כושלה")
         
 
 # for admins only, please only enable when testing and db reset is needed
@@ -286,7 +279,12 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
                 result.raters_count = 1
         stars = 1.0 * result.total_stars / result.raters_count if result.raters_count != 0 else 0
         results += [(result, result.answer.decode('utf'), result.definition.decode('utf'), round(stars, 2), int(round(stars)))] # first stars are for alt-text (rounded to 2 digits after decimal point),
-                                                                                                                                # second stars are integer for presenting
+                                                                                                                                # second
+                                                                                                                                                                                                                                                               # stars
+                                                                                                                                                                                                                                                                                                                                                                                              # are
+                                                                                                                                                                                                                                                                                                                                                                                              # integer
+                                                                                                                                                                                                                                                                                                                                                                                              # for
+                                                                                                                                                                                                                                                                                                                                                                                              # presenting
     # rendering the page with the results
     template_values = {
     'results_list' : results,
@@ -296,3 +294,11 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
     }
     template = JINJA_ENVIRONMENT.get_template('/templates/results.html')
     this.response.write(template.render(template_values))
+
+def AddToDB(this, answer_object):
+    if answer_object.source == '' or fix_encoding(answer_object.source) == databaseUtils.SOLVER_NAME:
+        answer_object.source = 'אנונימי'
+    if databaseUtils.add_to_ndb(answer_object.definition, answer_object.answer, answer_object.source, 5, 1):
+        cookiesUtils.rate_cookie(this, answer_object, 5)
+        return this.response.write('תודה על תרומתך')
+    return this.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')

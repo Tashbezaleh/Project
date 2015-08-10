@@ -64,7 +64,7 @@ tr td:last-child {
     text-align: right;
     float: right;
     margin-right: -15px;
-    margin-top: 15%;
+    margin-top: 40vh;
     width: 200px;
 }
 
@@ -282,4 +282,9 @@ input[type="radio"] + label {
     border: 1px;
     background-color: #F0F0F0;
     box-shadow: inset 0px 0px 5px 0.1px White, 0px 0px 5px 0.1px Black;
+}
+
+/*used for start animation:*/
+#slidingNavigation li,#main_search form>*,.news{
+    visibility:hidden;
 }

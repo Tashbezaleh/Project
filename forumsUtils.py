@@ -58,10 +58,16 @@ def add_question(name, question, pattern, description):
     new_question.put()
     return [new_question] + questions
 
+def good_answer(pattern,answer):
+    return len(pattern) == len(answer) and all(pattern[i] == answer[i] for i in range(len(pattern)) if pattern[i] != '?')
+
 def add_comment(QuestionURL, name, answer, description):
     name = ' '.join(name.split())
     question = ndb.Key(urlsafe=QuestionURL).get()
-    comments = question.comments
-    new_comment = Comment.create(name,answer,description, 1 + max(map(lambda x:x.commentID,comments)) if comments else 0)
-    question.comments.append(new_comment)
-    question.put()
+    if good_answer(question.pattern,answer):
+        comments = question.comments
+        new_comment = Comment.create(name,answer,description, 1 + max(map(lambda x:x.commentID,comments)) if comments else 0)
+        question.comments.append(new_comment)
+        question.put()
+        return True
+    return False

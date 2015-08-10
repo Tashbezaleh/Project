@@ -90,19 +90,18 @@
                 </p>
                 <br />
                 <br />
+                <label for="pattern">
+                    הכנס תבנית:
+                </label>
                 <p>
-                    <label for="pattern">
-                        הכנס תבנית:
-                    </label>
-                    <br />
                     <a href="#patternHelp" class="popup">
                         <img src="graphics/question_mark.jpg" style="
                         margin: 0px -30px -8px 0;
                         width: 30px;
                         height: 30px;
-                    ">
+                    " />
                     </a>
-                    <input type="text" id="pattern" name="pattern" class="nice" placeholder="למשל: ת?ש??" tabindex="2" autocomplete="off"/>
+                    <input type="text" id="pattern" name="pattern" class="nice" placeholder="למשל: ת?ש??" tabindex="2" autocomplete="off" />
                 </p>
                 <br />
                 <div id="errorMessage" class="error">
@@ -167,8 +166,9 @@
     </div>
     <div id="currentPopup"></div>
     <br />
-    <div id="magnif" onclick="zoom();">
-        <img id="magnif_img" src="graphics/mag_glass.png" width="48px" /> <a>לחץ עלי להגדלה!</a>
+    <div id="magnif">
+        <a>לחץ עלי להגדלה!</a>
+        <img id="magnif_img" src="graphics/mag_glass.png" width="48px" />
     </div>
 </body>
 </html>

@@ -7,11 +7,14 @@
     $("#recentActivities").css("max-height", ($(window).height()) * 0.8);
 }
 
-function appear(list) {
+function appear(list, done) {
+    done = done || function () { };
     list
     .not("br, script")
+    //.slice(1) // <- im not sure about this. it says: everyone but the first in the list.
     .each(function (index, elem) {
-        $(elem).hide().delay(index * 200).fadeIn(1000);
+        a = "15";
+        $(elem).css({ opacity: 0, top: "-=" + a, marginTop: "+=" + a, visibility:"visible" }).delay(index * 100).animate({ opacity: 1, top: "+=" + a, marginTop: "-=" + a }, 500, done);
     });
 }
 function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
@@ -19,15 +22,16 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
         $(elem)
         .css("margin-right", "-=300px")
         .delay(waitPerAnim * ind)
-        .animate({ marginRight: "+=300px" }, timePerAnim, 'backinout'); //elasout?
-        if (ind != 0)
-            $(elem).hover(
-        	    function () {
-        	        $(this).animate({ "paddingRight": pad_hover }, 150);
-        	    },
-	            function () {
-	                $(this).animate({ "paddingRight": "0" }, 150);
-	            });
+        .animate({ marginRight: "+=300px" }, timePerAnim, 'backinout', function () {
+            if (ind != 0)
+                $(elem).hover(
+                    function () {
+                        $(this).stop(true).animate({ "paddingRight": pad_hover }, 150);
+                    },
+                    function () {
+                        $(this).stop(true).animate({ "paddingRight": "0" }, 150);
+                    });
+        }); //elasout?
     });
 }
 /*function sideSlide(father,limit) { //idea only, not yet tested.
@@ -64,7 +68,7 @@ function zoom() {
     scale_factor = 1 / scale_factor;
 }
 function zoomResults() {
-    if(scale_factor <= 1) {
+    if (scale_factor <= 1) {
         scale_factor = 1 / scale_factor;
         $("#results input").each(zoomFont);
         $("#results img").each(zoomImage);
@@ -180,7 +184,7 @@ function searchDone(data) {
 }
 function searchDoneAppear(data) {
     searchDone(data);
-    appear($("#results").children());
+    appear($("#results table tr"));
 }
 function submitAForm(addr, values, doneFunc) {
     $.get(addr, values)
@@ -206,7 +210,7 @@ function expirementWithForms() {
             $("#popupContentHolder").fadeIn({
                 duration: 500,
                 start: function () {
-                    $(this).empty().html("<h3>" + data + "</h3>");
+                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
                     fixCSSIssues();
                 }
             });
@@ -229,9 +233,9 @@ function submitRate(definition, answer, pattern, button) {
 function allowOnly(selector_string, allowed) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
-    $(document).on("keypress", selector_string, function(e) {
+    $(document).on("keypress", selector_string, function (e) {
         err = $("#errorMessage").empty();
-        if((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
+        if ((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
             err.stop(true, true).fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
             return false;
         }
@@ -249,7 +253,17 @@ function searchDefi(definition, pattern) {
 
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
-    slide("#slidingNavigation", 17, 900, 150);
+    appear($("#slidingNavigation").children(), function () {
+        if(!$(this).is(":first-child"))
+        $(this).hover(
+            function () {
+                $(this).stop(true).animate({ "paddingRight": 17 }, 150);
+            },
+            function () {
+                $(this).stop(true).animate({ "paddingRight": "0" }, 150);
+            });
+    });
+    appear($(".news"));
     setPopups();
     expirementWithForms();
     $(document).on("focus", "input", function () {
@@ -260,6 +274,11 @@ $(document).ready(function () {
     });
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`
+    });
+    $("#magnif").click(zoom).css("right", "-=" + $("#magnif a").outerWidth()).hover(function () {
+        $(this).stop(true).animate({ right: 0 }, 100, "easein");
+    }, function () {
+        $(this).stop(true).animate({ right: -$("#magnif a").outerWidth() }, 1000, "bounceout");
     });
     allowOnly("#definition", ",'-;()\"");
     allowOnly("#answer", "");
