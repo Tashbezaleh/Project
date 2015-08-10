@@ -58,10 +58,10 @@
         <div id="recentActivities">
             <h3>מה חדש?</h3>
             <div>
-                {% for string,func in activities_list %}
+                {% for description,onclick_func in activities_list %}
                 <hr>
-                <div class="news" onclick="{{ func.decode('utf') }}">
-                    {{ string.decode('utf')|safe }} </br>
+                <div class="news" onclick="{{ onclick_func.decode('utf') }}">
+                    {{ description.decode('utf')|safe }} </br>
                 </div>
                 {% endfor %}
             </div>
