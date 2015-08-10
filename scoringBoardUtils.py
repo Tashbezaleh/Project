@@ -19,7 +19,7 @@ class Winner(ndb.Model):
         return (self.name, self.score)
 
 def get_raw_sb():
-    return sorted(Winner.query().fetch(), key=lambda w: w.score, reverse=True)
+    return Winner.query().order(-Winner.score).fetch()
     
 def get_sb():
     return map(Winner.as_tuple, get_raw_sb())[:MAX_WINNERS]

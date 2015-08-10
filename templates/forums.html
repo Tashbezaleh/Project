@@ -1,119 +1,66 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>תשבצל'ה</title>
-      <link rel="stylesheet" type="text/css" href="graphics/GlobalStyle.css">
-      <link rel="stylesheet" type="text/css" href="graphics/ForumsStyle.css">
-      <link rel="stylesheet" type="text/css" href="graphics/BlocksInputStyle.css">
-      <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
-      <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
-      <script type="text/javascript" src="graphics/accordion.js"></script>
-      <script type="text/javascript" src="graphics/BlocksInput.js"></script>
-   </head>  
-   <body>
-      <center>
-         <h1><b> כותרת מפציצה - פורומים </b></h1>
-      </center>
-      <br/ >
-      <div class="accordion">
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-1">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-1" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <h4>תגובות:</h4>
-               <center>
-                  
-               </center>
-               </p>
+<head>
+    <title>תשבצל'ה</title>
+    <link rel="stylesheet" type="text/css" href="graphics/GlobalStyle.css">
+    <link rel="stylesheet" type="text/css" href="graphics/ForumsStyle.css">
+    <link rel="stylesheet" type="text/css" href="graphics/BlocksInputStyle.css">
+    <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+    <script type="text/javascript" src="graphics/accordion.js"></script>
+    <script type="text/javascript" src="graphics/BlocksInput.js"></script>
+</head>
+<body>
+    <center>
+        <h1><b> כותרת מפציצה - פורומים </b></h1>
+    </center>
+    <br />
+    {% if feed %}
+    <div class="accordion">
+        {% for i,(name,question,pattern,description,comments,questionID) in enumerate(feed) %}
+        <div class="accordion-section">
+            <a class="accordion-section-title" href="#accordion-{{ i }}">המשתמש <i>{{ name }}</i> שאל: {{ question }}, <Blocks-Input value="{{ pattern }}" fixed="true" disabled></Blocks-Input></a>
+            <div id="accordion-{{ i }}" class="accordion-section-content" style="display: none;">
+                <div class="qtext">{{ description }}</div>
+                {% if comments %}
+                <ul>
+                    {% for name,answer,description in comments %}
+                    <li>
+                        המשתמש <i>{{ name }}</i> הציע את התשובה: <b>{{ answer }}</b><br />
+                        {{ description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <br />
+                להוסיף תגובה:<br />
+                <form action="addComment.html" class="nice">
+                    <input type="hidden" name="questionID" value="{{ questionID }}" />
+                    <input type="text" name="name" placeholder="name" value="דני המלך" />
+                    <Blocks-Input name="answer" value="תנשמת" fixed="true"></Blocks-Input>
+                    <textarea name="description">
+                        יוסי ימצחיק ברור שזה תנשמת!
+                    </textarea>
+                    <input type="submit" value="הוסף!" />
+                </form>
             </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-2">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-2" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-3">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-3" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-4">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-4" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-5">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-5" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-6">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-6" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-         <div class="accordion-section">
-            <a class="accordion-section-title" href="#accordion-7">המשתמש <i>יוסי המלך</i> שאל: עוף דורס, <Blocks-Input value="ת??מ?" fixed="true"></Blocks-Input></a>
-            <div id="accordion-7" class="accordion-section-content" style="display: none;">
-               <p>
-                  <div class="qtext">היי כולם, </br>
-                  זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
-                  אשמח לעזרתכם!</div>
-                  <u><h4>תגובות:</u></h4>
-               <center>
-                  
-               </center>
-               </p>
-            </div>
-         </div>
-      </div>
-  </body>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    הפורום ריק, הוסף שאלה והיה הראשון!
+    {% endif %}
+    <br /> להוסיף שאלה: <br />
+    <form action="addQuestion.html" class="nice">
+        <input type="text" name="name" placeholder="name" value="גל" />
+        <input type="text" name="question" placeholder="question" value="עוף דורס" />
+        <Blocks-Input name="pattern" value="ת??מ?" fixed="true"></Blocks-Input>
+        <textarea name="description">
+            היי כולם,
+            זה ממש היה נראה לי כמו ינשוף אבל זה לא נכנס פה בכלל...
+            אשמח לעזרתכם!
+        </textarea>
+        <input type="submit" value="הוסף!" />
+    </form>
+</body>
 </html>

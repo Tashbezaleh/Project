@@ -1,10 +1,10 @@
-* {
+﻿* {
     direction: rtl;
     font-family: arial;
 }
 
 body {
-    background-image: url("p5_pattern.png");
+    background-image: url("white_brick_wall.png");
 }
 
 img {
@@ -19,9 +19,14 @@ img {
     box-sizing:border-box;
     box-shadow:0px 0px 0px 2px gray;
     border-radius:3px;
-    width: 75%;
+    width: 95%;
     padding: 10px;
     background-color: white;
+    font-size: 1.3em;
+}
+
+div {
+    text-indent:inherit;
 }
 
 h4 {
@@ -29,6 +34,7 @@ h4 {
     font-family: arial;
     font-weight: normal;
     font-size: 20px;
+    line-height:1;
 }
 
 Blocks-Input {
@@ -108,6 +114,58 @@ Blocks-Input {
 .accordion-section-content {
     padding:15px;
     display:none;
+}
+
+ul {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li { 
+    padding-right: 1em;
+    text-indent: -.7em;
+    margin: 1em 0em 1em 0em;
+}
+
+li:nth-child(6n+0):before {
+    content: "• ";
+    color: rgb(255, 33,35);
+}
+
+li:nth-child(6n+1):before {
+    content: "• ";
+    color: rgb(253, 165, 29);
+}
+
+li:nth-child(6n+2):before {
+    content: "• ";
+    color: rgb(219, 217, 34);
+}
+
+li:nth-child(6n+3):before {
+    content: "• ";
+    color: rgb(72, 182, 51);
+}
+
+li:nth-child(6n+4):before {
+    content: "• ";
+    color: rgb(76, 31, 244);
+}
+
+li:nth-child(6n+5):before {
+    content: "• ";
+    color: rgb(167, 71, 204);
+}
+
+.response {
+    width: 75%;
+    -webkit-box-sizing:border-box; 
+    -moz-box-sizing:border-box; 
+    box-sizing:border-box;
+    box-shadow:0px 0px 0px 1px rgba(0,0,0,0.25);
+    border-radius:3px;
+
 }
 
 #back {

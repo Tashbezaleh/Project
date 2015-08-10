@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
 		// Grab current anchor value
 		var currentAttrValue = jQuery(this).attr('href');
 
-		if(jQuery(e.target).is('.active')) {
+		if(jQuery(this).is('.active')) {
 			close_accordion_section();
 		}else {
 			close_accordion_section();
