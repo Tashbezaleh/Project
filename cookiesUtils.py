@@ -3,6 +3,7 @@
 from urllib import quote, unquote
 from encodingUtils import fix_encoding
 
+SIXTY_YEARS = 60 * 365 * 24 * 60 * 60
 def del_from_cookies(self, answer):
     '''
     input: and integer named identifier
@@ -18,14 +19,17 @@ def convert_Answer_to_identifier(answer):
     return quote(fix_encoding(answer.definition)) + '+' + quote(fix_encoding(answer.answer))
 
 def rate_cookie(self, answer, rate):
+    '''Saves a cookie to mark the user rating action'''
     identifier = convert_Answer_to_identifier(answer)
-    self.response.set_cookie(identifier, str(rate), max_age=None, path='/', domain=None, secure=False)
+    self.response.set_cookie(identifier, str(rate), max_age=SIXTY_YEARS, path='/', domain=None, secure=False)
     self.request.cookies[identifier] = str(rate)
     
 def has_rated(self, answer):
+    '''Checks if current user has rated this answer'''
     return self.request.cookies.has_key(convert_Answer_to_identifier(answer))
     
 def get_rate_from_cookie(self, answer):
+    '''Returns the rate of a rate-cookie'''
     if has_rated(self, answer):
         return int(self.request.cookies[convert_Answer_to_identifier(answer)])
     return 0
