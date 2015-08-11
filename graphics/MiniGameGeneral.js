@@ -75,6 +75,8 @@ function addQuestionDiv(data, i, div) {
             cur.addClass("current").stop().fadeTo(500, 1);
             div.data('active', cur).lavalamp('update');
             $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 1000);
+        }).keypress(function (e) {
+            if (e.which == 63) addHint();
         }).keyup(function (e) {
             if (e.which == 13 || e.which == 38) {
                 current = $(".current").prevAll(".question").first();
@@ -97,6 +99,15 @@ function addQuestionDiv(data, i, div) {
     }
     div.lavalamp('update');
 }
+function addHint() {
+    self = $(".current").find("blocks-input").get(0);
+    inputs = self.inputs;
+    if (inputs.length > 1) {
+        ind = Math.floor(Math.random() * inputs.length);
+        $(inputs[ind]).val($(".current").attr("QuestionAnswer")[self.allInputs.index($(inputs[ind]))]).prop('disabled', true);
+    }
+    $(self).focus();
+}
 
 function StartGame(div, timer, data) {
     time = 6000;
@@ -111,15 +122,7 @@ function StartGame(div, timer, data) {
     div.lavalamp({ enableHover: false });
     addQuestionDiv(data, 0, div);
     div.data('active', $(".current").first()).lavalamp('update');
-    $("<img alt='רמז' src='graphics/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(function () {
-        self = $(".current").find("blocks-input").get(0);
-        inputs = self.inputs;
-        if (inputs.length > 1) {
-            ind = Math.floor(Math.random() * inputs.length);
-            $(inputs[ind]).val($(".current").attr("QuestionAnswer")[self.allInputs.index($(inputs[ind]))]).prop('disabled', true);
-        }
-        $(self).focus();
-    });
+    $("<img alt='רמז' src='graphics/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(addHint);
 }
 
 function InitGame() {
@@ -172,7 +175,7 @@ function SubmitScoring(name, score) {
 }
 
 function allowOnly(selector_string, allowed) {
-    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
+    basic = " אבגדהוזחטיכלמנסעפצקרשתךםןףץ";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
         //err = $("#errorMessage").empty();
@@ -196,7 +199,7 @@ $(document).ready(function () {
     $(document).on("mouseleave", ".menu_button", function () {
         $(this).animate({ "marginTop": 20, "bottom": "-=20" }, 150);
     });
-    allowOnly("div[questionnumber] input", "");
+    allowOnly(".question input", "");
     allowOnly("#name", "0123456789!,'-;()\"");
     $("#main_menu .menu_button").css("background-color", function (ind, old) {
         return ["rgb(172, 232, 130)", "rgb(20, 156, 172)", "rgb(237, 210, 119)", "rgb(230, 123, 105)"][ind];
