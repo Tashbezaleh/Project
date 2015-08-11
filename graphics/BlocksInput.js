@@ -3,7 +3,6 @@ document.registerElement("Blocks-Input", {
         newInput: {
             value: function () {
                 return $('<input type="text" size="30" maxlength="1" autocomplete="off"/>').keydown(function (e) {
-                    if (e.which == 13) return false;
                     self = $(this).closest("Blocks-Input").get(0);
                     if (e.which == 37) { // left
                         if (self.next(this).length == 0 && !self.isFixedLength) self.addInput().focus();
@@ -14,6 +13,7 @@ document.registerElement("Blocks-Input", {
                     if (e.which == 8) if ($(this).val()) $(this).val("").css("background-color", "");
                     else self.prev(this).focus().val("").css("background-color", "");
                 }).keypress(function (e) {
+                    if (e.which == 13) return e.stopPropagation();
                     self = $(this).closest("Blocks-Input").get(0);
                     $(this).css("background-color", (e.keyCode == 32 ? "Black" : ""));
                     self.next($(this).val("")).focus();
@@ -39,7 +39,7 @@ document.registerElement("Blocks-Input", {
         },
         allInputs: {
             get: function () {
-                return this.inputsDiv.children();
+                return this.inputsDiv.children(":not(.dead)");
             }
         },
         createdCallback: {
@@ -54,18 +54,24 @@ document.registerElement("Blocks-Input", {
                         if (e.which == 38) this.addInput();
                         if (e.which == 40) this.removeInput();
                     });
-                    this.minus = $("<button />").text("-").click(this.removeInput).appendTo(self);
-                    this.plus = $("<button />").text("+").click(this.addInput).appendTo(self);
+                    this.minus = $("<button type='button' />").text("-").click(this.removeInput).appendTo(self);
+                    this.plus = $("<button type='button' />").text("+").click(this.addInput).appendTo(self);
                 }
                 if (self.attr("value")) this.value = self.attr("value");
                 else this.length = parseInt(self.attr("length") || 4);
                 this.disabled = $(this).attr("disabled");
+                if (self.attr("tabindex")) {
+                    this.inputs.first().attr("tabindex", self.attr("tabindex"));
+                    self.attr("tabindex", "");
+                }
             }
         },
         addInput: {
             value: function () {
                 self = $(this).closest("Blocks-Input").get(0);
-                return $(self.newInput()).hide().appendTo(self.inputsDiv).show(self.animConst);
+                a = $(self.newInput()).hide().appendTo(self.inputsDiv).show(self.animConst);
+                self.updateNative();
+                return a;
             }
         },
         updateNative: {
@@ -78,10 +84,11 @@ document.registerElement("Blocks-Input", {
                 self = $(this).closest("Blocks-Input").get(0);
                 if (self.length <= 2) return;
                 toRemove = self.inputs.last();
-                if (toRemove.is(":focus")) toRemove.prev(":not(.dead)").focus();
+                if (toRemove.is(":focus")) self.prev(toRemove).focus();
                 toRemove.hide(self.animConst, function () {
                     $(this).remove();
                 }).addClass("dead");
+                self.updateNative();
             }
         },
         length: {

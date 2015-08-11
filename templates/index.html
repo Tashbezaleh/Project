@@ -4,8 +4,10 @@
     <title>תשבצל'ה</title>
     <link rel="stylesheet" type="text/css" href="graphics/GlobalStyle.css">
     <link rel="stylesheet" type="text/css" href="graphics/styles.css">
+    <link rel="stylesheet" type="text/css" href="graphics/BlocksInputStyle.css">
     <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+    <script type="text/javascript" src="graphics/BlocksInput.js"></script>
     <script type="text/javascript" src="graphics/General.js"></script>
 </head>
 <body>
@@ -96,12 +98,13 @@
                 <p>
                     <a href="#patternHelp" class="popup">
                         <img src="graphics/question_mark.jpg" style="
-                        margin: 0px -30px -8px 0;
+                        margin: 0px -30px 5px 0;
                         width: 30px;
                         height: 30px;
                     " />
                     </a>
-                    <input type="text" id="pattern" name="pattern" class="nice" placeholder="למשל: ת?ש??" tabindex="2" autocomplete="off" />
+                    <!--<input type="text" id="pattern" name="pattern" class="nice" placeholder="למשל: ת?ש??" tabindex="2" autocomplete="off" />-->
+                    <blocks-input id="pattern" name="pattern" tabindex="2" />
                 </p>
                 <br />
                 <div id="errorMessage" class="error">

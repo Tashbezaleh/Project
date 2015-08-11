@@ -14,7 +14,7 @@ function appear(list, done) {
     //.slice(1) // <- im not sure about this. it says: everyone but the first in the list.
     .each(function (index, elem) {
         a = "15";
-        $(elem).css({ opacity: 0, top: "-=" + a, marginTop: "+=" + a, visibility:"visible" }).delay(index * 100).animate({ opacity: 1, top: "+=" + a, marginTop: "-=" + a }, 500, done);
+        $(elem).css({ opacity: 0, marginTop: "+=" + a, visibility:"visible" }).delay(index * 100).animate({ opacity: 1, marginTop: "-=" + a }, 500, done);
     });
 }
 function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {

@@ -12,7 +12,7 @@ Blocks-Input input, Blocks-Input button {
     text-align: center;
     color:inherit;
 }
-Blocks-Input input:last-child, BlocksInput button:last-child {
+Blocks-Input input:last-child, Blocks-Input button:last-child {
     border-left: 1px solid black;
 }
 Blocks-Input button {
