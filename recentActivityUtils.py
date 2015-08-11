@@ -21,48 +21,36 @@ MAX_ACTIVITIES = 10 # number of maximum activities shown
 # every activity type has its own parser
 
 class Activity(ndb.Model):
-	id_num = ndb.IntegerProperty()
+	activityID = ndb.IntegerProperty()
 	description = ndb.StringProperty(indexed=False)
 	onclick_func = ndb.StringProperty(indexed=False)
 
 	@staticmethod
-	def create(id_num, description, onclick_func):
-		return Activity(id_num=id_num, description=fix_encoding(description), onclick_func=fix_encoding(onclick_func))
+	def create(activityID, description, onclick_func):
+		return Activity(activityID=activityID, description=fix_encoding(description), onclick_func=fix_encoding(onclick_func))
 
-	def as_tuple(self):
-		return (self.id_num, self.description, self.onclick_func)
+def get_raw_ra_feed():
+	return Activity.query().order(-Activity.activityID).fetch(MAX_ACTIVITIES)
 
-def add_to_ra(activity):
-	app = webapp2.get_app()
-	ra_list = app.registry.get(ACTIVITIES_LIST)
-	if not ra_list:
-		app.registry[ACTIVITIES_LIST] = [activity]
-	else:
-		app.registry[ACTIVITIES_LIST] = ([activity] + ra_list)[:MAX_ACTIVITIES]
-
-def get_ra():
-	app = webapp2.get_app()
-	ra_list = app.registry.get(ACTIVITIES_LIST)
-	if not ra_list:
-		return [(9, [fix_encoding('אין חדשות בינתיים')])]
-	return ra_list
+def get_ra_feed():
+	ra_feed = map(lambda x: (fix_encoding(x.description), fix_encoding(x.onclick_func)), get_raw_ra_feed())
+	if not ra_feed:
+		return [(fix_encoding('אין חדשות בינתיים'), "")]
+	return ra_feed
 
 def add_ra(act_type, args):
-	activity = (act_type, args)
-	add_to_ra(activity)
+	description, onclick_func = parse_ra_string(act_type, args)
+	activities = get_raw_ra_feed()
+	new_activity = Activity.create(1 + max(map(lambda x:x.activityID, activities)) if activities else 0, description, onclick_func)
+	new_activity.put()
+	return [new_activity] + activities
 
-def parse_ra_string(indexed_activity):
-	i, activity = indexed_activity
-	if activity[0] == 1:
+def parse_ra_string(act_type, args):
+	if act_type == 1:
 		# Add Definition
-		template = fix_encoding(ADD_DEFI_TEMPLATE%(fix_encoding(activity[1][0]), fix_encoding(activity[1][2]), fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
-		func = fix_encoding(ADD_DEFI_FUNC%(fix_encoding(activity[1][0]), fix_encoding(activity[1][1])))
-		return (template, func)
-	if activity[0] == 9:
+		description = fix_encoding(ADD_DEFI_TEMPLATE%(fix_encoding(args[0]), fix_encoding(args[2]), fix_encoding(args[0]), fix_encoding(args[1])))
+		onclick_func = fix_encoding(ADD_DEFI_FUNC%(fix_encoding(args[0]), fix_encoding(args[1])))
+		return (description, onclick_func)
+	if act_type == 9:
 		# String
-		return (activity[1][0], "")
-
-def get_ra_strings():
-	ra = get_ra()
-	indexed_ra = [(i, ra[i]) for i in xrange(len(ra))]
-	return list(map(parse_ra_string, indexed_ra))
+		return (args[0], "")

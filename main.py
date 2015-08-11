@@ -43,7 +43,7 @@ missing_field_message = red_font % 'אנא הכנס %s'
 class MainHandler(webapp2.RequestHandler):
     def get(self):      
         template_values = {
-        'activities_list' : recentActivityUtils.get_ra_strings()
+        'activities_list' : recentActivityUtils.get_ra_feed()
         }
         template = JINJA_ENVIRONMENT.get_template('/templates/index.html')
         in_text = template.render(template_values)

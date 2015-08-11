@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{b1e64489-a7ed-467b-80ac-6aa95f7007e3}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>cookiesUtils.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="continue facebook.txt" />
+    <Content Include="definitions.txt" />
+    <Content Include="favicon.ico" />
+    <Content Include="graphics\accordion.js" />
+    <Content Include="graphics\back.jpg" />
+    <Content Include="graphics\BlocksInput.js" />
+    <Content Include="graphics\BlocksInputStyle.css" />
+    <Content Include="graphics\disabled_minus.png" />
+    <Content Include="graphics\disabled_plus.png" />
+    <Content Include="graphics\fancy_close.png" />
+    <Content Include="graphics\ForumsStyle.css" />
+    <Content Include="graphics\General.js" />
+    <Content Include="graphics\GlobalStyle.css" />
+    <Content Include="graphics\google_icon.jpg" />
+    <Content Include="graphics\help-definition_adding.bmp" />
+    <Content Include="graphics\help-enlarging.bmp" />
+    <Content Include="graphics\help-front_page.bmp" />
+    <Content Include="graphics\help-valid_input1.bmp" />
+    <Content Include="graphics\help-valid_input2.bmp" />
+    <Content Include="graphics\help-valid_input3.bmp" />
+    <Content Include="graphics\HelpStyle.css" />
+    <Content Include="graphics\help_back_button.png" />
+    <Content Include="graphics\howto.jpg" />
+    <Content Include="graphics\jquery-2.1.4.min.js" />
+    <Content Include="graphics\jQuery-easing.js" />
+    <Content Include="graphics\jquery.lavalamp.min.js" />
+    <Content Include="graphics\logo.jpg" />
+    <Content Include="graphics\mag_glass.png" />
+    <Content Include="graphics\medal_1.png" />
+    <Content Include="graphics\medal_2.png" />
+    <Content Include="graphics\medal_3.png" />
+    <Content Include="graphics\MG_Spinner.GIF" />
+    <Content Include="graphics\MiniGameGeneral.js" />
+    <Content Include="graphics\minigames-definition_solved_right.bmp" />
+    <Content Include="graphics\minigames-definition_solved_wrong.bmp" />
+    <Content Include="graphics\minigames-empty_definition.bmp" />
+    <Content Include="graphics\minigames-results.bmp" />
+    <Content Include="graphics\MiniGameStyles.css" />
+    <Content Include="graphics\minus.png" />
+    <Content Include="graphics\New Bitmap Image.bmp" />
+    <Content Include="graphics\p5_pattern.png" />
+    <Content Include="graphics\pattern-help.bmp" />
+    <Content Include="graphics\play.jpg" />
+    <Content Include="graphics\plus.png" />
+    <Content Include="graphics\question_mark.jpg" />
+    <Content Include="graphics\results-help.bmp" />
+    <Content Include="graphics\return.jpg" />
+    <Content Include="graphics\spinner.gif" />
+    <Content Include="graphics\styles.css" />
+    <Content Include="graphics\swirl_pattern.png" />
+    <Content Include="graphics\thumb.png" />
+    <Content Include="graphics\trophy.jpg" />
+    <Content Include="graphics\wiki_icon.jpg" />
+    <Content Include="templates\facebook.html" />
+    <Content Include="templates\forums.html" />
+    <Content Include="templates\help.html" />
+    <Content Include="templates\index.html" />
+    <Content Include="templates\MiniGame.html" />
+    <Content Include="templates\minigamesdefinitions.html" />
+    <Content Include="templates\mobileRecognitionJs.html" />
+    <Content Include="templates\results.html" />
+    <Content Include="templates\ScoringBoard.html" />
+    <Content Include="templates\test.html" />
+    <Content Include="words.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cookiesUtils.py" />
+    <Compile Include="databaseUtils.py" />
+    <Compile Include="encodingUtils.py" />
+    <Compile Include="main.py" />
+    <Compile Include="minigamesUtils.py" />
+    <Compile Include="recentActivityUtils.py" />
+    <Compile Include="scoringBoardUtils.py" />
+    <Compile Include="solver.py" />
+    <Compile Include="temp.py" />
+    <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="graphics" />
+    <Folder Include="templates" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

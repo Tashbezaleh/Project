@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import urllib, json, re
-import databaseUtils, webapp2, time
+import urllib
+import urllib2
+import json
+import re
+import databaseUtils
+import webapp2
+import time
 from encodingUtils import fix_encoding
 from threading import Thread, Lock
 
 MINUTES_TO_WAIT = 5
 MAX_CALLS = 20
 NUM_OF_SOLS_TO_SHOW = 7
+MAX_RESULTS_TO_SEARCH = 4
 
 #
 # methods for online search
@@ -36,42 +42,23 @@ def style(hist):
     items = sorted(hist.items(), key=lambda t: -t[1])[:max_num_of_options]
     n_matches = sum(t[1] for t in items)
     return [(k, 100.0 * v / n_matches) for (k, v) in items]
-        
-def can_search_online():
-    app = webapp2.get_app()
-    if 'num calls' not in app.registry:
-        return True
-    if 'last call' not in app.registry:
-        return True
-    if (time.time() - app.registry['last call']) / 60 > MINUTES_TO_WAIT:
-        app.registry['num calls'] = 0
-        return True
-    if app.registry['num calls'] <= MAX_CALLS:
-        return True
-    return False
 
-def search_performed():
-    app = webapp2.get_app()
-    if 'num calls' not in app.registry:
-        app.registry['num calls'] = 0
-    app.registry['num calls'] += 1
-    app.registry['last call'] = time.time()
-
+def get_search_results(s, hebrew=True):
+    '''Searches for a string 's' in google.co.il (or .com of 'hebrew'=False) and return a list of all results'''
+    try:
+        headers = {'User-Agent': 'Mozilla/34.0'}
+        search_url = 'https://www.google.%s/search?' % ('co.il' if hebrew else 'com')
+        req = urllib2.Request(search_url + urllib.urlencode({'q': s}),
+                        headers=headers)
+        html = urllib2.urlopen(req).read()
+        links = re.findall(r'href="/url\?q=(http.*?)&amp.*?"', html)
+        return [link for link in links if 'webcache' not in link]
+    except: # something not nice happened
+        return []
 
 def find_online(definition, guess):
     '''Searches for 'definition' in google and then scans for 'guess' (compiled regex).'''
-    if not can_search_online():
-        return []
-    query = urllib.urlencode({u'q': fix_encoding(definition)})
-    url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % query
-    search_response = urllib.urlopen(url)
-    search_results = search_response.read()
-    results = json.loads(search_results)
-    data = results['responseData']
-    search_performed()
-    if data == None:
-        return []
-    hits = data['results']
+    links = get_search_results(fix_encoding(definition))[:MAX_RESULTS_TO_SEARCH]
     histogram = dict()
     lock = Lock()
     # a function to download the webpages and add them to hist in parallel
@@ -86,8 +73,8 @@ def find_online(definition, guess):
             if lock.locked():
                 lock.release()
     threads = []
-    for h in hits:
-        t = Thread(target=fill_hist, args=(urllib.unquote(h['url']),))
+    for link in links:
+        t = Thread(target=fill_hist, args=(link,))
         t.daemon = True # won't hold the program running if the main thread stops
         threads += [t]
         t.start()
@@ -103,7 +90,6 @@ def find_online(definition, guess):
     answers = map(lambda t: t[0], style(histogram))
     return [databaseUtils.Answer(answer, definition, databaseUtils.SOLVER_NAME, 0, 0) for answer in answers]
 
-
 ##def deep_online_search(definition, guess):
 ##    hist = style(find_online(definition + ' תשבץ', guess))[:5]
 ##    regex = r'|'.join(definition.split())
@@ -112,8 +98,8 @@ def find_online(definition, guess):
 ##        sub_hist = find_online(w, regex)
 ##        lst += [(w, sum(sub_hist.values()))]
 ##    total = sum(f for (w, f) in lst)
-##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t: -t[1])
-
+##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t:
+##    -t[1])
 def find(definition, guess):
     off_lst = databaseUtils.find_in_ndb(definition, guess)
     for e in off_lst[:NUM_OF_SOLS_TO_SHOW]:
