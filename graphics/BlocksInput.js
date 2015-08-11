@@ -3,19 +3,20 @@ document.registerElement("Blocks-Input", {
         newInput: {
             value: function () {
                 return $('<input type="text" size="30" maxlength="1" autocomplete="off"/>').keydown(function (e) {
+                    if (e.which == 13) return false;
                     self = $(this).closest("Blocks-Input").get(0);
-                    if (e.which == 37) {
-                        if ($(this).next(self.filter).length == 0 && !self.isFixedLength) self.addInput().focus();
-                        else $(this).next(self.filter).focus();
+                    if (e.which == 37) { // left
+                        if (self.next(this).length == 0 && !self.isFixedLength) self.addInput().focus();
+                        else self.next(this).focus();
                     }
-                    if (e.which == 46) $(this).next(self.filter).focus().val("").css("background-color", "");
-                    if (e.which == 39) $(this).prev(self.filter).focus();
+                    if (e.which == 46) self.next(this).focus().val("").css("background-color", "");
+                    if (e.which == 39) self.prev(this).focus();
                     if (e.which == 8) if ($(this).val()) $(this).val("").css("background-color", "");
-                    else $(this).prev(self.filter).focus().val("").css("background-color", "");
+                    else self.prev(this).focus().val("").css("background-color", "");
                 }).keypress(function (e) {
                     self = $(this).closest("Blocks-Input").get(0);
                     $(this).css("background-color", (e.keyCode == 32 ? "Black" : ""));
-                    $(this).val("").next(self.filter).focus();
+                    self.next($(this).val("")).focus();
                 }).change(function () {
                     $(this).closest("Blocks-Input").get(0).updateNative();
                 });
@@ -28,12 +29,17 @@ document.registerElement("Blocks-Input", {
         },
         filter: {
             get: function () {
-                return ":not(.dead)";
+                return ":not(.dead, [disabled])";
             }
         },
         inputs: {
             get: function () {
                 return this.inputsDiv.children(this.filter);
+            }
+        },
+        allInputs: {
+            get: function () {
+                return this.inputsDiv.children();
             }
         },
         createdCallback: {
@@ -92,15 +98,15 @@ document.registerElement("Blocks-Input", {
         },
         value: {
             get: function () {
-                return (this.inputs.map(function () {
-                    var x = $(this).val().trim();
+                return (this.allInputs.map(function () {
+                    var x = $(this).val();
                     return x == "" ? "?" : x;
                 }) || []).get().join("");
             },
             set: function (str) {
                 this.length = str.length;
                 for (var i = 0, len = str.length; i < len; i++)
-                    this.inputs.eq(i).val(str[i] == "?" ? "" : str[i]).css("background-color", (str[i] == ' ' ? "Black" : ""));
+                    this.allInputs.eq(i).val(str[i] == "?" ? "" : str[i]).css("background-color", (str[i] == ' ' ? "Black" : ""));
                 this.updateNative();
             }
         },
@@ -108,6 +114,21 @@ document.registerElement("Blocks-Input", {
             set: function (dis) {
                 dis = dis ? true : false;
                 this.inputs.prop('disabled', dis);
+            }
+        },
+        focus: {
+            value: function () {
+                this.inputs.first().focus();
+            }
+        },
+        next: {
+            value: function (input) {
+                return $(this.inputs[this.inputs.index(input) + 1]);
+            }
+        },
+        prev: {
+            value: function (input) {
+                return $(this.inputs[this.inputs.index(input) - 1]);
             }
         }
     })

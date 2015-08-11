@@ -34,9 +34,9 @@ function finishGame(data, div) {
     Score = 0;
     div.find(".question").each(function () {
         i = parseInt($(this).attr("QuestionNumber"));
-        userAnswer = $(this).find("input").val();
+        userAnswer = $(this).find("blocks-input").val();
         userCorrect = data[i][1].indexOf(userAnswer) >= 0;
-        userScore = userCorrect ? Math.floor(userAnswer.length * 10 / data[i][1].length) : 0;
+        userScore = userCorrect ? Math.floor($(this).find("blocks-input").get(0).inputs.length * 10) : 0;
         table.append(
             $("<tr/>").append($("<td style='max-width:200px;white-space:initial;'/>").text(data[i][0]))
             .append($("<td/>").css("color", userCorrect ? "green" : "red").text(userAnswer))
@@ -68,9 +68,10 @@ function addQuestionDiv(data, i, div) {
             return finishGame(data, div);
         else $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
     else {
-        $("<div/>").attr("QuestionNumber", i).addClass("question").append($("<label/>").text(data[i][0] + " (" + data[i][1][0].length + ")").append("<br />").append($("<input/>").focus(function () {
+        answer = data[i][1][Math.floor(Math.random() * data[i][1].length)];
+        gal = $("<blocks-input fixed='true' value='" + [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('') + "'/>").on("focus", "input", function () {
             $(".current").removeClass("current").stop().fadeTo(1000, 0.62);
-            cur = $(this).css("color", "black").parents(".question");
+            cur = $(this).closest("blocks-input").css("color", "black").parents(".question");
             cur.addClass("current").stop().fadeTo(500, 1);
             div.data('active', cur).lavalamp('update');
             $('html, body').stop(true).animate({ "scrollTop": Math.max(cur.offset().top - ($(window).height() - cur.outerHeight()) / 2, 0) }, 1000);
@@ -79,15 +80,20 @@ function addQuestionDiv(data, i, div) {
                 current = $(".current").prevAll(".question").first();
                 if (current.length == 0)
                     addQuestionDiv(data, parseInt($(".current").attr("QuestionNumber")) + 1, div);
-                else current.find("input").focus().select();
+                else current.find("blocks-input").focus().select();
             }
             else if (e.which == 40) {
                 current = $(".current").nextAll(".question").first();
-                if (current.length > 0) current.find("input").focus().select();
+                if (current.length > 0) current.find("blocks-input").focus().select();
             }
         }).focusout(function () {
             $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
-        })).hide().show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active").find("input").focus();
+        });
+        gal.get(0).inputs.each(function () {
+            if ($(this).val()) $(this).prop('disabled', true);
+        });
+        $("<div/>").attr("QuestionNumber", i).attr("QuestionAnswer", answer).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append(gal).fadeOut(0).show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active");
+        gal.focus();
     }
     div.lavalamp('update');
 }
@@ -105,6 +111,15 @@ function StartGame(div, timer, data) {
     div.lavalamp({ enableHover: false });
     addQuestionDiv(data, 0, div);
     div.data('active', $(".current").first()).lavalamp('update');
+    $("<img alt='רמז' src='graphics/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(function () {
+        self = $(".current").find("blocks-input").get(0);
+        inputs = self.inputs;
+        if (inputs.length > 1) {
+            ind = Math.floor(Math.random() * inputs.length);
+            $(inputs[ind]).val($(".current").attr("QuestionAnswer")[self.allInputs.index($(inputs[ind]))]).prop('disabled', true);
+        }
+        $(self).focus();
+    });
 }
 
 function InitGame() {

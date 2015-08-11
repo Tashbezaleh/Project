@@ -64,9 +64,10 @@ body {
 #timer {
     font-size: 45px;
 }
-#timer sup {
-    font-size: 25px;
-}
+
+    #timer sup {
+        font-size: 25px;
+    }
 
 #timerButton, #restartButton {
     position: fixed;
@@ -95,9 +96,10 @@ body {
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
+    overflow: visible !important;
 }
 
-#help{
+#help {
     width: 60%;
     white-space: inherit;
 }

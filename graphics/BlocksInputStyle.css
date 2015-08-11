@@ -10,6 +10,7 @@ Blocks-Input input, Blocks-Input button {
     box-sizing: border-box;
     margin:0;
     text-align: center;
+    color:inherit;
 }
 Blocks-Input input:last-child, BlocksInput button:last-child {
     border-left: 1px solid black;
