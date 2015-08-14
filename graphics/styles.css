@@ -20,35 +20,6 @@ a {
     text-decoration: none;
 }
 
-.news:nth-child(12n+2) > h3 {
-    color: rgb(255, 33,35);
-}
-
-.news:nth-child(12n+4) > h3 {
-    color: rgb(253, 165, 29);
-}
-
-.news:nth-child(12n+6) > h3 {
-    color: rgb(219, 217, 34);
-}
-
-.news:nth-child(12n+8) > h3 {
-    color: rgb(72, 182, 51);
-}
-
-.news:nth-child(12n+10) > h3 {
-    color: rgb(76, 31, 244);
-}
-
-.news:nth-child(12n+12) > h3 {
-    color: rgb(167, 71, 204);
-}
-
-
-/*h3 {
-    font-size: x-large;
-}*/
-
 td {
     padding: 0px 16px;
 }
@@ -76,8 +47,8 @@ tr td:last-child {
 
     #slidingNavigation li:first-of-type * {
         padding: 5px 40px 5px 30px;
-        color: #fff;
-        background-color: #333;
+        color: rgb(202,202,202);
+        background-color: rgb(120,120,120);
         font-weight: normal;
         margin-bottom: 2px;
         font-size: 1.17em;
@@ -87,17 +58,28 @@ tr td:last-child {
         display: inline-block;
         width: 150px;
         padding: 3px 30px 3px 20px;
-        color: GrayText;
+        color: rgb(120,120,120);
         text-decoration: none;
-        background-color: #222;
         border: 1px solid #1a1a1a;
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
         border-radius: 20px;
     }
 
+    #slidingNavigation li:nth-child(3n+0) *{
+        background-color: rgb(252,207,65);   
+    }
+
+    #slidingNavigation li:not(first-of-type) *{
+        background-color: rgb(55,184,155);   
+    }
+
+    #slidingNavigation li:nth-child(3n+2) *{
+        background-color: rgb(255,152,44);   
+    }
+
     #slidingNavigation li a:hover {
-        color: Orange;
+        background-color: rgb(249,59,151);
         font-style: italic;
     }
 
@@ -143,6 +125,22 @@ tr td:last-child {
     background-color:#D4D4D4;
 }
 
+.news:nth-child(6n+2) > h3 {
+    color: rgb(252,207,65);
+}
+
+.news:nth-child(6n+4) > h3 {
+    color: rgb(55,184,155);
+}
+
+.news:nth-child(6n+0) > h3 {
+    color: rgb(255,152,44);
+}
+
+.news:hover > h3{
+   color:rgb(249,59,151);
+}
+
 #main_search {
     display: inline-block;
     margin: 0 auto;
@@ -150,9 +148,7 @@ tr td:last-child {
 }
 
 #logo {
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 30px 0px 30px 0px;
+        width:35em;
 }
 
 input:focus::-webkit-input-placeholder {
@@ -259,7 +255,7 @@ input[type="radio"] + label {
 .error {
     font-size: 0.75em;
     font-family: arial;
-    color: red;
+    color: rgb(55,184,155);
     display: none;
 }
 
