@@ -115,7 +115,7 @@ function StartGame(div, timer, data) {
     timer.attr("timerID", setInterval(function () {
         updateTimer(timer, time--);
         if (time < 1000)
-            timer.css("color", "red");
+            timer.css("color", "rgb(249,59,151)");
         if (time <= 0)
             finishGame(data, div);
     }, 10));
@@ -141,11 +141,11 @@ function InitGame() {
             timerButton = $("<div id='timerButton' class='menu_button'/>").html("סיים משחק!<br/>").append(timer).appendTo(divGame).hide().click(function (e) {
                 finishGame(data, div);
             });
-            $("<h1 style='color:Red;'/>").text('3').appendTo(div.empty().fadeIn(300)).fadeOut(1500);
+            $("<h1 style='color:rgb(249,59,151);'/>").text('3').appendTo(div.empty().fadeIn(300)).fadeOut(1500);
             setTimeout(function () {
-                $("<h1 style='color:Red;'/>").text('2').appendTo(div.empty()).fadeOut(1500);
+                $("<h1 style='color:rgb(249,59,151);'/>").text('2').appendTo(div.empty()).fadeOut(1500);
                 setTimeout(function () {
-                    $("<h1 style='color:Red;'/>").text('1').appendTo(div.empty()).fadeOut(1500);
+                    $("<h1 style='color:rgb(249,59,151);'/>").text('1').appendTo(div.empty()).fadeOut(1500);
                     setTimeout(function () {
                         if (divGame.find(div).length > 0) { //this means 'return to main menu' called before ajax finished.
                             timerButton.fadeIn(fadeConst);
@@ -202,7 +202,7 @@ $(document).ready(function () {
     allowOnly(".question input", "");
     allowOnly("#name", "0123456789!,'-;()\"");
     $("#main_menu .menu_button").css("background-color", function (ind, old) {
-        return ["rgb(172, 232, 130)", "rgb(20, 156, 172)", "rgb(237, 210, 119)", "rgb(230, 123, 105)"][ind];
+        return ["rgb(252,207,65)", "rgb(255,152,44)", "rgb(55,184,155)", "rgb(245, 84, 164)"][ind];
     }).hide().each(function (i) {
         $(this).click(i, function () {
             var f;

@@ -55,7 +55,7 @@ body {
     position: fixed;
     bottom: 10px;
     left: 10px;
-    background-color: rgb(92, 201, 195);
+    background-color: rgb(55,184,155);
 }
 
 #timer {
@@ -70,7 +70,7 @@ body {
     position: fixed;
     bottom: 10px;
     right: 10px;
-    background-color: rgb(244, 224, 152);
+    background-color: rgb(252,207,65);
 }
 
 .question {
