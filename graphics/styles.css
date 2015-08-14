@@ -58,7 +58,7 @@ tr td:last-child {
         display: inline-block;
         width: 150px;
         padding: 3px 30px 3px 20px;
-        color: rgb(120,120,120);
+        color: rgb(0,0,0);
         text-decoration: none;
         border: 1px solid #1a1a1a;
         -webkit-border-radius: 20px;
@@ -283,4 +283,10 @@ input[type="radio"] + label {
 /*used for start animation:*/
 #slidingNavigation li,#main_search form>*,.news{
     visibility:hidden;
+}
+
+#mail_body {
+    font-family: Arial;
+    text-align: right;
+    font-size: 16px;
 }

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.appengine.api import users
+from google.appengine.api import users, mail
 from google.appengine.ext import ndb
 
 import urllib
@@ -122,7 +122,7 @@ class ScoringBoardHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('/templates/ScoringBoard.html')
         self.response.write(template.render(template_values))
 
-class facebookHandler(webapp2.RequestHandler):
+class FacebookHandler(webapp2.RequestHandler):
     def get(self):
         # uses /template/facebook.html template, and renders into it
         # definitions_list which is a list of
@@ -134,14 +134,14 @@ class facebookHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('/templates/facebook.html')
         self.response.write(template.render(template_values))
 
-class helpHandler(webapp2.RequestHandler):
+class HelpHandler(webapp2.RequestHandler):
     def get(self):
         
         template_values = {}
         template = JINJA_ENVIRONMENT.get_template('/templates/help.html')
         self.response.write(template.render(template_values))
 
-class forumsHandler(webapp2.RequestHandler):
+class ForumsHandler(webapp2.RequestHandler):
     def get(self):
         template_values = { "feed" : forumsUtils.get_questions_feed(), "enumerate":enumerate }
         template = JINJA_ENVIRONMENT.get_template('/templates/forums.html')
@@ -235,7 +235,26 @@ class ResetDBHandler(webapp2.RequestHandler):
 
         self.response.write("NO SUCCESS, parameter is missing")
 
-
+class ContactUsHandler(webapp2.RequestHandler):
+    def post(self):
+        sender_name = fix_encoding(cgi.escape(self.request.get('sender_name')))
+        sender_address = fix_encoding(cgi.escape(self.request.get('sender_address')))
+        mail_body = fix_encoding(cgi.escape(self.request.get('mail_body')))
+        if not mail_body:
+            return
+        if not sender_name:
+            sender_name = 'אנונימי'
+        if not sender_address:
+            sender_address = 'אין'
+        text = '''%s כותב:
+        ---------------------------------------------------
+        %s
+        ---------------------------------------------------
+        מייל לחזרה: %s'''
+        mail.send_mail(sender="תשבצל'ה - צור קשר <contact@tashbezale.appspotmail.com>",
+                       to='Tashbezaleh@gmail.com',
+                       subject='המשתמש "%s" יצר קשר!' % sender_name,
+                       body=text % (sender_name, mail_body, sender_address))
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
@@ -247,11 +266,12 @@ app = webapp2.WSGIApplication([('/', MainHandler),
     ('/getDefinitions.html', MinigameDefinitionsHandler),
     ('/ScoringBoard.html', ScoringBoardHandler),
     ('/MiniGame.html', MiniGameHandler),
-    ('/facebook.html', facebookHandler),
-    ('/help.html',helpHandler),
+    ('/facebook.html', FacebookHandler),
+    ('/help.html',HelpHandler),
     ('/addQuestion.html',AddQuestionHandler),
     ('/addComment.html',AddCommentHandler),
-    ('/forums.html',forumsHandler)], debug=True)
+    ('/forums.html',ForumsHandler),
+    ('/contact_us',ContactUsHandler)], debug=True)
 
 
 def get_results(this, new_rate=0, changed_definition='', answer=''):
@@ -282,9 +302,9 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
                                                                                                                                 # second
                                                                                                                                                                                                                                                                # stars
                                                                                                                                                                                                                                                                                                                                                                                               # are
-                                                                                                                                                                                                                                                                                                                                                                                              # integer
-                                                                                                                                                                                                                                                                                                                                                                                              # for
-                                                                                                                                                                                                                                                                                                                                                                                              # presenting
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             # integer
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            # for
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            # presenting
     # rendering the page with the results
     template_values = {
     'results_list' : results,

@@ -216,6 +216,21 @@ function expirementWithForms() {
             });
         });
     });
+    $(document).on("submit", "#contact_form", function (e) {
+        e.preventDefault();
+        $("#popupContentHolder").fadeOut(500);
+        $.post("contact_us", $(this).serialize())
+        .done(function (data) {
+            $("#popupContentHolder").fadeIn({
+                duration: 500,
+                start: function () {
+                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך תענה בהקדם</h3>");
+                    fixCSSIssues();
+                }
+            });
+        })
+        .fail(ajaxFail);
+    });
 }
 function submitRate(definition, answer, pattern, button) {
     submitAForm("result_action", {

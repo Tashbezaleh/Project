@@ -24,11 +24,6 @@
                     הוסף הגדרה
                 </a>
             </li>
-            <!-- <li>
-                <a href="#four" class="popup">
-                    צור קשר
-                </a>
-            </li> -->
             <li>
                 <a href="/forums.html">
                     פורומים
@@ -42,6 +37,11 @@
             <li>
                 <a href="/help.html">
                     עזרה
+                </a>
+            </li>
+            <li>
+                <a href="#four" class="popup">
+                    צור קשר
                 </a>
             </li>
             <li>
@@ -130,7 +130,16 @@
         תכונה זאת לא נתמכת עדיין
     </div>
     <div id="four" class="popupContent">
-        תכונה זאת לא נתמכת עדיין
+        <form method="post" action="contact_us" id="contact_form">
+            <h3>צור קשר</h3><br />
+            שם (לא חובה):<br />
+            <input type="text" id="sender_name" name="sender_name" class="nice" value="" /><br /><br />
+            כתובת מייל (לא חובה):<br />
+            <input type="text" id="sender_address" name="sender_address" class="nice" value="" placeholder="כדי שנוכל לחזור אליך" /><br /><br />
+            הודעתך:
+            <br /><textarea rows="20" cols="50" maxlength="1000" id="mail_body" name="mail_body" class="nice"></textarea><br /><br />
+            <input type="submit" class="nice" value="שלח!" />
+        </form>
     </div>
     <div id="five" class="popupContent">
         תשבצל'ה הוא אתר חינמי המיועד לקהילת פותרי התשבצים.<br />
