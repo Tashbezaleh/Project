@@ -9,6 +9,7 @@
     <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
     <script type="text/javascript" src="graphics/BlocksInput.js"></script>
     <script type="text/javascript" src="graphics/General.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
     <div id="rightColumn">
@@ -137,7 +138,15 @@
             כתובת מייל (לא חובה):<br />
             <input type="text" id="sender_address" name="sender_address" class="nice" value="" placeholder="כדי שנוכל לחזור אליך" /><br /><br />
             הודעתך:
-            <br /><textarea rows="20" cols="50" maxlength="1000" id="mail_body" name="mail_body" class="nice"></textarea><br /><br />
+            <br /><textarea rows="16" cols="50" maxlength="800" id="mail_body" name="mail_body" class="nice"></textarea><br /><br />
+            <center>
+                <div id="contact_error" class="error">
+                    <br />
+                </div>
+                <br />
+                <div class="g-recaptcha" data-sitekey="6LdvSgsTAAAAANYJ7SwEP5Q3XLDCHyc20X0d9ttX"></div>
+            </center>
+            <br />
             <input type="submit" class="nice" value="שלח!" />
         </form>
     </div>

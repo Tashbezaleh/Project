@@ -255,7 +255,8 @@ input[type="radio"] + label {
 .error {
     font-size: 0.75em;
     font-family: arial;
-    color: rgb(55,184,155);
+    color: red;
+    /*color: rgb(55,184,155);*/
     display: none;
 }
 

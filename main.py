@@ -32,6 +32,7 @@ import cookiesUtils
 import minigamesUtils
 import scoringBoardUtils
 import forumsUtils
+import json
 from encodingUtils import fix_encoding
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)), extensions=['jinja2.ext.autoescape'],autoescape=True) 
@@ -236,25 +237,43 @@ class ResetDBHandler(webapp2.RequestHandler):
         self.response.write("NO SUCCESS, parameter is missing")
 
 class ContactUsHandler(webapp2.RequestHandler):
+    '''Handles contact-us page, including input verifying'''
     def post(self):
+        # get parameters
         sender_name = fix_encoding(cgi.escape(self.request.get('sender_name')))
         sender_address = fix_encoding(cgi.escape(self.request.get('sender_address')))
         mail_body = fix_encoding(cgi.escape(self.request.get('mail_body')))
-        if not mail_body:
-            return
-        if not sender_name:
+        captcha = self.request.get('g-recaptcha-response')
+        
+        # verifying captcha
+        response = urllib.urlopen('https://www.google.com/recaptcha/api/siteverify',
+                       data=urllib.urlencode({'secret':
+                       '6LdvSgsTAAAAALVxedZl-lXE8-1UdFFOEcaRn6M1', 'response':
+                       captcha}))
+        success = json.load(response)['success']
+
+        # hnadle special cases
+        if not mail_body: # empty message
+            return self.response.write('empty')
+        if not success: # captcha not verified
+            return self.response.write('captcha')
+        if not sender_name: # nameless sender
             sender_name = 'אנונימי'
-        if not sender_address:
+        if not sender_address: # no return address :(
             sender_address = 'אין'
+
+        # contact message format
         text = '''%s כותב:
         ---------------------------------------------------
         %s
         ---------------------------------------------------
         מייל לחזרה: %s'''
+
         mail.send_mail(sender="תשבצל'ה - צור קשר <contact@tashbezale.appspotmail.com>",
                        to='Tashbezaleh@gmail.com',
                        subject='המשתמש "%s" יצר קשר!' % sender_name,
                        body=text % (sender_name, mail_body, sender_address))
+        return self.response.write('sent')
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
@@ -304,7 +323,7 @@ def get_results(this, new_rate=0, changed_definition='', answer=''):
                                                                                                                                                                                                                                                                                                                                                                                               # are
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              # integer
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             # for
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            # presenting
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           # presenting
     # rendering the page with the results
     template_values = {
     'results_list' : results,

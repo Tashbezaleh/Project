@@ -14,7 +14,7 @@ function appear(list, done) {
     //.slice(1) // <- im not sure about this. it says: everyone but the first in the list.
     .each(function (index, elem) {
         a = "15";
-        $(elem).css({ opacity: 0, marginTop: "+=" + a, visibility:"visible" }).delay(index * 100).animate({ opacity: 1, marginTop: "-=" + a }, 500, done);
+        $(elem).css({ opacity: 0, marginTop: "+=" + a, visibility: "visible" }).delay(index * 100).animate({ opacity: 1, marginTop: "-=" + a }, 500, done);
     });
 }
 function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
@@ -192,6 +192,18 @@ function submitAForm(addr, values, doneFunc) {
     .fail(ajaxFail);
 }
 
+function showError(selector, message, isError) {
+    elem = $(selector).empty();
+    if (isError) {
+        elem.stop(true, true).fadeOut(150).append(message).fadeIn(150);
+        return false;
+    }
+    else {
+        elem.html("<br />");
+        return true;
+    }
+}
+
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
@@ -218,17 +230,23 @@ function expirementWithForms() {
     });
     $(document).on("submit", "#contact_form", function (e) {
         e.preventDefault();
-        $("#popupContentHolder").fadeOut(500);
         $.post("contact_us", $(this).serialize())
-        .done(function (data) {
-            $("#popupContentHolder").fadeIn({
-                duration: 500,
-                start: function () {
-                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך תענה בהקדם</h3>");
-                    fixCSSIssues();
+            .done(function (data) {
+                // Show proper error message if needed
+                if (showError("#popupContentHolder #contact_error", "גוף ההודעה ריק!", data === "empty")) {
+                    showError("#popupContentHolder #contact_error", "לפני שתשלח אנו רוצים לוודא שאתה אנושי, אנא הקלק בתוך הריבוע", data === "captcha");
                 }
-            });
-        })
+                if (data != "sent")
+                    return;
+                // Show proper message if contact succeeded
+                $("#popupContentHolder").fadeOut(500).fadeIn({
+                    duration: 500,
+                    start: function () {
+                        $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך נשלחה ותענה בהקדם</h3>");
+                        fixCSSIssues();
+                    }
+                });
+            })
         .fail(ajaxFail);
     });
 }
@@ -249,14 +267,7 @@ function allowOnly(selector_string, allowed) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
-        err = $("#errorMessage").empty();
-        if ((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
-            err.stop(true, true).fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
-            return false;
-        }
-        else {
-            err.html("<br />");
-        }
+        return showError("#errorMessage", "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
     });
 }
 
@@ -269,14 +280,14 @@ function searchDefi(definition, pattern) {
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
     appear($("#slidingNavigation").children(), function () {
-        if(!$(this).is(":first-child"))
-        $(this).hover(
-            function () {
-                $(this).stop(true).animate({ "paddingRight": 17 }, 150);
-            },
-            function () {
-                $(this).stop(true).animate({ "paddingRight": "0" }, 150);
-            });
+        if (!$(this).is(":first-child"))
+            $(this).hover(
+                function () {
+                    $(this).stop(true).animate({ "paddingRight": 17 }, 150);
+                },
+                function () {
+                    $(this).stop(true).animate({ "paddingRight": "0" }, 150);
+                });
     });
     appear($(".news"));
     setPopups();
