@@ -27,6 +27,7 @@ td {
 tr td:first-child {
     padding-right: 4px;
 }
+
 tr td:last-child {
     padding-left: 4px;
 }
@@ -66,16 +67,16 @@ tr td:last-child {
         border-radius: 20px;
     }
 
-    #slidingNavigation li:nth-child(3n+0) *{
-        background-color: rgb(252,207,65);   
+    #slidingNavigation li:nth-child(3n+0) * {
+        background-color: rgb(252,207,65);
     }
 
-    #slidingNavigation li:not(first-of-type) *{
-        background-color: rgb(55,184,155);   
+    #slidingNavigation li:not(first-of-type) * {
+        background-color: rgb(55,184,155);
     }
 
-    #slidingNavigation li:nth-child(3n+2) *{
-        background-color: rgb(255,152,44);   
+    #slidingNavigation li:nth-child(3n+2) * {
+        background-color: rgb(255,152,44);
     }
 
     #slidingNavigation li a:hover {
@@ -87,7 +88,6 @@ tr td:last-child {
     text-align: right;
     margin-left: -15px;
     margin-top: 15px;
-    
     width: 250px;
     padding: 3px 30px 3px 20px;
     color: black;
@@ -99,47 +99,45 @@ tr td:last-child {
     border-radius: 20px;
 }
 
-#recentActivities > div{
-    min-height: 50px;
-    max-height:500px;
-    overflow-y: scroll;
-}
+    #recentActivities > div {
+        min-height: 50px;
+        max-height: 500px;
+        overflow-y: scroll;
+    }
 
-#recentActivitiesFather{
+#recentActivitiesFather {
     display: inline-block;
     float: left;
     overflow: hidden;
 }
 
 .news {
-
     border: 0px solid #B8B8B8;
     padding: 3px 30px 3px 20px;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
-
 }
 
-.news:hover {
-    background-color:#D4D4D4;
-}
+    .news:hover {
+        background-color: #D4D4D4;
+    }
 
-.news:nth-child(6n+2) > h3 {
-    color: rgb(252,207,65);
-}
+    .news:nth-child(6n+2) > h3 {
+        color: rgb(252,207,65);
+    }
 
-.news:nth-child(6n+4) > h3 {
-    color: rgb(55,184,155);
-}
+    .news:nth-child(6n+4) > h3 {
+        color: rgb(55,184,155);
+    }
 
-.news:nth-child(6n+0) > h3 {
-    color: rgb(255,152,44);
-}
+    .news:nth-child(6n+0) > h3 {
+        color: rgb(255,152,44);
+    }
 
-.news:hover > h3{
-   color:rgb(249,59,151);
-}
+    .news:hover > h3 {
+        color: rgb(249,59,151);
+    }
 
 #main_search {
     display: inline-block;
@@ -148,7 +146,7 @@ tr td:last-child {
 }
 
 #logo {
-        width:560px;
+    width: 560px;
 }
 
 input:focus::-webkit-input-placeholder {
@@ -177,6 +175,8 @@ input:focus:-moz-placeholder {
     -moz-box-shadow: 0px 0px 15px 15px White;
     -webkit-box-shadow: 0px 0px 15px 15px White;
     box-shadow: 0px 0px 15px 15px White;
+    max-height: 100%;
+    overflow: auto;
 }
 
 #blackblock {
@@ -217,40 +217,40 @@ input[type="radio"] + label {
     min-width: 120px;
 }
 
-.rating > input {
-    display: none;
-}
+    .rating > input {
+        display: none;
+    }
 
-.rating > label:before {
-    margin: 2.5px;
-    font-size: 1.25em;
-    font-family: arial;
-    display: inline-block;
-    font-weight: bolder;
-    content: "★";
-}
+    .rating > label:before {
+        margin: 2.5px;
+        font-size: 1.25em;
+        font-family: arial;
+        display: inline-block;
+        font-weight: bolder;
+        content: "★";
+    }
 
-.rating > label {
-    color: #ddd;
-    -webkit-text-stroke: 1px #ddd;
-    float: right;
-    cursor: pointer;
-}
+    .rating > label {
+        color: #ddd;
+        -webkit-text-stroke: 1px #ddd;
+        float: right;
+        cursor: pointer;
+    }
 
-/***** CSS Magic to Highlight Stars on Hover *****/
+    /***** CSS Magic to Highlight Stars on Hover *****/
 
-.rating > input:checked ~ label {
-    color: #FFD700;
-    -webkit-text-stroke: 1px #FFD700;
-}
+    .rating > input:checked ~ label {
+        color: #FFD700;
+        -webkit-text-stroke: 1px #FFD700;
+    }
 
-.rating > label:hover ~ label,
-.rating > label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > input:checked ~ label:hover {
-    color: #FF8000;
-    -webkit-text-stroke: 1px #FF8000;
-}
+        .rating > label:hover ~ label,
+        .rating > label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > input:checked ~ label:hover {
+            color: #FF8000;
+            -webkit-text-stroke: 1px #FF8000;
+        }
 
 .error {
     font-size: 0.75em;
@@ -276,12 +276,13 @@ input[type="radio"] + label {
 }
 
 /*used for start animation:*/
-#slidingNavigation li,#main_search form>*,.news{
-    visibility:hidden;
+#slidingNavigation li, #main_search form > *, .news {
+    visibility: hidden;
 }
 
 #mail_body {
     font-family: Arial;
     text-align: right;
     font-size: 16px;
+    resize: vertical;
 }

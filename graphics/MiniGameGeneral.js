@@ -7,7 +7,7 @@ function showMain() {
         if (!$(this).is(".menu_button") && $(this).is(":visible"))
             toFadeHeight = Math.max(toFadeHeight, $(this).outerHeight());
     });
-    $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight() + toFadeHeight) / 4, 0) }, 500, function () {
+    $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight() + toFadeHeight) / 6, 0) }, 500, function () {
         $("#main_menu .menu_button").each(function (index, elem) {
             $(elem).delay(index * waitConst).show(fadeConst);
         });
@@ -20,7 +20,7 @@ function hideMain(fun) {
     toHide.stop(true).each(function (index, elem) {
         $(elem).delay(index * waitConst).hide(fadeConst);
     });
-    $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight()) / 4, 0) }, (toHide.length - 1) * waitConst + fadeConst, fun);
+    $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight()) / 8, 0) }, (toHide.length - 1) * waitConst + fadeConst, fun);
 }
 
 function StopGame() {
@@ -40,7 +40,7 @@ function finishGame(data, div) {
         table.append(
             $("<tr/>").append($("<td style='max-width:200px;white-space:initial;'/>").text(data[i][0]))
             .append($("<td/>").css("color", userCorrect ? "green" : "red").text(userAnswer))
-            .append($("<td style='max-width:300px;white-space:initial;'/>").text(data[i][1]))
+            .append($("<td style='max-width:300px;overflow:auto;'/>").text(data[i][1]))
             .append($("<td/>").text(userScore)));
         Score += userScore;
     });
