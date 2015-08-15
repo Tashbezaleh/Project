@@ -4,7 +4,7 @@
 }
 
 body {
-    background-image: url("white_brick_wall.png");
+    background-image: url("/graphics/images/forum/white_brick_wall.png");
 }
 
 img {
@@ -23,6 +23,10 @@ img {
     padding: 10px;
     background-color: white;
     font-size: 1.3em;
+}
+
+#logo {
+    width: 560px;
 }
 
 div {
@@ -82,28 +86,16 @@ Blocks-Input {
     text-decoration: none;
 }
 
-.accordion-section:nth-child(6n+0) > .accordion-section-title:hover, .accordion-section:nth-child(6n+0) > .accordion-section-title.active {
-    background: rgb(255, 33,35);
+.accordion-section:nth-child(3n+0) > .accordion-section-title:hover, .accordion-section:nth-child(3n+0) > .accordion-section-title.active {
+    background: rgb(252,207,65);
 }
 
-.accordion-section:nth-child(6n+1) > .accordion-section-title:hover, .accordion-section:nth-child(6n+1) > .accordion-section-title.active {
-    background: rgb(253, 165, 29);
+.accordion-section:nth-child(3n+1) > .accordion-section-title:hover, .accordion-section:nth-child(3n+1) > .accordion-section-title.active {
+    background: rgb(55,184,155);
 }
 
-.accordion-section:nth-child(6n+2) > .accordion-section-title:hover, .accordion-section:nth-child(6n+2) > .accordion-section-title.active {
-    background: rgb(219, 217, 34);
-}
-
-.accordion-section:nth-child(6n+3) > .accordion-section-title:hover, .accordion-section:nth-child(6n+3) > .accordion-section-title.active {
-    background: rgb(72, 182, 51);
-}
-
-.accordion-section:nth-child(6n+4) > .accordion-section-title:hover, .accordion-section:nth-child(6n+4) > .accordion-section-title.active {
-    background: rgb(76, 31, 244);
-}
-
-.accordion-section:nth-child(6n+5) > .accordion-section-title:hover, .accordion-section:nth-child(6n+5) > .accordion-section-title.active {
-    background: rgb(167, 71, 204);
+.accordion-section:nth-child(3n+2) > .accordion-section-title:hover, .accordion-section:nth-child(3n+2) > .accordion-section-title.active {
+    background: rgb(255,152,44);
 }
 
 .accordion-section:last-child .accordion-section-title {
