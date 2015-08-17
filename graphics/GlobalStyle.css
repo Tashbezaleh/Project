@@ -31,3 +31,60 @@
 .niceInvalidInput:hover {
     box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
 }
+
+.accordion-section:nth-child(3n+0) > .accordion-section-title:hover, .accordion-section:nth-child(3n+0) > .accordion-section-title.active {
+    background: rgb(252,207,65);
+}
+
+.accordion-section:nth-child(3n+1) > .accordion-section-title:hover, .accordion-section:nth-child(3n+1) > .accordion-section-title.active {
+    background: rgb(55,184,155);
+}
+
+.accordion-section:nth-child(3n+2) > .accordion-section-title:hover, .accordion-section:nth-child(3n+2) > .accordion-section-title.active {
+    background: rgb(255,152,44);
+}
+
+.menu_button:hover {
+    bottom: 30px;
+}
+.menu_button {
+    display: block;
+    float: right;
+    color: black;
+    padding: 45px;
+    margin: 20px;
+    width: 90px;
+    height: 90px;
+    bottom: 0px;
+    background-color: #D1D1D1;
+    cursor: pointer;
+    text-align: center;
+    font-size: larger;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    box-shadow: inset 0px 0px 0px 1px White, 0px 0px 0px 2px Black;
+    -webkit-transition: all 150ms ease 0s;
+    -moz-transition: all 150ms ease 0s;
+    -o-transition: all 150ms ease 0s;
+    transition: all 150ms ease 0s;
+}
+
+    .menu_button > img {
+        margin: 10px;
+        display: inline;
+    }
+
+.bot_left {
+    background-color:rgb(55,184,155);
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+.bot_right {
+    background-color:rgb(252,207,65);
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}

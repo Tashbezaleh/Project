@@ -137,6 +137,21 @@ document.registerElement("Blocks-Input", {
             value: function (input) {
                 return $(this.inputs[this.inputs.index(input) - 1]);
             }
+        },
+        attributeChangedCallback: {
+            value: function(name, previousValue, value) {
+                switch (name){
+                    case "disabled":
+                    this.disabled=value;
+                    break;
+                    case "length":
+                    this.length = parseInt(value);
+                    break;
+                    case "value":
+                    this.value=value;
+                    break;
+                }
+            }
         }
     })
 });

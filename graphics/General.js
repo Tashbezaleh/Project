@@ -315,4 +315,5 @@ $(document).ready(function () {
 window.onload = function () {
     fixCSSIssues();
     appear($("#main_search form").children());
+    //setTimeout(function(){$("#contact_form").append('<script src="https://www.google.com/recaptcha/api.js"></script><div class="g-recaptcha" data-sitekey="6LdvSgsTAAAAANYJ7SwEP5Q3XLDCHyc20X0d9ttX"></div>');},3000);
 };

@@ -4,9 +4,11 @@
     <title>תשבצל'ה</title>
     <link rel="stylesheet" type="text/css" href="graphics/GlobalStyle.css">
     <link rel="stylesheet" type="text/css" href="graphics/styles.css">
+    <link rel="stylesheet" type="text/css" href="graphics/css/PopupsStyle.css">
     <link rel="stylesheet" type="text/css" href="graphics/BlocksInputStyle.css">
     <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="graphics/jQuery-easing.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/document-register-element/0.3.0/document-register-element.js"></script>
     <script type="text/javascript" src="graphics/BlocksInput.js"></script>
     <script type="text/javascript" src="graphics/General.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -27,7 +29,7 @@
             </li>
             <li>
                 <a href="/forums.html">
-                    פורומים
+                    פורום
                 </a>
             </li>
             <li>
@@ -84,7 +86,7 @@
                         height: 30px;
                     ">
                     </a>
-                    <input type="text" id="definition" name="definition" class="nice" placeholder="למשל: עוף דורס" tabindex="1" />
+                    <input type="text" id="definition" name="definition" class="index_boxes" placeholder="למשל: עוף דורס" tabindex="1" style="width:220px"/>
                 </p>
                 <br />
                 <br />
@@ -107,7 +109,7 @@
                     <br />
                 </div>
                 <br />
-                <input id="submit_button" type="submit" value="חפש!" class="nice" tabindex="3" />
+                <input id="submit_button" type="submit" value="חפש!" class="index_boxes" tabindex="3" />
             </form>
             <br />
             <ul id="results"></ul>

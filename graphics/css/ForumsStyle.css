@@ -86,17 +86,6 @@ Blocks-Input {
     text-decoration: none;
 }
 
-.accordion-section:nth-child(3n+0) > .accordion-section-title:hover, .accordion-section:nth-child(3n+0) > .accordion-section-title.active {
-    background: rgb(252,207,65);
-}
-
-.accordion-section:nth-child(3n+1) > .accordion-section-title:hover, .accordion-section:nth-child(3n+1) > .accordion-section-title.active {
-    background: rgb(55,184,155);
-}
-
-.accordion-section:nth-child(3n+2) > .accordion-section-title:hover, .accordion-section:nth-child(3n+2) > .accordion-section-title.active {
-    background: rgb(255,152,44);
-}
 
 .accordion-section:last-child .accordion-section-title {
     border-bottom: none;
@@ -165,3 +154,14 @@ li:nth-child(6n+5):before {
     margin-top: 50px;
     display: inline;
 }
+
+.add_q_boxes {
+    text-align: center;
+    padding: 10px;
+    border: 0px;
+    box-shadow: inset 0px 0px 0px 1px Black;
+}
+
+    .add_q_boxes:hover {
+        box-shadow: 0px 0px 1px 1px Black;
+    }

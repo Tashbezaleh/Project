@@ -12,6 +12,13 @@ Blocks-Input input, Blocks-Input button {
     text-align: center;
     color:inherit;
 }
+    
+    Blocks-Input input:not([disabled]):hover, Blocks-Input button:not([disabled]):hover {
+        border:0px;
+        box-shadow: 0px 0px 1px 1px Black;
+        border-left: 0px;
+    }
+
 Blocks-Input input:last-child, Blocks-Input button:last-child {
     border-left: 1px solid black;
 }
