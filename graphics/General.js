@@ -297,14 +297,14 @@ function submitRate(definition, answer, pattern, button) {
     button.checked = false;
 
     // user 'thank you':
-    $(button).closest("td").html("<b style='color: LimeGreen;'>תודה על תרומתך!</b>");
+    $(button).closest("td").html("<b style='color: rgb(249,59,151);'>תודה על תרומתך!</b>");
 }
 
-function allowOnly(selector_string, allowed) {
+function allowOnly(selector_string, allowed, error_div) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
-        return showError("#errorMessage", "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
+        return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
     });
 }
 
@@ -343,10 +343,11 @@ $(document).ready(function () {
     }, function () {
         $(this).stop(true).animate({ right: -$("#magnif a").outerWidth() }, 1000, "bounceout");
     });
-    allowOnly("#definition", ",'-;()\"");
-    allowOnly("#answer", "");
-    allowOnly("#source_name", "0123456789!,'-;()\"");
-    allowOnly("#pattern", "?");
+    allowOnly("#definition", ",'-;()\"", "#searchFormError");
+    allowOnly("#add_defi_definition", ",'-;()\"", "#currentPopup #addDefiFormError");
+    allowOnly("#answer", "", "#currentPopup #addDefiFormError");
+    allowOnly("#source_name", "0123456789!,'-;()\"", "#currentPopup #addDefiFormError");
+    allowOnly("#pattern", "?", "#searchFormError");
 });
 
 window.onload = function () {
