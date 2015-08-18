@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li>
-                <a href="#one" class="popup">
+                <a href="#add_defi_popup" class="popup">
                     הוסף הגדרה
                 </a>
             </li>
@@ -43,12 +43,12 @@
                 </a>
             </li>
             <li>
-                <a href="#four" class="popup">
+                <a href="#contact_us_popup" class="popup">
                     צור קשר
                 </a>
             </li>
             <li>
-                <a href="#five" class="popup">
+                <a href="#about_popup" class="popup">
                     אודות
                 </a>
             </li>
@@ -101,7 +101,6 @@
                         height: 30px;
                     " />
                     </a>
-                    <!--<input type="text" id="pattern" name="pattern" class="nice" placeholder="למשל: ת?ש??" tabindex="2" autocomplete="off" />-->
                     <blocks-input id="pattern" name="pattern" tabindex="2" />
                 </p>
                 <br />
@@ -115,8 +114,11 @@
             <ul id="results"></ul>
         </div>
     </center>
+    
+    <!-- Popup Content Area - holding all of the popups-->
 
-    <div id="one" class="popupContent">
+    <div id="add_defi_popup" class="popupContent">
+        <!-- Add Definition Popup -->
         <form method="get" action="result_action" id="add_defi">
             <h3>הוסף הגדרה</h3><br />
             הגדרה: <br /><input type="text" id="definition" name="definition" class="nice" value="" /><br /><br />
@@ -130,13 +132,8 @@
             <input type="submit" class="nice" value="הוסף!" />
         </form>
     </div>
-    <div id="two" class="popupContent">
-        תכונה זאת לא נתמכת עדיין
-    </div>
-    <div id="three" class="popupContent">
-        תכונה זאת לא נתמכת עדיין
-    </div>
-    <div id="four" class="popupContent">
+    <div id="contact_us_popup" class="popupContent">
+        <!-- Contact Us Popup -->
         <form method="post" action="contact_us" id="contact_form">
             <h3>צור קשר</h3><br />
             שם (לא חובה):<br />
@@ -156,7 +153,8 @@
             <input type="submit" class="nice" value="שלח!" />
         </form>
     </div>
-    <div id="five" class="popupContent">
+    <div id="about_popup" class="popupContent">
+        <!-- About us Popup -->
         תשבצל'ה הוא אתר חינמי המיועד לקהילת פותרי התשבצים.<br />
         האתר מאפשר פעולות כמו פתרון הגדרות ע"י מנגנון מתוחכם.<br />
         חברי קהילת תשבצל'ה יכולים להיעזר באתר לפתרון תשבצים, <br />
