@@ -29,6 +29,26 @@ function initializeForms() {
 	});
 }
 
+function getQueryVariable(variable) {
+//retrieving variable from the url
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+  return "";
+}
+
 $(document).ready(function() {
 	initializeForms();
+	if (getQueryVariable("add_ques")=="open") {
+		definition = getQueryVariable("definition");
+		pattern = getQueryVariable("pattern");
+		showPopup($("#add_question").html());	
+		$("#currentPopup #def_input").val("בלה");
+		$("#currentPopup #pat_input").val(pattern);
+	}
 });

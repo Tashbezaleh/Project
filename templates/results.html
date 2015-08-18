@@ -6,6 +6,9 @@
             $(this).find("#answer").focus();
         });
     });
+    $("#go_to_forum_results").click(function (e) {
+        window.location="/forums.html?add_ques=open&definition={{ definition }}&pattern={{ pattern }}"
+    });
 </script>
 
 
@@ -61,9 +64,8 @@
 <br />
  <input id="add_defi_results" href="#add_defi_popup" type="button" value="יודע את התשובה ורוצה לעזור?" class="index_boxes" style="background-color: rgb(255,152,44);"/>
 
-<a href="/forums.html">
-    <input id="go_to_forum_results" href="/forums.html" type="button" value="רוצה לשאול חברים בפורום?" class="index_boxes" style="background-color: rgb(252,207,65);"/>
-</a>    
+<input id="go_to_forum_results" href="/forums.html" type="button" value="רוצה לשאול חברים בפורום?" class="index_boxes" style="background-color: rgb(252,207,65);"/>
+    
 <br />
 <br />
 <a href="#resultsHelp" class="popup">
