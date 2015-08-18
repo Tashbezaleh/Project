@@ -3,7 +3,7 @@
 <head>
     <title>תשבצל'ה</title>
     <link rel="stylesheet" type="text/css" href="graphics/GlobalStyle.css">
-    <link rel="stylesheet" type="text/css" href="graphics/styles.css">
+    <link rel="stylesheet" type="text/css" href="graphics/css/IndexStyle.css">
     <link rel="stylesheet" type="text/css" href="graphics/css/PopupsStyle.css">
     <link rel="stylesheet" type="text/css" href="graphics/BlocksInputStyle.css">
     <script type="text/javascript" src="graphics/jquery-2.1.4.min.js"></script>
@@ -105,7 +105,7 @@
                     <blocks-input id="pattern" name="pattern" tabindex="2" />
                 </p>
                 <br />
-                <div id="errorMessage" class="error">
+                <div id="searchFormError" class="error">
                     <br />
                 </div>
                 <br />
@@ -123,6 +123,10 @@
             פתרון: <br /><input type="text" id="answer" name="answer" class="nice" value="" /><br /><br />
             שמך (לא חובה): <br /><input type="text" id="source_name" name="source" class="nice" value="" /><br /><br />
             <input type="hidden" name="action" value="add" />
+            <div id="addDefiFormError" class="error">
+                    <br />
+            </div>
+            </br>
             <input type="submit" class="nice" value="הוסף!" />
         </form>
     </div>

@@ -82,50 +82,87 @@ function checkPatternValid(patternStr) {
     // use $.trim(patternStr)=='' to check if patternStr is empty.
     return !/[^אבגדהוזחטיכלמנסעפצקרשתךםןףץ ?]/.test(patternStr);
 }
-function isFormValid(self) {
-    inputs = [self.definition, self.answer, self.pattern]
-    out = true;
-    hasError = false;
-    $("#errorMessage").empty();
-    for (i = 0; i < inputs.length; i++) {
-        $(inputs[i]).val($.trim($(inputs[i]).val()));
-        if (inputs[i]) {
-            if ($(inputs[i]).val() == '' ||
-                (inputs[i] == self.pattern &&
-                    !checkPatternValid($(inputs[i]).val()))) {
-                out = false;
-                $(inputs[i]).addClass("niceInvalidInput");
-                if (!hasError) {
-                    if ($(inputs[i]).val() == '') {
-                        if (i == 0) {
-                            $("#errorMessage").append("אנא הכנס הגדרה")
-                            hasError = true;
-                        }
-                        if (i == 2) {
-                            $("#errorMessage").append("אנא הכנס תבנית")
-                            hasError = true;
-                        }
-                    }
-                    if ((inputs[i] == self.pattern &&
-                        !checkPatternValid($(inputs[i]).val()))) {
-                        $("#errorMessage").append("אנא הכנס תבנית חוקית")
-                        hasError = true;
-                    }
-                }
-                else {
-                    $(inputs[i]).removeClass("niceInvalidInput");
-                }
-            }
-        }
-    }
-    if (!hasError) {
-        $("#errorMessage").html("</br>");
+
+function isSearchFormValid(self) {
+    //This function checks if the search form in index page is valid.
+    //If it isn't, shows a corresponding message.
+    $("#searchFormError").empty();
+
+    // Definition Input checking
+    if ($(self.definition).val() == '') {
+        // Definition Input is empty
+        $(self.definition).addClass("error_index_boxes");
+        $("#searchFormError").append("אנא הכנס הגדרה");
+        $("#searchFormError").show();
+        return false;
     }
     else {
-        $("#errorMessage").show();
+        // Definition input is valid
+        $(self.definition).removeClass("error_index_boxes");
     }
-    return out;
+
+    //Pattern input checking
+    if ($(self.pattern).val() == '') {
+        // Pattern input is empty
+        $("#pattern").css("border-color", "red");
+        $("#searchFormError").append("אנא הכנס תבנית");
+        $("#searchFormError").show();
+        return false;
+    }
+    else if (!checkPatternValid($(self.pattern).val())) {
+        // Pattern input isn't valid
+        $("#pattern").css("border-color", "red");
+        $("#searchFormError").append("אנא הכנס תבנית חוקית");
+        $("#searchFormError").show();
+        return false;
+    } 
+    else {
+        // Pattern input is valid
+        $("#pattern").css("border-color", "black");
+    }
+
+    // The form is valid.
+    $("#searchFormError").html("</br>");
+    return true;
 }
+
+function isAddDefiFormValid(self) {
+    //This function checks if the add definition form in the popup is valid.
+    //If it isn't, shows a corresponding message.
+
+    $("#currentPopup #addDefiFormError").empty();
+
+    // Definition Input checking
+    if ($(self.definition).val() == '') {
+        // Definition Input is empty
+        $(self.definition).addClass("error_index_boxes");
+        $("#currentPopup #addDefiFormError").append("אנא הכנס הגדרה</br>");
+        $("#currentPopup #addDefiFormError").show();
+        return false;
+    }
+    else {
+        // Definition input is valid
+        $(self.definition).removeClass("error_index_boxes");
+    }
+
+    // Answer Input checking
+    if ($(self.answer).val() == '') {
+        // Answer Input is empty
+        $(self.answer).addClass("error_index_boxes");
+        $("#currentPopup #addDefiFormError").append("אנא הכנס פתרון</br>");
+        $("#currentPopup #addDefiFormError").show();
+        return false;
+    }
+    else {
+        // Answer Input is valid
+        $(self.answer).removeClass("error_index_boxes");
+    }
+
+    // The form is valid.
+    $("#currentPopup #addDefiFormError").html("</br></br>");
+    return true;
+}
+
 function closePopup() {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
@@ -207,7 +244,7 @@ function showError(selector, message, isError) {
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
-        if (isFormValid(this)) {
+        if (isSearchFormValid(this)) {
             $("#results").empty().append('<img src="graphics/spinner.gif" />');
             fixCSSIssues();
             appear($("#results").children());
@@ -216,7 +253,7 @@ function expirementWithForms() {
     });
     $(document).on("submit", "#add_defi", function (e) {
         e.preventDefault();
-        if (!isFormValid(this)) return;
+        if (!isAddDefiFormValid(this)) return;
         $("#popupContentHolder").fadeOut(500);
         submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
             $("#popupContentHolder").fadeIn({

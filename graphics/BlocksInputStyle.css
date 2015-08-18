@@ -11,6 +11,7 @@ Blocks-Input input, Blocks-Input button {
     margin:0;
     text-align: center;
     color:inherit;
+    border-color:inherit;
 }
     
     Blocks-Input input:not([disabled]):hover, Blocks-Input button:not([disabled]):hover {
@@ -23,11 +24,15 @@ Blocks-Input input:last-child, Blocks-Input button:last-child {
     border-left: 1px solid black;
 }
 Blocks-Input button {
+    border-color:black;
     background-color: #6C6C6C;
     color:#fff;
 }
 Blocks-Input {
     display:inline-block;
+}
+Blocks-Input div{
+    border-color:inherit;
 }
 #outer {
     font: 15px arial, sans-serif;

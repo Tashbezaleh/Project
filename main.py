@@ -155,7 +155,7 @@ class AddQuestionHandler(webapp2.RequestHandler):
                                                              self.request.get('pattern'),
                                                              self.request.get('description')))
         forumsUtils.add_question(name,question,pattern,description)
-        self.response.write("success")
+        self.response.write("השאלה נוספה בהצלחה!")
 
 class AddCommentHandler(webapp2.RequestHandler):
     def get(self):
