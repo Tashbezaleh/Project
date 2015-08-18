@@ -48,7 +48,7 @@ $(document).ready(function() {
 		definition = getQueryVariable("definition");
 		pattern = getQueryVariable("pattern");
 		showPopup($("#add_question").html());	
-		$("#currentPopup #def_input").val("בלה");
-		$("#currentPopup #pat_input").val(pattern);
+		$("#currentPopup #def_input").val(decodeURI(definition));
+		$("#currentPopup #pat_input").val(decodeURI(pattern));
 	}
 });
