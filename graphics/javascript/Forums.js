@@ -9,14 +9,84 @@ function submitAForm(addr, values, doneFunc) {
     .fail(ajaxFail);
 }
 
-function isFormValid(self) {
-	return true;
+function isQuestionFormValid(self) {
+	//This function checks if the add question form in the popup is valid.
+    //If it isn't, shows a corresponding message.
+
+    $("#currentPopup #addQuesFormError").empty();
+
+    // Definition Input checking
+    if ($(self.definition).val() == '') {
+        // Definition Input is empty
+        $(self.definition).addClass("add_q_error_boxes");
+        $("#currentPopup #addQuesFormError").append("אנא הכנס הגדרה</br>");
+        $("#currentPopup #addQuesFormError").show();
+        return false;
+    }
+    else {
+        // Definition input is valid
+        $(self.definition).removeClass("add_q_error_boxes");
+    }
+
+    //Pattern input checking - abit unnecessary
+    if ($(self.pattern).val() == '') {
+        // Pattern input is empty
+        $("#pat_input").css("border-color", "red");
+        $("#currentPopup #addQuesFormError").append("אנא הכנס תבנית");
+        $("#currentPopup #addQuesFormError").show();
+        return false;
+    } 
+    else {
+        // Pattern input is valid
+        $("#pat_input").css("border-color", "black");
+    }
+
+    // The form is valid.
+    $("#currentPopup #addQuesFormError").html("</br></br>");
+    return true;
+}
+
+function isCommentFormValid(self) {
+	//This function checks if the add comment form in the accordion is valid.
+    //If it isn't, shows a corresponding message.
+
+    $(".error",self).empty();
+
+    //Answer input checking
+    if ($(self.answer).val() == '' || $(self.answer).val().indexOf("?") != -1) {
+        // Answer input is empty
+        $("#ans_input").css("border-color", "red");
+        $(".error",self).append("אנא הכנס תשובתך");
+        $$(".error",self).show();
+        return false;
+    } 
+    else {
+        // Answer input is valid
+        $("#ans_input").css("border-color", "black");
+    }
+
+    // The form is valid.
+    $(".error",self).html("</br></br>");
+    return true;
 }
 
 function initializeForms() {
 	$(document).on("submit", "#add_que_form", function (e) {
 		e.preventDefault();
-		if (!isFormValid(this)) return;
+		if (!isQuestionFormValid(this)) return;
+		$("#popupContentHolder").fadeOut(500);
+		submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
+            $("#popupContentHolder").fadeIn({
+                duration: 500,
+                start: function () {
+                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
+                }
+            });
+        });
+	});
+	$(document).on("submit", ".accordion form", function (e) {
+		e.preventDefault();
+		if (!isCommentFormValid(this)) return;
 		$("#popupContentHolder").fadeOut(500);
 		submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
             $("#popupContentHolder").fadeIn({

@@ -225,12 +225,6 @@ input[type="radio"] + label {
             -webkit-text-stroke: 1px #FF8000;
         }
 
-.error {
-    font-size: 0.75em;
-    font-family: arial;
-    color: red;
-}
-
 .infoIcon {
     width: 24px;
     height: 24px;

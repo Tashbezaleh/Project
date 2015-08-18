@@ -88,3 +88,9 @@
     bottom: 10px;
     right: 10px;
 }
+
+.error {
+    font-size: 0.75em;
+    font-family: arial;
+    color: red;
+}

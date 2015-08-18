@@ -4,6 +4,7 @@ import cgi
 import re
 import json
 import urllib
+import recentActivityUtils
 from encodingUtils import fix_encoding
 from google.appengine.ext import ndb
 
@@ -56,6 +57,7 @@ def add_question(name, question, pattern, description):
     questions = get_raw_questions_feed()
     new_question = Question.create(name, question, pattern, description, 1 + max(map(lambda x:x.questionID,questions)) if questions else 0)
     new_question.put()
+    recentActivityUtils.add_ra(recentActivityUtils.NEW_QUESTION_TYPE, [name, question, pattern])
     return [new_question] + questions
 
 def good_answer(pattern,answer):

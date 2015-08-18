@@ -19,7 +19,7 @@ img {
     box-sizing:border-box;
     box-shadow:0px 0px 0px 2px gray;
     border-radius:3px;
-    width: 95%;
+    width: 80%;
     padding: 10px;
     background-color: white;
     font-size: 1.3em;
@@ -165,3 +165,7 @@ li:nth-child(6n+5):before {
     .add_q_boxes:hover {
         box-shadow: 0px 0px 1px 1px Black;
     }
+
+.add_q_error_boxes {
+    box-shadow: inset 0px 0px 0px 1px red;
+}

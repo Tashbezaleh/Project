@@ -39,9 +39,9 @@
                     <br />
                     <img src="graphics/images/forum/add_comment.png" style="
                     text-align: right;
-                    display: inline;" onclick="$(this).next().next().toggle(200)">
+                    display: inline;" onclick="$('#add_comment_{{questionID}}').toggle(200)">
                     <br />
-                    <form action="addComment.html" class="nice" style="display:none;">
+                    <form action="addComment.html" class="nice" style="display:none; width:80%; text-align:center;" id="add_comment_{{questionID}}">
                         <input type="hidden" name="questionID" value="{{ questionID }}" />
                         <table>
                           <tbody><tr style="height:35px">
@@ -57,7 +57,7 @@
                               תשובה:
                             </td>
                             <td>
-                                <Blocks-Input name="answer" value="{{ pattern }}" fixed="true"></Blocks-Input>
+                                <Blocks-Input name="answer" value="{{ pattern }}" fixed="true" id="ans_input"></Blocks-Input>
                             </td>
                           </tr>
                           <tr style="height:70px">
@@ -70,8 +70,13 @@
                             </td>
                           </tr>
                         </tbody></table>
+                        <div id="addCommFormError_{{ questionID }}" class="error">
+                            <br />
+                        </div>
+                        <br/>
                         <input type="submit" value="הוסף!" class="add_q_boxes"/>
                     </form>
+                    
                 </div>
             </div>
             {% endfor %}
@@ -105,6 +110,10 @@
                 תיאור:</br>
                 <textarea name="description" class="add_q_boxes" style="width:60%; height:70px; overflow:auto;">
                 </textarea></br>
+                <div id="addQuesFormError" class="error">
+                    <br />
+                </div>
+                </br>
                 <input type="submit" class="add_q_boxes" value="הוסף!" />
             </form>
         </div>

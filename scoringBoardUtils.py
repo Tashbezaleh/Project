@@ -2,6 +2,7 @@
 
 import cgi, re, json
 import urllib
+import recentActivityUtils
 from encodingUtils import fix_encoding
 from google.appengine.ext import ndb
 
@@ -35,4 +36,5 @@ def add_sb(name, score):
         new_winner.put()
         winners[-1].key.delete()
         winners = winners[:-1] + [new_winner]
+    recentActivityUtils.add_ra(recentActivityUtils.SCORING_BOARD_TYPE, [name, str(score)])
     return sorted(map(Winner.as_tuple, winners), key=lambda x:x[1], reverse=True)
