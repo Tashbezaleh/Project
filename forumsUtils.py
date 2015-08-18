@@ -54,6 +54,10 @@ def get_questions_feed():
 
 def add_question(name, question, pattern, description):
     name = ' '.join(name.split())
+    if (name==''):
+        name = 'אנונימי'
+    if (description == ''):
+        description = 'אין תיאור'
     questions = get_raw_questions_feed()
     new_question = Question.create(name, question, pattern, description, 1 + max(map(lambda x:x.questionID,questions)) if questions else 0)
     new_question.put()

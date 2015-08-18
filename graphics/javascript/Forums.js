@@ -15,17 +15,17 @@ function isQuestionFormValid(self) {
 
     $("#currentPopup #addQuesFormError").empty();
 
-    // Definition Input checking
-    if ($(self.definition).val() == '') {
-        // Definition Input is empty
-        $(self.definition).addClass("add_q_error_boxes");
+    // Question Input checking
+    if ($(self.question).val() == '') {
+        // Question Input is empty
+        $(self.question).addClass("add_q_error_boxes");
         $("#currentPopup #addQuesFormError").append("אנא הכנס הגדרה</br>");
         $("#currentPopup #addQuesFormError").show();
         return false;
     }
     else {
-        // Definition input is valid
-        $(self.definition).removeClass("add_q_error_boxes");
+        // Question input is valid
+        $(self.question).removeClass("add_q_error_boxes");
     }
 
     //Pattern input checking - abit unnecessary
@@ -118,7 +118,7 @@ $(document).ready(function() {
 		definition = getQueryVariable("definition");
 		pattern = getQueryVariable("pattern");
 		showPopup($("#add_question").html());	
-		$("#currentPopup #def_input").val(decodeURI(definition));
+		$("#currentPopup #ques_input").val(decodeURI(definition));
 		$("#currentPopup #pat_input").val(decodeURI(pattern));
 	}
 });
