@@ -8,6 +8,8 @@ import recentActivityUtils
 from encodingUtils import fix_encoding
 from google.appengine.ext import ndb
 
+MAX_QUESTIONS_TO_SHOW = 10
+
 class Comment(ndb.Model):
     name = ndb.StringProperty(indexed=False)
     answer = ndb.StringProperty(indexed=False)
@@ -42,7 +44,7 @@ class Question(ndb.Model):
         return map(lambda x: (x.name,x.answer,x.description),self.comments)
 
 def get_raw_questions_feed():
-    return Question.query().order(-Question.questionID).fetch()
+    return Question.query().order(-Question.questionID).fetch(MAX_QUESTIONS_TO_SHOW)
     
 def get_questions_feed():
     return map(lambda x:[x.name,
