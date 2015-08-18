@@ -56,8 +56,6 @@ def add_question(name, question, pattern, description):
     name = ' '.join(name.split())
     if (name==''):
         name = 'אנונימי'
-    if (description == ''):
-        description = 'אין תיאור'
     questions = get_raw_questions_feed()
     new_question = Question.create(name, question, pattern, description, 1 + max(map(lambda x:x.questionID,questions)) if questions else 0)
     new_question.put()
@@ -69,6 +67,8 @@ def good_answer(pattern,answer):
 
 def add_comment(QuestionURL, name, answer, description):
     name = ' '.join(name.split())
+    if (name==''):
+        name = 'אנונימי'
     question = ndb.Key(urlsafe=QuestionURL).get()
     if good_answer(question.pattern,answer):
         comments = question.comments

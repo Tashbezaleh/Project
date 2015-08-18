@@ -82,7 +82,10 @@ class ResultActionHandler(webapp2.RequestHandler):
             cookiesUtils.rate_cookie(self, answer_object, rate)
         if action == 'add':
             answer_object.source = cgi.escape(self.request.get('source'))
-            return AddToDB(self, answer_object)
+            if AddToDB(self, answer_object):
+                return self.response.write('תודה על תרומתך')
+            else:
+                return self.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')
 
         get_results(self, new_rate, definition, answer)
         
@@ -155,14 +158,17 @@ class AddQuestionHandler(webapp2.RequestHandler):
                                                              self.request.get('pattern'),
                                                              self.request.get('description')))
         forumsUtils.add_question(name,question,pattern,description)
-        self.response.write("השאלה נוספה בהצלחה!")
+        self.response.write("השאלה נוספה בהצלחה! <br/> שאלתך תופיע עם רענון האתר.")
 
 class AddCommentHandler(webapp2.RequestHandler):
     def get(self):
         questionID,name,answer,description = map(lambda x: cgi.escape(self.request.get(x)), ('questionID', 'name', 'answer', 'description'))        
         if forumsUtils.add_comment(questionID,name,answer,description):
-            AddToDB(self, databaseUtils.Answer(answer.encode('utf'), ndb.Key(urlsafe=questionID).get().question, name, 0, 1))
-        else: self.response.write("כושלה")
+            if AddToDB(self, databaseUtils.Answer(answer.encode('utf'), ndb.Key(urlsafe=questionID).get().question, name, 0, 1)):
+                return self.response.write('תודה על עזרתך! <br /> תגובתך תופיע עם רענון האתר.')
+            else:
+                return self.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')
+        else: self.response.write("תשובתך אינה מתאימה לתבנית השאלה,<br/> אנא נסה שנית.")
         
 
 # for admins only, please only enable when testing and db reset is needed
@@ -339,5 +345,5 @@ def AddToDB(this, answer_object):
         answer_object.source = 'אנונימי'
     if databaseUtils.add_to_ndb(answer_object.definition, answer_object.answer, answer_object.source, 5, 1):
         cookiesUtils.rate_cookie(this, answer_object, 5)
-        return this.response.write('תודה על תרומתך')
-    return this.response.write('ההגדרה כבר נמצאת במאגר <br /> תודה בכל זאת')
+        return True
+    return False

@@ -57,7 +57,7 @@ function isCommentFormValid(self) {
         // Answer input is empty
         $("#ans_input").css("border-color", "red");
         $(".error",self).append("אנא הכנס תשובתך");
-        $$(".error",self).show();
+        $(".error",self).show();
         return false;
     } 
     else {
@@ -66,7 +66,7 @@ function isCommentFormValid(self) {
     }
 
     // The form is valid.
-    $(".error",self).html("</br></br>");
+    $(".error",self).html("</br>");
     return true;
 }
 
@@ -87,14 +87,8 @@ function initializeForms() {
 	$(document).on("submit", ".accordion form", function (e) {
 		e.preventDefault();
 		if (!isCommentFormValid(this)) return;
-		$("#popupContentHolder").fadeOut(500);
 		submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
-            $("#popupContentHolder").fadeIn({
-                duration: 500,
-                start: function () {
-                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
-                }
-            });
+            showPopup("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
         });
 	});
 }
@@ -114,6 +108,14 @@ function getQueryVariable(variable) {
 
 $(document).ready(function() {
 	initializeForms();
+    
+    // Hide empty qtexts
+    $(".qtext").each(function() {
+        if ($(this).html().trim() == '')
+            $(this).css('display','none');
+    });
+
+    // Check whether should open popup
 	if (getQueryVariable("add_ques")=="open") {
 		definition = getQueryVariable("definition");
 		pattern = getQueryVariable("pattern");

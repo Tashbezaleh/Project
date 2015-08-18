@@ -109,34 +109,19 @@ li {
     margin: 1em 0em 1em 0em;
 }
 
-li:nth-child(6n+0):before {
+li:nth-child(3n+0):before {
     content: "• ";
-    color: rgb(255, 33,35);
+    color: rgb(252,207,65);
 }
 
-li:nth-child(6n+1):before {
+li:nth-child(3n+1):before {
     content: "• ";
-    color: rgb(253, 165, 29);
+    color: rgb(55,184,155);
 }
 
-li:nth-child(6n+2):before {
+li:nth-child(3n+2):before {
     content: "• ";
-    color: rgb(219, 217, 34);
-}
-
-li:nth-child(6n+3):before {
-    content: "• ";
-    color: rgb(72, 182, 51);
-}
-
-li:nth-child(6n+4):before {
-    content: "• ";
-    color: rgb(76, 31, 244);
-}
-
-li:nth-child(6n+5):before {
-    content: "• ";
-    color: rgb(167, 71, 204);
+    color: rgb(255,152,44);
 }
 
 .response {
