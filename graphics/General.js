@@ -300,14 +300,6 @@ function submitRate(definition, answer, pattern, button) {
     $(button).closest("td").html("<b style='color: rgb(249,59,151);'>תודה על תרומתך!</b>");
 }
 
-function allowOnly(selector_string, allowed, error_div) {
-    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
-    // usual awesome gal hack
-    $(document).on("keypress", selector_string, function (e) {
-        return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
-    });
-}
-
 function searchDefi(definition, pattern) {
     $("#definition").val(definition);
     $("#pattern").val(pattern);

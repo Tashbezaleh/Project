@@ -106,9 +106,29 @@ function getQueryVariable(variable) {
   return "";
 }
 
+function showError(selector, message, isError) {
+    elem = $(selector).empty();
+    if (isError) {
+        elem.stop(true, true).fadeOut(150).append(message).fadeIn(150);
+        return false;
+    }
+    else {
+        elem.html("<br />");
+        return true;
+    }
+}
+
+function allowOnly(selector_string, allowed, error_div) {
+    basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
+    // usual awesome gal hack
+    $(document).on("keypress", selector_string, function (e) {
+        return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
+    });
+}
+
 $(document).ready(function() {
 	initializeForms();
-    
+
     // Hide empty qtexts
     $(".qtext").each(function() {
         if ($(this).html().trim() == '')
@@ -123,4 +143,20 @@ $(document).ready(function() {
 		$("#currentPopup #ques_input").val(decodeURI(definition));
 		$("#currentPopup #pat_input").val(decodeURI(pattern));
 	}
+
+    // Allow only certain characters
+    
+    // Add question form
+    allowOnly("#source_name", "0123456789!,'-;()\"", "#currentPopup #addQuesFormError");
+    allowOnly("#ques_input", ",'-;()\"", "#currentPopup #addQuesFormError");
+    allowOnly("#currentPopup blocks-input input", "", "#currentPopup #addQuesFormError");
+    allowOnly("#add_que_form textarea", "0123456789!,'-;()\"", "#currentPopup #addQuesFormError");
+
+
+    // Add comment form
+    $(".accordion-section-content form").each(function() {
+        allowOnly("#"+this.id+" #source", "0123456789!,'-;()\"", "#"+this.id+" .error");
+        allowOnly("#"+this.id+" blocks-input input", "", "#"+this.id+" .error");
+        allowOnly("#"+this.id+" textarea", "0123456789!,'-;()\"", "#"+this.id+" .error");
+    });
 });
