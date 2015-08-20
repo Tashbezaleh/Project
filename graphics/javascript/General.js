@@ -115,7 +115,7 @@ function isSearchFormValid(self) {
         $("#searchFormError").append("אנא הכנס תבנית חוקית");
         $("#searchFormError").show();
         return false;
-    } 
+    }
     else {
         // Pattern input is valid
         $("#pattern").css("border-color", "black");
@@ -267,19 +267,18 @@ function expirementWithForms() {
     });
     $(document).on("submit", "#contact_form", function (e) {
         e.preventDefault();
+        if (!showError("#popupContentHolder #contact_error", "גוף ההודעה ריק!", $.trim($("#popupContentHolder #mail_body").val()) == "")) {
+            $("#popupContentHolder #mail_body").addClass("niceInvalidInput");
+            return;
+        }
         $.post("contact_us", $(this).serialize())
             .done(function (data) {
-                // Show proper error message if needed
-                if (showError("#popupContentHolder #contact_error", "גוף ההודעה ריק!", data === "empty")) {
-                    showError("#popupContentHolder #contact_error", "לפני שתשלח אנו רוצים לוודא שאתה אנושי, אנא הקלק בתוך הריבוע", data === "captcha");
-                }
-                if (data != "sent")
-                    return;
-                // Show proper message if contact succeeded
+                // Show proper message if contact succeeded and error otherwise
                 $("#popupContentHolder").fadeOut(500).fadeIn({
                     duration: 500,
                     start: function () {
-                        $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך נשלחה ותענה בהקדם</h3>");
+                        msg = data == "sent" ? "הודעתך נשלחה ותענה בהקדם" : "אירעה שגיאה, הודעתך לא נשלחה";
+                        $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + msg + "</h3>");
                         fixCSSIssues();
                     }
                 });
@@ -329,11 +328,13 @@ $(document).ready(function () {
     appear($(".news"));
     setPopups();
     expirementWithForms();
-    $(document).on("focus", "input", function () {
+    $(document).on("focus", "input, textarea", function () {
+        $(this).removeClass("error_index_boxes");
         $(this).removeClass("niceInvalidInput");
     });
     $(document).on("focus focusout", "input", function () {
-        $("#errorMessage").empty().html("<br/ >");
+        $("#searchFormError").empty().html("<br/ >");
+        $("#popupContentHolder #contact_error").empty().html("<br/ >");
     });
     $(document).keyup(function (e) {
         if (e.keyCode == 27) closePopup(); // escape key maps to keycode `27`

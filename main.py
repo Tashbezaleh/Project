@@ -249,20 +249,10 @@ class ContactUsHandler(webapp2.RequestHandler):
         sender_name = fix_encoding(cgi.escape(self.request.get('sender_name')))
         sender_address = fix_encoding(cgi.escape(self.request.get('sender_address')))
         mail_body = fix_encoding(cgi.escape(self.request.get('mail_body')))
-        captcha = self.request.get('g-recaptcha-response')
-        
-        # verifying captcha
-        response = urllib.urlopen('https://www.google.com/recaptcha/api/siteverify',
-                       data=urllib.urlencode({'secret':
-                       '6LdvSgsTAAAAALVxedZl-lXE8-1UdFFOEcaRn6M1', 'response':
-                       captcha}))
-        success = json.load(response)['success']
 
         # hnadle special cases
-        if not mail_body: # empty message
-            return self.response.write('empty')
-        if not success: # captcha not verified
-            return self.response.write('captcha')
+        if len(mail_body) < 2: # pointless message
+            return self.response.write('sent') # if somebody bothered to send an empty message, let him enjoy himself
         if not sender_name: # nameless sender
             sender_name = 'אנונימי'
         if not sender_address: # no return address :(
@@ -274,12 +264,14 @@ class ContactUsHandler(webapp2.RequestHandler):
         %s
         ---------------------------------------------------
         מייל לחזרה: %s'''
-
-        mail.send_mail(sender="תשבצל'ה - צור קשר <contact@tashbezale.appspotmail.com>",
-                       to='Tashbezaleh@gmail.com',
-                       subject='המשתמש "%s" יצר קשר!' % sender_name,
-                       body=text % (sender_name, mail_body, sender_address))
-        return self.response.write('sent')
+        try:
+            mail.send_mail(sender="תשבצל'ה - צור קשר <contact@tashbezale.appspotmail.com>",
+                           to='Tashbezaleh@gmail.com',
+                           subject='המשתמש "%s" יצר קשר!' % sender_name,
+                           body=text % (sender_name, mail_body, sender_address))
+            return self.response.write('sent')
+        except Exception as e:
+            return self.response.write('error')
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 

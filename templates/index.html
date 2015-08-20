@@ -11,7 +11,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/document-register-element/0.3.0/document-register-element.js"></script>
     <script type="text/javascript" src="graphics/javascript/BlocksInput.js"></script>
     <script type="text/javascript" src="graphics/javascript/General.js"></script>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
     <div id="rightColumn">
@@ -86,7 +85,7 @@
                         height: 30px;
                     ">
                     </a>
-                    <input type="text" id="definition" name="definition" class="index_boxes" placeholder="למשל: עוף דורס" tabindex="1" style="width:220px"/>
+                    <input type="text" id="definition" name="definition" class="index_boxes" placeholder="למשל: עוף דורס" tabindex="1" style="width:220px" />
                 </p>
                 <br />
                 <br />
@@ -101,7 +100,7 @@
                         height: 30px;
                     " />
                     </a>
-                    <blocks-input id="pattern" name="pattern" tabindex="2"/>
+                    <blocks-input id="pattern" name="pattern" tabindex="2" />
                 </p>
                 <br />
                 <div id="searchFormError" class="error">
@@ -114,7 +113,7 @@
             <ul id="results"></ul>
         </div>
     </center>
-    
+
     <!-- Popup Content Area - holding all of the popups-->
 
     <div id="add_defi_popup" class="popupContent">
@@ -126,7 +125,7 @@
             שמך (לא חובה): <br /><input type="text" id="source_name" name="source" class="nice" value="" /><br /><br />
             <input type="hidden" name="action" value="add" />
             <div id="addDefiFormError" class="error">
-                    <br />
+                <br />
             </div>
             </br>
             <input type="submit" class="nice" value="הוסף!" />
@@ -142,13 +141,9 @@
             <input type="text" id="sender_address" name="sender_address" class="nice" value="" placeholder="כדי שנוכל לחזור אליך" /><br /><br />
             הודעתך:
             <br /><textarea rows="16" cols="50" maxlength="800" id="mail_body" name="mail_body" class="nice"></textarea><br /><br />
-            <center>
-                <div id="contact_error" class="error">
-                    <br />
-                </div>
+            <div id="contact_error" class="error">
                 <br />
-                <div class="g-recaptcha" data-sitekey="6LdvSgsTAAAAANYJ7SwEP5Q3XLDCHyc20X0d9ttX"></div>
-            </center>
+            </div>
             <br />
             <input type="submit" class="nice" value="שלח!" />
         </form>

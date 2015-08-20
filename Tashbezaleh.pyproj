@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{b1e64489-a7ed-467b-80ac-6aa95f7007e3}</ProjectGuid>
+    <ProjectGuid>{ac0375ec-a13a-4073-abf4-68ee0a45719b}</ProjectGuid>
     <ProjectHome />
     <StartupFile>cookiesUtils.py</StartupFile>
     <SearchPath />
@@ -24,53 +24,66 @@
     <Content Include="continue facebook.txt" />
     <Content Include="definitions.txt" />
     <Content Include="favicon.ico" />
-    <Content Include="graphics\accordion.js" />
-    <Content Include="graphics\back.jpg" />
-    <Content Include="graphics\BlocksInput.js" />
-    <Content Include="graphics\BlocksInputStyle.css" />
-    <Content Include="graphics\disabled_minus.png" />
-    <Content Include="graphics\disabled_plus.png" />
+    <Content Include="graphics\css\BlocksInputStyle.css" />
+    <Content Include="graphics\css\ForumsStyle.css" />
+    <Content Include="graphics\css\GlobalStyle.css" />
+    <Content Include="graphics\css\HelpStyle.css" />
+    <Content Include="graphics\css\IndexStyle.css" />
+    <Content Include="graphics\css\MiniGameStyles.css" />
+    <Content Include="graphics\css\PopupsStyle.css" />
     <Content Include="graphics\fancy_close.png" />
-    <Content Include="graphics\ForumsStyle.css" />
-    <Content Include="graphics\General.js" />
-    <Content Include="graphics\GlobalStyle.css" />
+    <Content Include="graphics\game_logo.png" />
     <Content Include="graphics\google_icon.jpg" />
     <Content Include="graphics\help-definition_adding.bmp" />
     <Content Include="graphics\help-enlarging.bmp" />
     <Content Include="graphics\help-front_page.bmp" />
+    <Content Include="graphics\help-hint.png" />
     <Content Include="graphics\help-valid_input1.bmp" />
     <Content Include="graphics\help-valid_input2.bmp" />
     <Content Include="graphics\help-valid_input3.bmp" />
-    <Content Include="graphics\HelpStyle.css" />
     <Content Include="graphics\help_back_button.png" />
     <Content Include="graphics\howto.jpg" />
-    <Content Include="graphics\jquery-2.1.4.min.js" />
-    <Content Include="graphics\jQuery-easing.js" />
-    <Content Include="graphics\jquery.lavalamp.min.js" />
+    <Content Include="graphics\images\about\us.jpg" />
+    <Content Include="graphics\images\backgrounds\1.png" />
+    <Content Include="graphics\images\backgrounds\swirl_pattern.png" />
+    <Content Include="graphics\images\buttons\disabled_minus.png" />
+    <Content Include="graphics\images\buttons\disabled_plus.png" />
+    <Content Include="graphics\images\buttons\minus.png" />
+    <Content Include="graphics\images\buttons\plus.png" />
+    <Content Include="graphics\images\forum\add_comment.png" />
+    <Content Include="graphics\images\forum\forum_logo.png" />
+    <Content Include="graphics\images\forum\white_brick_wall.png" />
+    <Content Include="graphics\images\help\help_logo.png" />
+    <Content Include="graphics\images\icons\back.jpg" />
+    <Content Include="graphics\images\icons\new_post.png" />
+    <Content Include="graphics\javascript\accordion.js" />
+    <Content Include="graphics\javascript\BlocksInput.js" />
+    <Content Include="graphics\javascript\Forms.js" />
+    <Content Include="graphics\javascript\Forums.js" />
+    <Content Include="graphics\javascript\General.js" />
+    <Content Include="graphics\javascript\jquery-2.1.4.min.js" />
+    <Content Include="graphics\javascript\jQuery-easing.js" />
+    <Content Include="graphics\javascript\jquery.lavalamp.min.js" />
+    <Content Include="graphics\javascript\MiniGameGeneral.js" />
+    <Content Include="graphics\javascript\Popups.js" />
     <Content Include="graphics\logo.jpg" />
+    <Content Include="graphics\logo.png" />
     <Content Include="graphics\mag_glass.png" />
     <Content Include="graphics\medal_1.png" />
     <Content Include="graphics\medal_2.png" />
     <Content Include="graphics\medal_3.png" />
     <Content Include="graphics\MG_Spinner.GIF" />
-    <Content Include="graphics\MiniGameGeneral.js" />
     <Content Include="graphics\minigames-definition_solved_right.bmp" />
     <Content Include="graphics\minigames-definition_solved_wrong.bmp" />
     <Content Include="graphics\minigames-empty_definition.bmp" />
     <Content Include="graphics\minigames-results.bmp" />
-    <Content Include="graphics\MiniGameStyles.css" />
-    <Content Include="graphics\minus.png" />
-    <Content Include="graphics\New Bitmap Image.bmp" />
-    <Content Include="graphics\p5_pattern.png" />
     <Content Include="graphics\pattern-help.bmp" />
     <Content Include="graphics\play.jpg" />
-    <Content Include="graphics\plus.png" />
     <Content Include="graphics\question_mark.jpg" />
+    <Content Include="graphics\question_mark.png" />
     <Content Include="graphics\results-help.bmp" />
     <Content Include="graphics\return.jpg" />
     <Content Include="graphics\spinner.gif" />
-    <Content Include="graphics\styles.css" />
-    <Content Include="graphics\swirl_pattern.png" />
     <Content Include="graphics\thumb.png" />
     <Content Include="graphics\trophy.jpg" />
     <Content Include="graphics\wiki_icon.jpg" />
@@ -90,6 +103,7 @@
     <Compile Include="cookiesUtils.py" />
     <Compile Include="databaseUtils.py" />
     <Compile Include="encodingUtils.py" />
+    <Compile Include="forumsUtils.py" />
     <Compile Include="main.py" />
     <Compile Include="minigamesUtils.py" />
     <Compile Include="recentActivityUtils.py" />
@@ -100,6 +114,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="graphics" />
+    <Folder Include="graphics\css" />
+    <Folder Include="graphics\images\about" />
+    <Folder Include="graphics\images\backgrounds" />
+    <Folder Include="graphics\images\buttons" />
+    <Folder Include="graphics\images\forum" />
+    <Folder Include="graphics\images\help" />
+    <Folder Include="graphics\images\icons" />
+    <Folder Include="graphics\javascript" />
     <Folder Include="templates" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
