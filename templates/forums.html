@@ -19,93 +19,99 @@
         <img src="graphics/images/forum/forum_logo.png" alt="הפורום של תשבצל'ה" id="logo">
         <br />
     </center>
-        {% if feed %}
-        <div class="accordion">
-            {% for i,(name,question,pattern,description,comments,questionID) in enumerate(feed) %}
-            <div class="accordion-section">
-                <a class="accordion-section-title" href="#accordion-{{ i }}">המשתמש <i>{{ name }}</i> שאל: {{ question }}, <Blocks-Input value="{{ pattern }}" fixed="true" disabled style="color:rgb(249,59,151); border-color:black;"></Blocks-Input></a>
-                <div id="accordion-{{ i }}" class="accordion-section-content" style="display: none;">
-                    <div class="qtext">{{ description }}</div>
-                    {% if comments %}
-                    <ul>
-                        {% for name,answer,description in comments %}
-                        <li>
-                            המשתמש <i>{{ name }}</i> הציע את התשובה: <b>{{ answer }}</b><br />
-                            {{ description }}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    <br />
-                    <img src="graphics/images/forum/add_comment.png" style="
+    {% if feed %}
+    <div class="accordion">
+        {% for i,(name,question,pattern,description,comments,questionID) in enumerate(feed) %}
+        <div class="accordion-section">
+            <a class="accordion-section-title" href="#accordion-{{ i }}">המשתמש <i>{{ name }}</i> שאל: {{ question }}, <Blocks-Input value="{{ pattern }}" fixed="true" disabled style="color:rgb(249,59,151); border-color:black;"></Blocks-Input></a>
+            <div id="accordion-{{ i }}" class="accordion-section-content" style="display: none;">
+                <div class="qtext">{{ description }}</div>
+                {% if comments %}
+                <ul>
+                    {% for name,answer,description in comments %}
+                    <li>
+                        המשתמש <i>{{ name }}</i> הציע את התשובה: <b>{{ answer }}</b><br />
+                        {{ description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <br />
+                <img src="graphics/images/forum/add_comment.png" style="
                     text-align: right;
                     display: inline;" onclick="$('#add_comment_{{questionID}}').toggle(200)">
-                    <br />
-                    <form action="addComment.html" class="nice" style="display:none; width:80%; text-align:center;" id="add_comment_{{questionID}}">
-                        <input type="hidden" name="questionID" value="{{ questionID }}" />
-                        <table>
-                          <tbody><tr style="height:35px">
-                            <td>
-                              מאת:
-                            </td>
-                            <td>
-                                <input type="text" class="add_q_boxes" name="name" id="source" style="width:100%"/>     
-                            </td>
+                <br />
+                <form action="addComment.html" class="nice" style="display:none; width:80%; text-align:center;" id="add_comment_{{questionID}}">
+                    <input type="hidden" name="questionID" value="{{ questionID }}" />
+                    <table style="display:inline-block;">
+                        <tbody>
+                            <tr style="height:35px">
+                                <td>
+                                    מאת:
+                                </td>
+                                <td>
+                                    <input type="text" class="add_q_boxes" name="name" id="source" style="width:100%" />
+                                </td>
                             </tr>
                             <tr style="height:35px">
-                            <td>
-                              תשובה:
-                            </td>
-                            <td>
-                                <Blocks-Input name="answer" value="{{ pattern }}" fixed="true" id="ans_input"></Blocks-Input>
-                            </td>
-                          </tr>
-                          <tr style="height:70px">
-                            <td>
-                                תיאור:
-                            </td>
-                            <td>
-                                <textarea name="description" class="add_q_boxes" style="width:200px"></textarea>
-                            </td>
-                          </tr>
-                        </tbody></table>
-                        <div id="addCommFormError_{{ questionID }}" class="error">
-                            <br />
-                        </div>
-                        <br/>
-                        <input type="submit" value="הוסף!" class="add_q_boxes"/>
-                    </form>
-                    
-                </div>
+                                <td>
+                                    תשובה:
+                                </td>
+                                <td>
+                                    <Blocks-Input name="answer" disabled-value="{{ pattern }}" fixed="true" id="ans_input"></Blocks-Input>
+                                </td>
+                            </tr>
+                            <tr style="height:70px">
+                                <td>
+                                    תיאור:
+                                </td>
+                                <td>
+                                    <textarea name="description" class="add_q_boxes" style="width:200px"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="addCommFormError_{{ questionID }}" class="error">
+                        <br />
+                    </div>
+                    <br />
+                    <input type="submit" value="הוסף!" class="add_q_boxes" />
+                </form>
+
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        הפורום ריק, הוסף שאלה והיה הראשון!
-        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    הפורום ריק, הוסף שאלה והיה הראשון!
+    {% endif %}
     <div id="add_question" class="popupContent">
         <div style="line-height:2; width:450px">
             <h3> הוספת שאלה </h3>
             <form action="addQuestion.html" id="add_que_form">
                 <table style="width:100%">
-                  <tbody><tr width="50%">
-                    <td style="width:15%">מאת:</td>
-                    <td><input type="text" class="add_q_boxes" name="name" id="source_name">
-                    </td>
-                    <td style="width:15%"></td>
-                </tr>
-                  <tr>
-                    <td>
-                      הגדרה:
-                    </td>
-                    <td><input type="text" id="ques_input" class="add_q_boxes" name="question">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>תבנית:</td>
-                    <td><blocks-input name="pattern" id="pat_input" value="????"></blocks-input></td>
-                  </tr>
-                </tbody></table>
+                    <tbody>
+                        <tr width="50%">
+                            <td style="width:15%">מאת:</td>
+                            <td>
+                                <input type="text" class="add_q_boxes" name="name" id="source_name">
+                            </td>
+                            <td style="width:15%"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                הגדרה:
+                            </td>
+                            <td>
+                                <input type="text" id="ques_input" class="add_q_boxes" name="question">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>תבנית:</td>
+                            <td><blocks-input name="pattern" id="pat_input" value="????"></blocks-input></td>
+                        </tr>
+                    </tbody>
+                </table>
                 תיאור:</br>
                 <textarea name="description" class="add_q_boxes" style="width:60%; height:70px; overflow:auto;"></textarea></br>
                 <div id="addQuesFormError" class="error">
@@ -116,20 +122,20 @@
             </form>
         </div>
     </div>
-         <a href="/">
-            <div class="menu_button bot_left">
+    <a href="/">
+        <div class="menu_button bot_left">
             חזרה לתשבצל'ה
-               <br/>
-               <img src="graphics/images/icons/back.jpg" height="60">
-            </div>
-        </a>
-        <a href="#add_question" class="popup">
-            <div class="menu_button bot_right">
-                הוסף שאלה
-               <br/>
-               <img src="graphics/images/icons/new_post.png" height="60">
-            </div>
-        </a>
+            <br />
+            <img src="graphics/images/icons/back.jpg" height="60">
+        </div>
+    </a>
+    <a href="#add_question" class="popup">
+        <div class="menu_button bot_right">
+            הוסף שאלה
+            <br />
+            <img src="graphics/images/icons/new_post.png" height="60">
+        </div>
+    </a>
     <div id="currentPopup"></div>
 </body>
 </html>

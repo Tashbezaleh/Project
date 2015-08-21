@@ -21,16 +21,17 @@
     box-shadow: inset 0px 0px 5px 0.1px Black, 0px 0px 5px 0.1px Black;
 }
 
-.nice:hover, .nice:focus {
-    box-shadow: inset 0px 0px 5px 0.1px Grey, 0px 0px 5px 0.1px Grey;
-}
+    .nice:hover, .nice:focus {
+        box-shadow: inset 0px 0px 5px 0.1px Grey, 0px 0px 5px 0.1px Grey;
+    }
 
 .niceInvalidInput {
     box-shadow: inset 0px 0px 3px 0.7px Red, 0px 0px 3px 0.7px Red;
-}    
-.niceInvalidInput:hover {
-    box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
 }
+
+    .niceInvalidInput:hover {
+        box-shadow: inset 0px 0px 3px 1px #FF7373, 0px 0px 3px 1px #FF7373;
+    }
 
 .accordion-section:nth-child(3n+0) > .accordion-section-title:hover, .accordion-section:nth-child(3n+0) > .accordion-section-title.active {
     background: rgb(252,207,65);
@@ -47,6 +48,7 @@
 .menu_button:hover {
     bottom: 30px;
 }
+
 .menu_button {
     display: block;
     float: right;
@@ -76,14 +78,14 @@
     }
 
 .bot_left {
-    background-color:rgb(55,184,155);
+    background-color: rgb(55,184,155);
     position: fixed;
     bottom: 10px;
     left: 10px;
 }
 
 .bot_right {
-    background-color:rgb(252,207,65);
+    background-color: rgb(252,207,65);
     position: fixed;
     bottom: 10px;
     right: 10px;
@@ -93,5 +95,9 @@
     font-size: 0.75em;
     font-family: arial;
     color: red;
-    display:block;
+    display: block;
+}
+
+.nice {
+   transition: all 0.3s ease 0s;  /*   todo: ask peleg the designer.  maybe add this line to other places also. pretty cool line. */
 }

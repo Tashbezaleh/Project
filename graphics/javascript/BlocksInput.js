@@ -1,5 +1,41 @@
 document.registerElement("Blocks-Input", {
     prototype: Object.create(HTMLElement.prototype, {
+        // constructors:
+        createdCallback: {
+            value: function () {
+                self = $(this);
+                if (this.wasCreated) return;
+                //self.shadow=$(this.createShadowRoot());
+                $("<input type='hidden'/>").prop("name", self.attr("name")).appendTo(self);
+                $("<div/>").css("display", "inline").appendTo(self);
+                self.keydown(function (e) {
+                    if (e.which == 35) this.inputs.last().focus();
+                    if (e.which == 36) this.inputs.first().focus();
+                });
+                if (!this.isFixedLength) {
+                    self.keydown(function (e) {
+                        if (e.which == 38) this.addInput();
+                        if (e.which == 40) this.removeInput();
+                    });
+                    $("<button id='minus' type='button' />").text("-").click(this.removeInput).appendTo(self);
+                    $("<button id='plus' type='button' />").text("+").click(this.addInput).appendTo(self);
+                }
+                if (self.attr("value")) this.value = self.attr("value");
+                else this.length = parseInt(self.attr("length") || 4);
+                this.disabled = $(this).attr("disabled");
+                if (self.attr("disabled-value")) {
+                    this.value = self.attr("disabled-value");
+                    this.inputs.each(function () {
+                        if ($(this).val()) $(this).prop('disabled', true);
+                    });
+                }
+                if (self.attr("tabindex")) {
+                    this.inputs.first().attr("tabindex", self.attr("tabindex"));
+                    self.attr("tabindex", "");
+                }
+                this.updateNative();
+            }
+        },
         newInput: {
             value: function () {
                 return $('<input type="text" size="30" maxlength="1" autocomplete="off"/>').keydown(function (e) {
@@ -10,18 +46,26 @@ document.registerElement("Blocks-Input", {
                     }
                     if (e.which == 46) self.next(this).focus().val("").css("background-color", "");
                     if (e.which == 39) self.prev(this).focus();
-                    if (e.which == 8) if ($(this).val()) $(this).val("").css("background-color", "");
-                    else self.prev(this).focus().val("").css("background-color", "");
+                    if (e.which == 8)
+                        if ($(this).val()) $(this).val("").css("background-color", "");
+                        else {
+                            self.prev(this).focus().val("").css("background-color", "");
+                            if ($(this).is(self.inputs.last()) && !self.isFixedLength)
+                                self.removeInput();
+                        }
+                    self.updateNative();
                 }).keypress(function (e) {
                     if (e.which == 13) return e.stopPropagation();
                     self = $(this).closest("Blocks-Input").get(0);
                     $(this).css("background-color", (e.keyCode == 32 ? "Black" : ""));
-                    self.next($(this).val("")).focus();
+                    thenext = self.next($(this).val("").change());
+                    (thenext.length > 0 || self.isFixedLength ? thenext : self.addInput()).focus();
                 }).change(function () {
                     $(this).closest("Blocks-Input").get(0).updateNative();
                 });
             }
         },
+        // constants:
         animConst: {
             get: function () {
                 return 200;
@@ -30,6 +74,17 @@ document.registerElement("Blocks-Input", {
         filter: {
             get: function () {
                 return ":not(.dead, [disabled])";
+            }
+        },
+        // getters:
+        native: {
+            get: function () {
+                return $(this).children("input");
+            }
+        },
+        inputsDiv: {
+            get: function () {
+                return $(this).children("div");
             }
         },
         inputs: {
@@ -42,41 +97,29 @@ document.registerElement("Blocks-Input", {
                 return this.inputsDiv.children(":not(.dead)");
             }
         },
-        createdCallback: {
+        plus: {
+            get: function () {
+                return $("#plus", this);
+            }
+        },
+        minus: {
+            get: function () {
+                return $("#minus", this);
+            }
+        },
+        // functions:
+        updateNative: {
             value: function () {
-                self = $(this);
-                //self.shadow=$(this.createShadowRoot());
-                this.native = $("<input type='hidden'/>").prop("name", self.attr("name")).appendTo(self);
-                this.inputsDiv = $("<div/>").css("display", "inline").appendTo(self);
-                this.isFixedLength = self.attr("fixed") == "true";
-                if (!this.isFixedLength) {
-                    self.keydown(function (e) {
-                        if (e.which == 38) this.addInput();
-                        if (e.which == 40) this.removeInput();
-                    });
-                    this.minus = $("<button type='button' />").text("-").click(this.removeInput).appendTo(self);
-                    this.plus = $("<button type='button' />").text("+").click(this.addInput).appendTo(self);
-                }
-                if (self.attr("value")) this.value = self.attr("value");
-                else this.length = parseInt(self.attr("length") || 4);
-                this.disabled = $(this).attr("disabled");
-                if (self.attr("tabindex")) {
-                    this.inputs.first().attr("tabindex", self.attr("tabindex"));
-                    self.attr("tabindex", "");
-                }
+                $(this.native).val($(this).val());
             }
         },
         addInput: {
             value: function () {
                 self = $(this).closest("Blocks-Input").get(0);
+                if (self.length >= 30) return self.inputs.last();
                 a = $(self.newInput()).hide().appendTo(self.inputsDiv).show(self.animConst);
                 self.updateNative();
                 return a;
-            }
-        },
-        updateNative: {
-            value: function () {
-                $(this.native).val($(this).val());
             }
         },
         removeInput: {
@@ -91,6 +134,22 @@ document.registerElement("Blocks-Input", {
                 self.updateNative();
             }
         },
+        focus: {
+            value: function () {
+                this.inputs.first().focus();
+            }
+        },
+        next: {
+            value: function (input) {
+                return $(this.inputs[this.inputs.index(input) + 1]);
+            }
+        },
+        prev: {
+            value: function (input) {
+                return $(this.inputs[this.inputs.index(input) - 1]);
+            }
+        },
+        // properties:
         length: {
             get: function () {
                 return this.inputs.length;
@@ -118,38 +177,39 @@ document.registerElement("Blocks-Input", {
             }
         },
         disabled: {
+            get: function () {
+                return this.inputs.toArray().every(function (elem) {
+                    return $(elem).prop('disabled');
+                });
+            },
             set: function (dis) {
                 dis = dis ? true : false;
                 this.inputs.prop('disabled', dis);
             }
         },
-        focus: {
-            value: function () {
-                this.inputs.first().focus();
+        isFixedLength: {
+            get: function () {
+                return $(this).attr("fixed") == "true";
             }
         },
-        next: {
-            value: function (input) {
-                return $(this.inputs[this.inputs.index(input) + 1]);
+        wasCreated: {
+            get: function () {
+                return $("input", this).length > 0;
             }
         },
-        prev: {
-            value: function (input) {
-                return $(this.inputs[this.inputs.index(input) - 1]);
-            }
-        },
+        // events:
         attributeChangedCallback: {
-            value: function(name, previousValue, value) {
-                switch (name){
+            value: function (name, previousValue, value) {
+                switch (name) {
                     case "disabled":
-                    this.disabled=value;
-                    break;
+                        this.disabled = value;
+                        break;
                     case "length":
-                    this.length = parseInt(value);
-                    break;
+                        this.length = parseInt(value);
+                        break;
                     case "value":
-                    this.value=value;
-                    break;
+                        this.value = value;
+                        break;
                 }
             }
         }

@@ -2,12 +2,14 @@
     display: none;
 }
 
-#popupContentHolder {
+#fancyCloseHolder {
     z-index: 10;
     position: fixed;
+    top: 120px;
+}
+#popupContentHolder {
     background-color: White;
     padding: 20px;
-    top: 120px;
     min-width: 300px;
     display: none;
     -webkit-border-radius: 75px 0px;

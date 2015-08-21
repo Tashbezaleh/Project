@@ -1,6 +1,6 @@
 ﻿function fixCSSIssues() {
-    $("#popupContentHolder").css("right", ($(window).width() - $("#popupContentHolder").outerWidth()) / 2);
-    $("#popupContentHolder").css("top", ($(window).height() - $("#popupContentHolder").outerHeight()) / 2);
+    $("#fancyCloseHolder").css("right", ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2);
+    $("#fancyCloseHolder").css("top", ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2);
     $("#main_search").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
     $("#rightColumn").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
 
@@ -170,18 +170,23 @@ function closePopup() {
 }
 
 function showPopup(content, onPopupReady) {
-    closePopup();
+    if ($("#popupContentHolder").length > 0) //check if there is an open popup
+        return $("#popupContentHolder").fadeOut(100, function () {
+            $(this).empty().append($(content).show(0)).css("top", "-=30").fadeIn({ queue: false, duration: 500 }).animate({ top: "+=30" }, 500);
+            fixCSSIssues();
+        });
     $("#currentPopup").append("<div id='blackblock'></div>");
     $("#blackblock").click(closePopup).fadeIn(500, function () {
-        $("#currentPopup").append("<div id='popupContentHolder'><img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /></div>");
+        $("#currentPopup").append("<div id='fancyCloseHolder'><img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><div id='popupContentHolder'></div></div>");
         if (scale_factor < 1) {
             scale_factor = 1 / scale_factor;
             $("#small_x").each(zoomImage);
             scale_factor = 1 / scale_factor;
         }
         $("#popupContentHolder").append(content);
+        $("#popupContentHolder").fadeIn({ queue: false, duration: 500 });
         fixCSSIssues();
-        $("#popupContentHolder").css("top", "-=30").fadeIn({ queue: false, duration: 500 }).animate({ top: "+=30" }, 500, function () {
+        $("#popupContentHolder").css("top", "-=30").animate({ top: "+=30" }, 500, function () {
             $(this).children().fadeIn(500);
         });
         if (typeof onPopupReady !== 'undefined')
@@ -193,7 +198,7 @@ function showPopup(content, onPopupReady) {
 function setPopups() {
     $(document).on("click", ".popup", function (e) {
         e.preventDefault();
-        showPopup($($(this).attr('href')).html());
+        showPopup($($(this).attr('href')).clone(true).show(0));
     });
 }
 // function setHelpButtons() {
@@ -256,13 +261,7 @@ function expirementWithForms() {
         if (!isAddDefiFormValid(this)) return;
         $("#popupContentHolder").fadeOut(500);
         submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
-            $("#popupContentHolder").fadeIn({
-                duration: 500,
-                start: function () {
-                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
-                    fixCSSIssues();
-                }
-            });
+            showPopup("<h3>" + data + "</h3>");
         });
     });
     $(document).on("submit", "#contact_form", function (e) {
@@ -354,5 +353,4 @@ $(document).ready(function () {
 window.onload = function () {
     fixCSSIssues();
     appear($("#main_search form").children());
-    //setTimeout(function(){$("#contact_form").append('<script src="https://www.google.com/recaptcha/api.js"></script><div class="g-recaptcha" data-sitekey="6LdvSgsTAAAAANYJ7SwEP5Q3XLDCHyc20X0d9ttX"></div>');},3000);
 };

@@ -69,7 +69,7 @@ function addQuestionDiv(data, i, div) {
         else $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
     else {
         answer = data[i][1][Math.floor(Math.random() * data[i][1].length)];
-        gal = $("<blocks-input fixed='true' value='" + [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('') + "'/>").on("focus", "input", function () {
+        gal = $("<blocks-input fixed='true' disabled-value='" + [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('') + "'/>").on("focus", "input", function () {
             $(".current").removeClass("current").stop().fadeTo(1000, 0.62);
             cur = $(this).closest("blocks-input").css("color", "black").parents(".question");
             cur.addClass("current").stop().fadeTo(500, 1);
@@ -90,9 +90,6 @@ function addQuestionDiv(data, i, div) {
             }
         }).focusout(function () {
             $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
-        });
-        gal.get(0).inputs.each(function () {
-            if ($(this).val()) $(this).prop('disabled', true);
         });
         $("<div/>").attr("QuestionNumber", i).attr("QuestionAnswer", answer).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append(gal).fadeOut(0).show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active");
         gal.focus();
