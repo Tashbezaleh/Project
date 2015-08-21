@@ -99,5 +99,5 @@
 }
 
 .nice {
-   transition: all 0.3s ease 0s;  /*   todo: ask peleg the designer.  maybe add this line to other places also. pretty cool line. */
+   transition: box-shadow 0.3s ease 0s;  /*   todo: ask peleg the designer.  maybe add this line to other places also. pretty cool line. */
 }

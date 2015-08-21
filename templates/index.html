@@ -60,7 +60,7 @@
                 {% for description,onclick_func in activities_list %}
                 <hr>
                 <div class="news" onclick="{{ onclick_func.decode('utf') }}">
-                    {{ description.decode('utf')|safe }} </br>
+                    {{ description.decode('utf')|safe }} <br />
                 </div>
                 {% endfor %}
             </div>
@@ -100,7 +100,7 @@
                         height: 30px;
                     " />
                     </a>
-                    <blocks-input id="pattern" name="pattern" tabindex="2" />
+                    <blocks-input id="pattern" name="pattern" tabindex="2"></blocks-input>
                 </p>
                 <br />
                 <div id="searchFormError" class="error">
@@ -127,7 +127,7 @@
             <div id="addDefiFormError" class="error">
                 <br />
             </div>
-            </br>
+            <br />
             <input type="submit" class="nice" value="הוסף!" />
         </form>
     </div>
@@ -174,7 +174,7 @@
         <h3>התוצאות</h3><br />
         אחרי חיפוש הגדרה ותבנית באמצעות תשבצל'ה יופיעו התוצאות:<br />
         <img src="graphics/results-help.bmp" width="486"> <br /><br />
-        <strong>הדירוג</strong><br />לכל הגדרה יש דירוג מ-1 עד 5, גם אתה יכול לדרג באמצעות לחיצה על הכוכב המתאים<br/ ><br/ >
+        <strong>הדירוג</strong><br />לכל הגדרה יש דירוג מ-1 עד 5, גם אתה יכול לדרג באמצעות לחיצה על הכוכב המתאים<br /><br />
         <strong>מקור</strong><br />המקור של פתרון הוא שם האדם שהזין את הפתרון או תשבצל'ה במקרה שההגדרה היא שלנו<br /><br />
         <strong>מידע נוסף</strong><br />לקבלת מידע נוסף תוכל ללחוץ על הכפתורים בעמודה זו<br />והם יובילו אותך לחיפוש בגוגל או לאתר ויקיפדיה<br /><br />
         <strong>יודע את התשובה ורוצה לעזור?</strong><br />אם חיפשת הגדרה ולא מצאנו עבורה פתרון שאתה<br /> יודע שהוא נכון, תוכל להוסיף אותו באמצעות כפתור זה
@@ -183,7 +183,7 @@
     <br />
     <div id="magnif">
         <a>לחץ עלי להגדלה!</a>
-        <img id="magnif_img" src="graphics/mag_glass.png" width="48px" />
+        <img id="magnif_img" src="graphics/mag_glass.png" width="48" />
     </div>
 </body>
 </html>

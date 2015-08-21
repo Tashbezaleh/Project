@@ -314,16 +314,7 @@ function searchDefi(definition, pattern) {
 
 $(document).ready(function () {
     $(window).resize(fixCSSIssues);
-    appear($("#slidingNavigation").children(), function () {
-        if (!$(this).is(":first-child"))
-            $(this).hover(
-                function () {
-                    $(this).stop(true).animate({ "paddingRight": 17 }, 150);
-                },
-                function () {
-                    $(this).stop(true).animate({ "paddingRight": "0" }, 150);
-                });
-    });
+    appear($("#slidingNavigation").children());
     appear($(".news"));
     setPopups();
     expirementWithForms();

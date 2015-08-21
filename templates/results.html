@@ -7,65 +7,65 @@
         });
     });
     $("#go_to_forum_results").click(function (e) {
-        window.location="/forums.html?add_ques=open&definition={{ definition }}&pattern={{ pattern }}"
+        window.location = "/forums.html?add_ques=open&definition={{ definition }}&pattern={{ pattern }}"
     });
 </script>
 
 
 
 {% if result_list_len == 0 %}
-    <h3>לא נמצאו תוצאות</h3>
+<h3>לא נמצאו תוצאות</h3>
 {% else %}
-    <table class="index_boxes" style="background-color: white;">
-        <tr>
-            <td>
-                דירוג
-            </td>
-            <td>
-                פתרון
-            </td> 
-            <td>
-                מקור
-            </td>  
-            <td>
-                מידע נוסף
-            </td>
-        </tr>
-        {% for entry, answer, definition, stars, int_stars in results_list %}
-        <tr style="height:31px;min-width: 120px;">
-            <td>
-                <fieldset class="rating">
-                    {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
-                        <input type="radio" id="star{{ i }}_{{ answer }}" name="rating_{{ answer }}" value="rate{{ i }}" 
-                        onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars == i %} checked {% endif %}/>
-                        <label class="full" for="star{{ i }}_{{ answer }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
-                    {% endfor %}
-                </fieldset>
-            </td>
-            <td>
-                {{ answer }}
-            </td>
-            <td>
-                (מאת {{ entry.source.decode('utf') }})
-            </td>
-            <td>
-                <a href="http://www.google.co.il/search?q={{ '+'.join(answer.split()) }}" target="_blank">
-                    <img src="graphics/google_icon.jpg" class="infoIcon" title='חפש את "{{ answer }}" בגוגל'/>
-                </a>
-                <a href="http://he.wikipedia.org/wiki/{{ '_'.join(answer.split()) }}" target="_blank">
-                    <img src="graphics/wiki_icon.jpg" class="infoIcon" title='קרא על "{{ answer }}" בויקיפדיה'/>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<table class="index_boxes" style="background-color: white;">
+    <tr>
+        <td>
+            דירוג
+        </td>
+        <td>
+            פתרון
+        </td>
+        <td>
+            מקור
+        </td>
+        <td>
+            מידע נוסף
+        </td>
+    </tr>
+    {% for entry, answer, definition, stars, int_stars in results_list %}
+    <tr style="height:31px;min-width: 120px;">
+        <td>
+            <fieldset class="rating">
+                {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
+                <input type="radio" id="star{{ i }}_{{ answer }}" name="rating_{{ answer }}" value="rate{{ i }}"
+                       onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars= =i %} checked {% endif %} />
+                <label class="full" for="star{{ i }}_{{ answer }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
+                {% endfor %}
+            </fieldset>
+        </td>
+        <td>
+            {{ answer }}
+        </td>
+        <td>
+            (מאת {{ entry.source.decode('utf') }})
+        </td>
+        <td>
+            <a href="http://www.google.co.il/search?q={{ '+'.join(answer.split()) }}" target="_blank">
+                <img src="graphics/google_icon.jpg" class="infoIcon" title='חפש את "{{ answer }}" בגוגל' />
+            </a>
+            <a href="http://he.wikipedia.org/wiki/{{ '_'.join(answer.split()) }}" target="_blank">
+                <img src="graphics/wiki_icon.jpg" class="infoIcon" title='קרא על "{{ answer }}" בויקיפדיה' />
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endif %}
 
 <br />
- <input id="add_defi_results" href="#add_defi_popup" type="button" value="יודע את התשובה ורוצה לעזור?" class="index_boxes" style="background-color: rgb(255,152,44);"/>
+<input id="add_defi_results" href="#add_defi_popup" type="button" value="יודע את התשובה ורוצה לעזור?" class="index_boxes" style="background-color: rgb(255,152,44);" />
 
-<input id="go_to_forum_results" href="/forums.html" type="button" value="רוצה לשאול חברים בפורום?" class="index_boxes" style="background-color: rgb(252,207,65);"/>
-    
+<input id="go_to_forum_results" href="/forums.html" type="button" value="רוצה לשאול חברים בפורום?" class="index_boxes" style="background-color: rgb(252,207,65);" />
+
 <br />
 <br />
 <a href="#resultsHelp" class="popup">

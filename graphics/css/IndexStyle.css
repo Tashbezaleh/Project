@@ -65,6 +65,7 @@ tr td:last-child {
         -webkit-border-radius: 20px;
         -moz-border-radius: 20px;
         border-radius: 20px;
+        transition: all 0.15s ease 0s;
     }
 
     #slidingNavigation li:nth-child(3n+0) * {
@@ -82,6 +83,7 @@ tr td:last-child {
     #slidingNavigation li a:hover {
         background-color: rgb(249,59,151);
         font-style: italic;
+        margin-right: 17px;
     }
 
 #recentActivities {

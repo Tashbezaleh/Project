@@ -44,24 +44,23 @@ document.registerElement("Blocks-Input", {
                         if (self.next(this).length == 0 && !self.isFixedLength) self.addInput().focus();
                         else self.next(this).focus();
                     }
-                    if (e.which == 46) self.next(this).focus().val("").css("background-color", "");
                     if (e.which == 39) self.prev(this).focus();
-                    if (e.which == 8)
+                    if (e.which == 8 || e.which == 46)
                         if ($(this).val()) $(this).val("").css("background-color", "");
                         else {
-                            self.prev(this).focus().val("").css("background-color", "");
+                            (e.which == 8 ? self.prev(this) : self.next(this)).focus().val("").css("background-color", "");
                             if ($(this).is(self.inputs.last()) && !self.isFixedLength)
                                 self.removeInput();
                         }
                     self.updateNative();
                 }).keypress(function (e) {
                     if (e.which == 13) return e.stopPropagation();
+                    $(this).val("").css("background-color", (e.which == 32 ? "Black" : ""));
+                }).on("input", function (e) {
                     self = $(this).closest("Blocks-Input").get(0);
-                    $(this).css("background-color", (e.keyCode == 32 ? "Black" : ""));
-                    thenext = self.next($(this).val("").change());
+                    thenext = self.next($(this));
                     (thenext.length > 0 || self.isFixedLength ? thenext : self.addInput()).focus();
-                }).change(function () {
-                    $(this).closest("Blocks-Input").get(0).updateNative();
+                    self.updateNative();
                 });
             }
         },
