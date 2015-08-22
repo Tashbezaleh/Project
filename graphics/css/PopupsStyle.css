@@ -7,6 +7,7 @@
     position: fixed;
     top: 120px;
 }
+
 #popupContentHolder {
     background-color: White;
     padding: 20px;
@@ -18,7 +19,7 @@
     -moz-box-shadow: 0px 0px 15px 15px White;
     -webkit-box-shadow: 0px 0px 15px 15px White;
     box-shadow: 0px 0px 15px 15px White;
-    max-height: 100%;
+    max-height: 100vh;
     overflow: auto;
     text-align: center;
 }

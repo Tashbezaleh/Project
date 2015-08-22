@@ -1,13 +1,13 @@
 <script type="text/javascript">
     $("#add_defi_results").click(function (e) {
-        showPopup($($(this).attr('href')).html(), function () {
+        showPopup($($(this).attr('href')).clone(true), function () {
             txt = $("<textarea/>").html("{{ definition }}").text();
-            $(this).find("#definition").val(txt);
-            $(this).find("#answer").focus();
+            $("#add_defi_definition", this).val(txt);
+            $("#answer", this).focus();
         });
     });
     $("#go_to_forum_results").click(function (e) {
-        window.location = "/forums.html?add_ques=open&definition={{ definition }}&pattern={{ pattern }}"
+        window.location = encodeURI("/forums.html?add_ques=open&definition={{ definition }}&pattern={{ pattern }}");
     });
 </script>
 
@@ -37,7 +37,7 @@
             <fieldset class="rating">
                 {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
                 <input type="radio" id="star{{ i }}_{{ answer }}" name="rating_{{ answer }}" value="rate{{ i }}"
-                       onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars= =i %} checked {% endif %} />
+                       onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars==i %} checked {% endif %} />
                 <label class="full" for="star{{ i }}_{{ answer }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
                 {% endfor %}
             </fieldset>

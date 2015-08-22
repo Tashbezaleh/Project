@@ -1,3 +1,8 @@
+function fixCssIssues() {
+    $("#fancyCloseHolder").css("right", Math.max(0, ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2));
+    $("#fancyCloseHolder").css("top", Math.max(0, ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2));
+}
+
 function closePopup(func) {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
@@ -8,8 +13,7 @@ function showPopup(content, onPopupReady) {
     if ($("#popupContentHolder").length > 0) //check if there is an open popup
         return $("#popupContentHolder").fadeOut(100, function () {
             $("#popupContentHolder").empty().append($(content).show(0)).fadeIn({ queue: false, duration: 500 });
-            $("#fancyCloseHolder").css("right", ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2);
-            $("#fancyCloseHolder").css("top", ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2);
+            fixCssIssues();
             $("#popupContentHolder").css("top", "-=30").animate({ top: "+=30" }, 500);
         });
     $("#currentPopup").append("<div id='blackblock'></div>");
@@ -17,8 +21,7 @@ function showPopup(content, onPopupReady) {
     $("#popupContentHolder").append($(content).show(0));
     $("#blackblock").click(closePopup).fadeIn(500, function () {
         $("#popupContentHolder").fadeIn({ queue: false, duration: 500 });
-        $("#fancyCloseHolder").css("right", ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2);
-        $("#fancyCloseHolder").css("top", ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2);
+        fixCssIssues();
         $("#popupContentHolder").css("top", "-=30").animate({ top: "+=30" }, 500);
 
         if (typeof onPopupReady !== 'undefined')
@@ -32,6 +35,7 @@ function setPopups() {
         e.preventDefault();
         showPopup($($(this).attr('href')).clone(true));
     });
+    $(window).resize(fixCssIssues);
 }
 
 $(document).ready(setPopups);

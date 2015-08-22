@@ -117,6 +117,7 @@ function allowOnly(selector_string, allowed, error_div) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
+        if (e.which == 0 || e.which == 8) return; // firefox problems...
         return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
     });
 }
@@ -134,7 +135,7 @@ $(document).ready(function () {
     if (getQueryVariable("add_ques") == "open") {
         definition = getQueryVariable("definition");
         pattern = getQueryVariable("pattern");
-        showPopup($("#add_question").html());
+        showPopup($("#add_question").clone(true));
         $("#currentPopup #ques_input").val(decodeURI(definition));
         $("#currentPopup #pat_input").val(decodeURI(pattern));
     }

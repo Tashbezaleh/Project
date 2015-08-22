@@ -1,10 +1,8 @@
 ﻿function fixCSSIssues() {
-    $("#fancyCloseHolder").css("right", ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2);
-    $("#fancyCloseHolder").css("top", ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2);
+    $("#fancyCloseHolder").css("right", Math.max(0, ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2));
+    $("#fancyCloseHolder").css("top", Math.max(0, ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2));
     $("#main_search").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
     $("#rightColumn").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
-
-    $("#recentActivities").css("max-height", ($(window).height()) * 0.8);
 }
 
 function appear(list, done) {
@@ -170,9 +168,10 @@ function closePopup() {
 }
 
 function showPopup(content, onPopupReady) {
+    $(content).show();
     if ($("#popupContentHolder").length > 0) //check if there is an open popup
         return $("#popupContentHolder").fadeOut(100, function () {
-            $(this).empty().append($(content).show(0)).css("top", "-=30").fadeIn({ queue: false, duration: 500 }).animate({ top: "+=30" }, 500);
+            $(this).empty().append(content).css("top", "-=30").fadeIn({ queue: false, duration: 500 }).animate({ top: "+=30" }, 500);
             fixCSSIssues();
         });
     $("#currentPopup").append("<div id='blackblock'></div>");
@@ -198,7 +197,7 @@ function showPopup(content, onPopupReady) {
 function setPopups() {
     $(document).on("click", ".popup", function (e) {
         e.preventDefault();
-        showPopup($($(this).attr('href')).clone(true).show(0));
+        showPopup($($(this).attr('href')).clone(true));
     });
 }
 // function setHelpButtons() {
@@ -302,6 +301,7 @@ function allowOnly(selector_string, allowed, error_div) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
+        if (e.which == 0 || e.which == 8) return; // firefox problems...
         return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
     });
 }

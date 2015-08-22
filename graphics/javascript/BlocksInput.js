@@ -10,25 +10,19 @@ document.registerElement("Blocks-Input", {
                 $("<div/>").css("display", "inline").appendTo(self);
                 self.keydown(function (e) {
                     if (e.which == 35) this.inputs.last().focus();
-                    if (e.which == 36) this.inputs.first().focus();
-                });
-                if (!this.isFixedLength) {
-                    self.keydown(function (e) {
+                    else if (e.which == 36) this.inputs.first().focus();
+                    else if (!this.fixed) {
                         if (e.which == 38) this.addInput();
                         if (e.which == 40) this.removeInput();
-                    });
-                    $("<button id='minus' type='button' />").text("-").click(this.removeInput).appendTo(self);
-                    $("<button id='plus' type='button' />").text("+").click(this.addInput).appendTo(self);
-                }
+                    }
+                });
+                $("<button id='minus' type='button' />").text("-").click(this.removeInput).appendTo(self);
+                $("<button id='plus' type='button' />").text("+").click(this.addInput).appendTo(self);
+                this.fixed = this.fixed; //its actualy has a meaning...
                 if (self.attr("value")) this.value = self.attr("value");
                 else this.length = parseInt(self.attr("length") || 4);
                 this.disabled = $(this).attr("disabled");
-                if (self.attr("disabled-value")) {
-                    this.value = self.attr("disabled-value");
-                    this.inputs.each(function () {
-                        if ($(this).val()) $(this).prop('disabled', true);
-                    });
-                }
+                if (self.attr("disabled-value")) this.disabledValue = self.attr("disabled-value");
                 if (self.attr("tabindex")) {
                     this.inputs.first().attr("tabindex", self.attr("tabindex"));
                     self.attr("tabindex", "");
@@ -41,7 +35,7 @@ document.registerElement("Blocks-Input", {
                 return $('<input type="text" size="30" maxlength="1" autocomplete="off"/>').keydown(function (e) {
                     self = $(this).closest("Blocks-Input").get(0);
                     if (e.which == 37) { // left
-                        if (self.next(this).length == 0 && !self.isFixedLength) self.addInput().focus();
+                        if (self.next(this).length == 0 && !self.fixed) self.addInput().focus();
                         else self.next(this).focus();
                     }
                     if (e.which == 39) self.prev(this).focus();
@@ -49,17 +43,18 @@ document.registerElement("Blocks-Input", {
                         if ($(this).val()) $(this).val("").css("background-color", "");
                         else {
                             (e.which == 8 ? self.prev(this) : self.next(this)).focus().val("").css("background-color", "");
-                            if ($(this).is(self.inputs.last()) && !self.isFixedLength)
+                            if ($(this).is(self.inputs.last()) && !self.fixed)
                                 self.removeInput();
                         }
                     self.updateNative();
                 }).keypress(function (e) {
                     if (e.which == 13) return e.stopPropagation();
+                    if (e.which == 0 || e.which == 8) return; // firefox is shit.
                     $(this).val("").css("background-color", (e.which == 32 ? "Black" : ""));
                 }).on("input", function (e) {
                     self = $(this).closest("Blocks-Input").get(0);
                     thenext = self.next($(this));
-                    (thenext.length > 0 || self.isFixedLength ? thenext : self.addInput()).focus();
+                    (thenext.length > 0 || self.fixed ? thenext : self.addInput()).focus();
                     self.updateNative();
                 });
             }
@@ -175,6 +170,14 @@ document.registerElement("Blocks-Input", {
                 this.updateNative();
             }
         },
+        disabledValue: {
+            set: function (str) {
+                this.value = str;
+                this.inputs.each(function () {
+                    if ($(this).val()) $(this).prop('disabled', true);
+                });
+            }
+        },
         disabled: {
             get: function () {
                 return this.inputs.toArray().every(function (elem) {
@@ -186,9 +189,21 @@ document.registerElement("Blocks-Input", {
                 this.inputs.prop('disabled', dis);
             }
         },
-        isFixedLength: {
+        fixed: {
             get: function () {
                 return $(this).attr("fixed") == "true";
+            },
+            set: function (val) {
+                if (val) {
+                    this.minus.hide();
+                    this.plus.hide();
+                }
+                else {
+                    this.minus.show();
+                    this.plus.show();
+                }
+                if (this.fixed != val)
+                    this.setAttribute("fixed", val ? "true" : "false");
             }
         },
         wasCreated: {
@@ -208,6 +223,12 @@ document.registerElement("Blocks-Input", {
                         break;
                     case "value":
                         this.value = value;
+                        break;
+                    case "fixed":
+                        this.fixed = (value == "true");
+                        break;
+                    case "disabled-value":
+                        this.disabledValue = value;
                         break;
                 }
             }

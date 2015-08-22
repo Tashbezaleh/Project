@@ -69,7 +69,12 @@ function addQuestionDiv(data, i, div) {
         else $("<h3/>").text("נגמרו ההגדרות, לחץ אנטר לסיום המשחק").prependTo(div.prepend("<br />"));
     else {
         answer = data[i][1][Math.floor(Math.random() * data[i][1].length)];
-        gal = $("<blocks-input fixed='true' disabled-value='" + [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('') + "'/>").on("focus", "input", function () {
+        //gal = $("<blocks-input fixed='true' disabled-value='" + [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('') + "'/>");
+        gal = document.createElement("blocks-input");
+        gal.fixed = "true";
+        gal.disabledValue = [].map.call(answer, function (x) { return x == ' ' ? x : '?'; }).join('');
+        gal = $(gal);
+        gal.on("focus", "input", function () {
             $(".current").removeClass("current").stop().fadeTo(1000, 0.62);
             cur = $(this).closest("blocks-input").css("color", "black").parents(".question");
             cur.addClass("current").stop().fadeTo(500, 1);
@@ -91,8 +96,8 @@ function addQuestionDiv(data, i, div) {
         }).focusout(function () {
             $(this).css("color", data[i][1].indexOf($(this).val()) >= 0 ? "green" : "red");
         });
-        $("<div/>").attr("QuestionNumber", i).attr("QuestionAnswer", answer).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append(gal).fadeOut(0).show(fadeConst)).prependTo(div.prepend("<br />")).addClass("active");
-        gal.focus();
+        $("<div/>").attr("QuestionNumber", i).attr("QuestionAnswer", answer).addClass("question").append($("<label/>").text(data[i][0]).append("<br />").append(gal).hide().fadeIn(fadeConst)).prependTo(div.prepend("<br />")).addClass("active");
+        gal.get(0).focus();
     }
     div.lavalamp('update');
 }
@@ -175,6 +180,7 @@ function allowOnly(selector_string, allowed) {
     basic = " אבגדהוזחטיכלמנסעפצקרשתךםןףץ";
     // usual awesome gal hack
     $(document).on("keypress", selector_string, function (e) {
+        if (e.which == 0 || e.which == 8) return; // firefox problems...
         //err = $("#errorMessage").empty();
         if ((basic + allowed).indexOf(String.fromCharCode(e.which)) < 0) {
             //err.fadeOut(150).append("תו זה אינו חוקי!").fadeIn(150);
