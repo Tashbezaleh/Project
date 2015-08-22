@@ -2,11 +2,13 @@ document.registerElement("Blocks-Input", {
     prototype: Object.create(HTMLElement.prototype, {
         // constructors:
         createdCallback: {
+            /** The Blocks-Input constructor. called on element create (differ a bit between browsers). */
             value: function () {
                 self = $(this);
                 if (this.wasCreated) return;
                 //self.shadow=$(this.createShadowRoot());
-                $("<input type='hidden'/>").prop("name", self.attr("name")).appendTo(self);
+                $("<input type='hidden'/>").appendTo(self);
+                this.name = self.attr("name");
                 $("<div/>").css("display", "inline").appendTo(self);
                 self.keydown(function (e) {
                     if (e.which == 35) this.inputs.last().focus();
@@ -31,6 +33,10 @@ document.registerElement("Blocks-Input", {
             }
         },
         newInput: {
+            /** 
+            * Constructor for a single input element inside blocks-input.
+            * Defines its behavior under key presses, input changes, focus, blur, etc...
+            */
             value: function () {
                 return $('<input type="text" size="30" maxlength="1" autocomplete="off"/>').keydown(function (e) {
                     self = $(this).closest("Blocks-Input").get(0);
@@ -61,62 +67,79 @@ document.registerElement("Blocks-Input", {
         },
         // constants:
         animConst: {
+            /** Const describing the length of the show/hide of the inputs */
             get: function () {
                 return 200;
             }
         },
+        maxLength: {
+            /** Const describing the max allowed characters in Blocks-input. */
+            get: function () {
+                return 30;
+            }
+        },
         filter: {
+            /** Const describing the dom filter string to apply to inputsDiv.children() to get all living inputs in current Blocks-input. */
             get: function () {
                 return ":not(.dead, [disabled])";
             }
         },
         // getters:
         native: {
+            /** A regular hidden input element used for form submiting. */
             get: function () {
                 return $(this).children("input");
             }
         },
         inputsDiv: {
+            /** A div containing all the vissible inputs (without native and the +- buttons). */
             get: function () {
                 return $(this).children("div");
             }
         },
         inputs: {
+            /** All the vissible not-disabled inputs (without native and the +- buttons). */
             get: function () {
                 return this.inputsDiv.children(this.filter);
             }
         },
         allInputs: {
+            /** All the vissible inputs (without native and the +- buttons). */
             get: function () {
                 return this.inputsDiv.children(":not(.dead)");
             }
         },
         plus: {
+            /** The + button. */
             get: function () {
                 return $("#plus", this);
             }
         },
         minus: {
+            /** The - button. */
             get: function () {
                 return $("#minus", this);
             }
         },
         // functions:
         updateNative: {
+            /** Copies the current value of the blocks-input to the native input. */
             value: function () {
                 $(this.native).val($(this).val());
             }
         },
         addInput: {
+            /** Adds (and returns) an input to the end of blocks-input. If the element already has 30 inputs, cancels the addition and returns the last input in inputs. */
             value: function () {
                 self = $(this).closest("Blocks-Input").get(0);
-                if (self.length >= 30) return self.inputs.last();
+                if (self.length >= self.maxLength) return self.inputs.last();
                 a = $(self.newInput()).hide().appendTo(self.inputsDiv).show(self.animConst);
                 self.updateNative();
                 return a;
             }
         },
         removeInput: {
+            /** Removes the last input of blocks-input. If the element has only 2 inputs, cancels the remaval. */
             value: function () {
                 self = $(this).closest("Blocks-Input").get(0);
                 if (self.length <= 2) return;
@@ -129,34 +152,49 @@ document.registerElement("Blocks-Input", {
             }
         },
         focus: {
+            /** Focuses on the first not-disabled input in the blocks-input. */
             value: function () {
                 this.inputs.first().focus();
             }
         },
         next: {
+            /** Given a input, returns the successive of that input in this.inputs (visible not-disabled inputs in current blocks-input). */
             value: function (input) {
                 return $(this.inputs[this.inputs.index(input) + 1]);
             }
         },
         prev: {
+            /** Given a input, returns the predecessive of that input in this.inputs (visible not-disabled inputs in current blocks-input). */
             value: function (input) {
                 return $(this.inputs[this.inputs.index(input) - 1]);
             }
         },
         // properties:
-        length: {
+        name: {
+            /** The 'name' html property of the blocks-input. */
             get: function () {
-                return this.inputs.length;
+                return this.native.prop("name");
+            },
+            set: function (val) {
+                this.native.prop("name", val);
+            }
+        },
+        length: {
+            /** The current length of the blocks-input in characters. */
+            get: function () {
+                return this.allInputs.length;
             },
             set: function (len) {
                 self = $(this);
                 while (this.length > len)
                     this.inputs.last().remove();
-                for (var i = this.length; i < len; i++)
+                for (var i = this.length; i < len && this.length < this.maxLength; i++)
                     this.inputsDiv.append(this.newInput());
+                this.updateNative();
             }
         },
         value: {
+            /** The current value of the blocks-input as string. blank inputs value is represented as '?'. */
             get: function () {
                 return (this.allInputs.map(function () {
                     var x = $(this).val();
@@ -171,6 +209,7 @@ document.registerElement("Blocks-Input", {
             }
         },
         disabledValue: {
+            /** Sets the value of the blocks-input to str, disabling every non blank input afterwards */
             set: function (str) {
                 this.value = str;
                 this.inputs.each(function () {
@@ -179,6 +218,7 @@ document.registerElement("Blocks-Input", {
             }
         },
         disabled: {
+            /** Gets or Sets whether all inputs are disabled. */
             get: function () {
                 return this.inputs.toArray().every(function (elem) {
                     return $(elem).prop('disabled');
@@ -190,6 +230,7 @@ document.registerElement("Blocks-Input", {
             }
         },
         fixed: {
+            /** Gets or Sets whether the blocks-input length can change (by up\down arrows or +- buttons), and whether or not the +- buttons is visible. */
             get: function () {
                 return $(this).attr("fixed") == "true";
             },
@@ -207,16 +248,21 @@ document.registerElement("Blocks-Input", {
             }
         },
         wasCreated: {
+            /** Gets whether the blocks-input was initialized by createdCallback. */
             get: function () {
                 return $("input", this).length > 0;
             }
         },
         // events:
         attributeChangedCallback: {
+            /** The Blocks-Input attributeChanged event. */
             value: function (name, previousValue, value) {
                 switch (name) {
                     case "disabled":
                         this.disabled = value;
+                        break;
+                    case "name":
+                        this.name = value;
                         break;
                     case "length":
                         this.length = parseInt(value);

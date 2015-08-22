@@ -1,4 +1,7 @@
-﻿var waitConst = 150, fadeConst = 1000;
+﻿/** some consts: */
+var waitConst = 150, fadeConst = 1000;
+
+/** closes currently visible screen and shows the main menu. */
 function showMain() {
     clearInterval(parseInt($("#timer").attr("timerID")));
     toFade = $("#main>div:not(#main_menu)");
@@ -15,6 +18,7 @@ function showMain() {
     toFade.fadeOut(500);
 }
 
+/** closes the main menu. */
 function hideMain(fun) {
     toHide = $("#main_menu .menu_button");
     toHide.stop(true).each(function (index, elem) {
@@ -23,11 +27,13 @@ function hideMain(fun) {
     $("#main").fadeIn({ queue: false, duration: 500 }).animate({ "margin-top": Math.max(($(window).height() - $("#main").outerHeight()) / 8, 0) }, (toHide.length - 1) * waitConst + fadeConst, fun);
 }
 
+/** stops the game and shows main menu. */
 function StopGame() {
     showMain();
     $("#Game").empty();
 }
 
+/** stops the game and shows the results screen. */
 function finishGame(data, div) {
     clearInterval(parseInt($("#timer").attr("timerID")));
     table = $("<table class=\"niceTable\"/>").append("<th>הגדרה</th><th>תשובתך</th><th>תשובות אפשריות</th><th>ניקוד</th>");
@@ -54,6 +60,7 @@ function finishGame(data, div) {
     });
 }
 
+/** updates the right-bottom timer in game screen. */
 function updateTimer(timer, time) {
     cetiSec = time % 100;
     if (cetiSec < 10) cetiSec = "0" + cetiSec;
@@ -62,6 +69,7 @@ function updateTimer(timer, time) {
     return timer;
 }
 
+/** adds a question to the top of the questions feed in game screen */
 function addQuestionDiv(data, i, div) {
     if (i >= data.length)
         if (div.children().first().is("h3"))
@@ -101,6 +109,8 @@ function addQuestionDiv(data, i, div) {
     }
     div.lavalamp('update');
 }
+
+/** adds a hint to the currently selected question in game screen */
 function addHint() {
     self = $(".current").find("blocks-input").get(0);
     inputs = self.inputs;
@@ -111,6 +121,7 @@ function addHint() {
     $(self).focus();
 }
 
+/** starts the game */
 function StartGame(div, timer, data) {
     time = 6000;
     clearInterval(parseInt($("#timer").attr("timerID")));
@@ -127,6 +138,7 @@ function StartGame(div, timer, data) {
     $("<img alt='רמז' src='graphics/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(addHint);
 }
 
+/** initializing all games components and start the countdown to game start */
 function InitGame() {
     divGame = $("#Game");
     divGame.html($("<h3/>").text("טוען את המשחק...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(300);
@@ -164,6 +176,7 @@ function InitGame() {
     });
 }
 
+/** submit a scoring to the server */
 function SubmitScoring(name, score) {
     $("#scoringBoard").html($("<h3/>").text("מוריד את טבלת המנצחים...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(fadeConst);
     $.get("/ScoringBoard.html", { "name": name || "", "score": score || "" }).done(function (data) {
@@ -176,6 +189,7 @@ function SubmitScoring(name, score) {
     });
 }
 
+/** allows only certain keys to be pressed in inputs [type=text] that match the selector_string */
 function allowOnly(selector_string, allowed) {
     basic = " אבגדהוזחטיכלמנסעפצקרשתךםןףץ";
     // usual awesome gal hack

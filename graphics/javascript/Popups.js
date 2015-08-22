@@ -1,14 +1,17 @@
+/** fixes css issues cannot be solved staticly, like popup position. */
 function fixCssIssues() {
     $("#fancyCloseHolder").css("right", Math.max(0, ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2));
     $("#fancyCloseHolder").css("top", Math.max(0, ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2));
 }
 
+/** close the currently open popup. */
 function closePopup(func) {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
     });
 }
 
+/** open a popup with the content given, and calls onPopupReady when done. */
 function showPopup(content, onPopupReady) {
     if ($("#popupContentHolder").length > 0) //check if there is an open popup
         return $("#popupContentHolder").fadeOut(100, function () {
@@ -30,6 +33,7 @@ function showPopup(content, onPopupReady) {
             $("#popupContentHolder input:first").focus();
     });
 }
+/** activates the popup mechanism. */
 function setPopups() {
     $(document).on("click", ".popup", function (e) {
         e.preventDefault();

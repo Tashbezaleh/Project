@@ -1,10 +1,12 @@
-﻿function fixCSSIssues() {
+﻿/** fixes css issues cannot be solved staticly, like popup, main search form and side menu positions. */
+function fixCSSIssues() {
     $("#fancyCloseHolder").css("right", Math.max(0, ($(window).width() - $("#fancyCloseHolder").outerWidth()) / 2));
     $("#fancyCloseHolder").css("top", Math.max(0, ($(window).height() - $("#fancyCloseHolder").outerHeight()) / 2));
     $("#main_search").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#main_search").outerHeight()) / 2, 0) }, 1000);
     $("#rightColumn").stop(true).animate({ "margin-top": Math.max(($(window).height() - $("#rightColumn").outerHeight()) / 2, 0) }, 1000);
 }
 
+/** takes a jQuery collection and fades them in one by one with nice effect */
 function appear(list, done) {
     done = done || function () { };
     list
@@ -15,6 +17,8 @@ function appear(list, done) {
         $(elem).css({ opacity: 0, marginTop: "+=" + a, visibility: "visible" }).delay(index * 100).animate({ opacity: 1, marginTop: "-=" + a }, 500, done);
     });
 }
+
+/*  // not in use:
 function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
     $(navigation_id).children().each(function (ind, elem) {
         $(elem)
@@ -32,7 +36,7 @@ function slide(navigation_id, pad_hover, timePerAnim, waitPerAnim) {
         }); //elasout?
     });
 }
-/*function sideSlide(father,limit) { //idea only, not yet tested.
+function sideSlide(father,limit) { //idea only, not yet tested.
     $(window).scroll(function () {
         var windowScroll = $(window).scrollTop();
         var menuScrollTop = $(navigation_id).offset().top;
@@ -75,15 +79,16 @@ function zoomResults() {
     fixCSSIssues();
 }
 
+/** return true if pattern is valid and not empty. */
 function checkPatternValid(patternStr) {
-    // return true if pattern is valid and not empty(!)
-    // use $.trim(patternStr)=='' to check if patternStr is empty.
     return !/[^אבגדהוזחטיכלמנסעפצקרשתךםןףץ ?]/.test(patternStr);
 }
 
+/**
+ * This function checks if the search form in index page is valid.
+ * If it isn't, shows a corresponding message.
+*/
 function isSearchFormValid(self) {
-    //This function checks if the search form in index page is valid.
-    //If it isn't, shows a corresponding message.
     $("#searchFormError").empty();
 
     // Definition Input checking
@@ -124,10 +129,11 @@ function isSearchFormValid(self) {
     return true;
 }
 
+/**
+ * This function checks if the add definition form in the popup is valid.
+ * If it isn't, shows a corresponding message.
+*/
 function isAddDefiFormValid(self) {
-    //This function checks if the add definition form in the popup is valid.
-    //If it isn't, shows a corresponding message.
-
     $("#currentPopup #addDefiFormError").empty();
 
     // Definition Input checking
@@ -161,12 +167,14 @@ function isAddDefiFormValid(self) {
     return true;
 }
 
+/** close the currently open popup. */
 function closePopup() {
     $("#currentPopup").children().fadeOut(500, function () {
         $("#currentPopup").empty();
     });
 }
 
+/** open a popup with the content given, and calls onPopupReady when done. */
 function showPopup(content, onPopupReady) {
     $(content).show();
     if ($("#popupContentHolder").length > 0) //check if there is an open popup
@@ -194,45 +202,38 @@ function showPopup(content, onPopupReady) {
             $("#popupContentHolder input:first").focus();
     });
 }
+
+/** activates the popup mechanism. */
 function setPopups() {
     $(document).on("click", ".popup", function (e) {
         e.preventDefault();
         showPopup($($(this).attr('href')).clone(true));
     });
 }
-// function setHelpButtons() {
-//     $("#definitionHelpAnchor").click(function(e) {
-//         e.preventDefault();
-//         showPopup($($(this).attr('href')).html());
-//     });
-//     $("#patternHelpAnchor").click(function(e) {
-//         e.preventDefault();
-//         showPopup($($(this).attr('href')).html());
-//     });
-// }
+/** Default function to be called on ajax failure. */
 function ajaxFail(request, error) {
     alert("אופס! קרתה שגיאה, אנא נסה/י שוב מאוחר יותר");
 }
 
+/** appends the results from the server to the document */
 function searchDone(data) {
-    //do something with server data!
-    //one option is:
-    // we don't want popup
-    //showPopup(data);
-    //the other is:
     $("#results").empty().append(data);
     zoomResults();
 }
+/** appends the results from the server to the document and calls 'appear' for animation */
 function searchDoneAppear(data) {
     searchDone(data);
     appear($("#results table tr"));
 }
+
+/** Submit (using get method) the given values to the given address, and call doneFunc when response arrives. */
 function submitAForm(addr, values, doneFunc) {
     $.get(addr, values)
     .done(doneFunc)
     .fail(ajaxFail);
 }
 
+/** shows the error message in $(selector) if isError is true. */
 function showError(selector, message, isError) {
     elem = $(selector).empty();
     if (isError) {
@@ -245,6 +246,7 @@ function showError(selector, message, isError) {
     }
 }
 
+/** Declares the behavior of form's submit event, for each form in the page. */
 function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
@@ -284,6 +286,7 @@ function expirementWithForms() {
         .fail(ajaxFail);
     });
 }
+/** Submit a rate request from the user to the server. */
 function submitRate(definition, answer, pattern, button) {
     submitAForm("result_action", {
         "definition": definition,
@@ -297,6 +300,7 @@ function submitRate(definition, answer, pattern, button) {
     $(button).closest("td").html("<b style='color: rgb(249,59,151);'>תודה על תרומתך!</b>");
 }
 
+/** allows only certain keys to be pressed in inputs [type=text] that match the selector_string */
 function allowOnly(selector_string, allowed, error_div) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
@@ -306,6 +310,7 @@ function allowOnly(selector_string, allowed, error_div) {
     });
 }
 
+/** Causes the main search form to submit with the given values */
 function searchDefi(definition, pattern) {
     $("#definition").val(definition);
     $("#pattern").val(pattern);

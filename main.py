@@ -147,12 +147,20 @@ class HelpHandler(webapp2.RequestHandler):
 
 class ForumsHandler(webapp2.RequestHandler):
     def get(self):
+        """
+        uses /template/forums.html template, and renders into it the forum feed with the last forumsUtils.MAX_QUESTIONS_TO_SHOW questions and their comments.
+        each element in the feed is a list [name,question,pattern,desc,comments,urlsafe].
+        also renders the python built-in enumerate function, in order to use it in jinja during page render.
+        """
         template_values = { "feed" : forumsUtils.get_questions_feed(), "enumerate":enumerate }
         template = JINJA_ENVIRONMENT.get_template('/templates/forums.html')
         self.response.write(template.render(template_values))
         
 class AddQuestionHandler(webapp2.RequestHandler):
     def get(self):
+        """
+        handles add question to forum feed request. adds the question and returns a proper message to the user.
+        """
         name,question,pattern,description = map(cgi.escape, (self.request.get('name'),
                                                              self.request.get('question'),
                                                              self.request.get('pattern'),
@@ -162,6 +170,11 @@ class AddQuestionHandler(webapp2.RequestHandler):
 
 class AddCommentHandler(webapp2.RequestHandler):
     def get(self):
+        """
+        handles add comment to a question (in forum) request.
+        in addition, adds the answer to the search DB of the website.
+        returns a proper message to the user.
+        """
         questionID,name,answer,description = map(lambda x: cgi.escape(self.request.get(x)), ('questionID', 'name', 'answer', 'description'))        
         if forumsUtils.add_comment(questionID,name,answer,description):
             if AddToDB(self, databaseUtils.Answer(answer.encode('utf'), ndb.Key(urlsafe=questionID).get().question, name, 0, 1)):

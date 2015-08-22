@@ -1,9 +1,11 @@
+/** Submit (using get method) the given values to the given address, and call doneFunc when response arrives. */
 function submitAForm(addr, values, doneFunc) {
     $.get(addr, values)
     .done(doneFunc)
     .fail(ajaxFail);
 }
 
+/** Declares the behavior of form's submit event, for each form in the page. */
 function expirementWithForms() {
     $("#add_question form").submit(function (e) {
         e.preventDefault();

@@ -1,18 +1,21 @@
+/** Default function to be called on ajax failure. */
 function ajaxFail(request, error) {
     alert("אופס! קרתה שגיאה, אנא נסה/י שוב מאוחר יותר");
 }
 
 
+/** Submit (using get method) the given values to the given address, and call doneFunc when response arrives. */
 function submitAForm(addr, values, doneFunc) {
     $.get(addr, values)
     .done(doneFunc)
     .fail(ajaxFail);
 }
 
+/**
+ * This function checks if the add question form in the popup is valid.
+ * If it isn't, shows a corresponding message.
+*/
 function isQuestionFormValid(self) {
-    //This function checks if the add question form in the popup is valid.
-    //If it isn't, shows a corresponding message.
-
     $("#addQuesFormError", self).empty();
 
     // Question Input checking
@@ -46,10 +49,11 @@ function isQuestionFormValid(self) {
     return true;
 }
 
+/**
+ * This function checks if the add comment form in the accordion is valid.
+ * If it isn't, shows a corresponding message.
+*/
 function isCommentFormValid(self) {
-    //This function checks if the add comment form in the accordion is valid.
-    //If it isn't, shows a corresponding message.
-
     $(".error", self).empty();
 
     //Answer input checking
@@ -70,6 +74,7 @@ function isCommentFormValid(self) {
     return true;
 }
 
+/** Declares the behavior of form's submit event, for each form in the page. */
 function initializeForms() {
     $(document).on("submit", "#add_que_form", function (e) {
         e.preventDefault();
@@ -88,8 +93,8 @@ function initializeForms() {
     });
 }
 
+/** retrieving variable from the url. note: use decodeURI on output. */
 function getQueryVariable(variable) {
-    //retrieving variable from the url
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
@@ -101,6 +106,7 @@ function getQueryVariable(variable) {
     return "";
 }
 
+/** shows the error message in $(selector) if isError is true. */
 function showError(selector, message, isError) {
     elem = $(selector).empty();
     if (isError) {
@@ -113,6 +119,7 @@ function showError(selector, message, isError) {
     }
 }
 
+/** allows only certain keys to be pressed in inputs [type=text] that match the selector_string */
 function allowOnly(selector_string, allowed, error_div) {
     basic = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ \r";
     // usual awesome gal hack
@@ -121,6 +128,7 @@ function allowOnly(selector_string, allowed, error_div) {
         return showError(error_div, "תו זה אינו חוקי!", (basic + allowed).indexOf(String.fromCharCode(e.which)) < 0);
     });
 }
+
 
 $(document).ready(function () {
     initializeForms();
