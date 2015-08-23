@@ -16,6 +16,7 @@ def del_from_cookies(self, answer):
     self.request.cookies.pop(identifier)
     
 def convert_Answer_to_identifier(answer):
+    ''' converts answer to it's identifier '''
     return quote(fix_encoding(answer.definition)) + '+' + quote(fix_encoding(answer.answer))
 
 def rate_cookie(self, answer, rate):
