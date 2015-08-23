@@ -14,8 +14,6 @@ NUMBER_OF_PARTS = 20
 DEFINTIONS_FILE_NUMBER_OF_LINES = 12810
 
 class Answer:
-	# Models an individual answer
-	# Isn't uploaded to the server
 	def __init__(self, answer, definition, source, total_stars, raters_count):
 		self.answer = answer
 		self.definition = definition
@@ -31,7 +29,6 @@ class Answer:
 
 class NDBAnswer(ndb.Model):
     # """Models an individual answer entry with ranking and source"""
-    # functions as an ndb model and is uploaded to the data-base
     answer = ndb.StringProperty()
     definition = ndb.StringProperty()
     source = ndb.StringProperty(indexed = False)
@@ -44,7 +41,6 @@ class NDBAnswer(ndb.Model):
     	return cls.query(cls.definition == urllib.quote(new_definition.encode('utf'))).order(-cls.total_stars * 1.0 / cls.raters_count)
 
 def NDBAnswer_to_Answer(ndb_answer):
-	#Converts an ndb_answer to Answer
 	return Answer(urllib.unquote(str(ndb_answer.answer)), \
 				  urllib.unquote(str(ndb_answer.definition)), \
 				  urllib.unquote(str(ndb_answer.source)), \
@@ -52,13 +48,11 @@ def NDBAnswer_to_Answer(ndb_answer):
                   ndb_answer.raters_count)
 
 def Answer_to_NDBAnswer(answer):
-	#converts answer to ndb_answer
 	return create_NDBAnswer(answer.answer, answer.definition, \
 								answer.source, answer.total_stars, answer.raters_count)
 
 
 def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
-	#creates an ndb_answer acording the given parms. also makes sure the parms are in the right encoding
 	return NDBAnswer(answer=urllib.quote(fix_encoding(answer)), \
 					 definition=urllib.quote(fix_encoding(definition)), \
 					 source=urllib.quote(fix_encoding(source)), \
@@ -66,7 +60,6 @@ def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
                      raters_count=raters_count)
 
 def add_to_ndb(definition, answer, source, total_stars, raters_count):
-	#adds a answer to the data base.
     if not answer_exists(definition, answer):
         entry = create_NDBAnswer(answer, definition, source, total_stars, raters_count)
         recentActivityUtils.add_ra(recentActivityUtils.ADD_DEFI_TYPE, [definition, answer, source])
@@ -76,7 +69,7 @@ def add_to_ndb(definition, answer, source, total_stars, raters_count):
 
 def text_to_database_part(part):
 	# """reads the entities from solver.defs_to_sols and store them in ndb"""
-	# the input indicates which part of the database to upload
+	# the input indicated which part of the database to upload
 	defs = ''
 	ls = []
 	with open((r'definitions.txt'), 'rb') as f:
@@ -84,6 +77,11 @@ def text_to_database_part(part):
 		defs = "".join(f.readlines()[(part - 1) * (part_size) : part * part_size])
 
 	defs_to_sols = {l.split('-')[0].strip(): map(str.strip, l.split('-')[1].split(';')) for l in defs.split('\n')[:-1]}
+	
+	# peleg's.  maybe it checks if the first new entry is in the db, and if so it
+	# returns
+	# if answer_exists(defs_to_sols.items()[0][0], defs_to_sols.items()[0][1][0]):
+	# 	return
 
 	for definition in defs_to_sols:
 		for sol in defs_to_sols[definition]:
@@ -99,7 +97,6 @@ def find_in_ndb(definition, guess):
 	return sorted(list(set(answers)), key=lambda ans: 1.0 * ans.total_stars / ans.raters_count, reverse=True)
 
 def rate_to_ndb(definition, answer, rate, prev_rate=0, source=SOLVER_NAME):
-	''' preforms a rating action in the data-base'''
     if rate not in xrange(1, 6):
         return False
     tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0, 1)
@@ -117,7 +114,6 @@ def rate_to_ndb(definition, answer, rate, prev_rate=0, source=SOLVER_NAME):
     return False
     
 def answer_exists(definition, answer):
-	# returns whether an answer exists in the data-base
 	tmp_answer = create_NDBAnswer(fix_encoding(answer), fix_encoding(definition), '', 0, 1)
 	entities = NDBAnswer.query(ndb.AND(NDBAnswer.answer == tmp_answer.answer, \
 									 NDBAnswer.definition == tmp_answer.definition))
@@ -125,7 +121,6 @@ def answer_exists(definition, answer):
 
 
 def clean_db():
-	#cleans the db
 	# it has intentionally the same line twice
 	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
 	ndb.delete_multi(NDBAnswer.query().fetch(keys_only=True))
