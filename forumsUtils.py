@@ -82,6 +82,9 @@ def add_comment(QuestionURL, name, answer, description):
     if (name==''):
         name = 'אנונימי'
     question = ndb.Key(urlsafe=QuestionURL).get()
+    description = description.strip()
+    if len(description) != 0:
+        description = '"'+description+'"'
     if good_answer(question.pattern,answer):
         comments = question.comments
         new_comment = Comment.create(name,answer,description, 1 + max(map(lambda x:x.commentID,comments)) if comments else 0)
