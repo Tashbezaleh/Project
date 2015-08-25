@@ -14,11 +14,11 @@ ADD_DEFI_FUNC = "searchDefi('%s', '%s')"
 
 SCORING_BOARD_TYPE = 2 # args: [name, score]
 SCORING_BOARD_TEMPLATE = "<h3>שיא חדש!</h3> <i>%s</i> זכה בניקוד <i>%s</i> במשחק תשבצל'ה"
-SCORING_BOARD_FUNC = "window.location='\MiniGame.html'"
+SCORING_BOARD_FUNC = "window.location='/MiniGame.html'"
 
 NEW_QUESTION_TYPE = 3 # args: [name, question, pattern]
 NEW_QUESTION_TEMPLATE = "<h3>שאלה חדשה בפורום!</h3> <i>%s</i> שאל בפורום לגבי ההגדרה <i>%s</i> עם התבנית <i>%s</i>"
-NEW_QUESTION_FUNC = "window.location='\forums.html'"
+NEW_QUESTION_FUNC = "window.location='/forums.html'"
 
 STRING_TYPE = 9 # just prints its args[0]
  
