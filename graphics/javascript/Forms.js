@@ -10,7 +10,7 @@ function expirementWithForms() {
     $("#add_question form").submit(function (e) {
         e.preventDefault();
         if (isFormValid(this)) {
-            $("#results").empty().append('<img src="graphics/spinner.gif" />');
+            $("#results").empty().append('<img src="graphics/images/spinner.gif" />');
             fixCSSIssues();
             appear($("#results").children());
             submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
@@ -24,7 +24,7 @@ function expirementWithForms() {
             $("#popupContentHolder").fadeIn({
                 duration: 500,
                 start: function () {
-                    $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
+                    $(this).empty().html("<img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
                     fixCSSIssues();
                 }
             });
@@ -44,7 +44,7 @@ function expirementWithForms() {
                 $("#popupContentHolder").fadeOut(500).fadeIn({
                     duration: 500,
                     start: function () {
-                        $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך נשלחה ותענה בהקדם</h3>");
+                        $(this).empty().html("<img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>הודעתך נשלחה ותענה בהקדם</h3>");
                         fixCSSIssues();
                     }
                 });

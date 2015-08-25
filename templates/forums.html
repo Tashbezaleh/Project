@@ -16,7 +16,7 @@
 </head>
 <body>
     <center>
-        <img src="graphics/images/forum/forum_logo.png" alt="הפורום של תשבצל'ה" id="logo">
+        <img src="graphics/images/logos/forum_logo.png" alt="הפורום של תשבצל'ה" id="logo">
         <br />
     </center>
     {% if feed %}
@@ -39,6 +39,7 @@
                 <br />
                 <img src="graphics/images/forum/add_comment.png" style="
                     text-align: right;
+                    cursor: pointer;
                     display: inline;" onclick="$('#add_comment_{{questionID}}').toggle(200)">
                 <br />
                 <form action="addComment.html" class="nice" style="display:none; width:80%; text-align:center;" id="add_comment_{{questionID}}">
@@ -112,12 +113,12 @@
                         </tr>
                     </tbody>
                 </table>
-                תיאור:<br/>
-                <textarea name="description" class="add_q_boxes" style="width:60%; height:70px; overflow:auto;"></textarea><br/>
+                תיאור:<br />
+                <textarea name="description" class="add_q_boxes" style="width:60%; height:70px; overflow:auto;"></textarea><br />
                 <div id="addQuesFormError" class="error">
                     <br />
                 </div>
-                <br/>
+                <br />
                 <input type="submit" class="add_q_boxes" value="הוסף!" />
             </form>
         </div>

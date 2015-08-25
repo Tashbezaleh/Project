@@ -20,7 +20,7 @@ function showPopup(content, onPopupReady) {
             $("#popupContentHolder").css("top", "-=30").animate({ top: "+=30" }, 500);
         });
     $("#currentPopup").append("<div id='blackblock'></div>");
-    $("#currentPopup").append("<div id='fancyCloseHolder'><img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><div id='popupContentHolder'></div></div>");
+    $("#currentPopup").append("<div id='fancyCloseHolder'><img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><div id='popupContentHolder'></div></div>");
     $("#popupContentHolder").append($(content).show(0));
     $("#blackblock").click(closePopup).fadeIn(500, function () {
         $("#popupContentHolder").fadeIn({ queue: false, duration: 500 });

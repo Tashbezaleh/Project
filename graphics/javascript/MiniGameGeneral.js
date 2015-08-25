@@ -51,7 +51,7 @@ function finishGame(data, div) {
         Score += userScore;
     });
     $("#Game").fadeOut(100, function () {
-        $(this).html(table).prepend("<br/>").prepend($("<div id='restartButton' class='menu_button'>שחק שוב!<br/><br/><img src='graphics/play.jpg' height='50'></div>").click(InitGame)).append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/><h4>הכנס את התוצאה שלך לטבלת המנצחים!</h4>שם:<br/>")
+        $(this).html(table).prepend("<br/>").prepend($("<div id='restartButton' class='menu_button'>שחק שוב!<br/><br/><img src='graphics/images/game/play.jpg' height='50'></div>").click(InitGame)).append("<br/> ציונך הוא: <b>" + Score + "</b><br/><br/><h4>הכנס את התוצאה שלך לטבלת המנצחים!</h4>שם:<br/>")
         .append($("<form/>").append("<input id='name' class='nice'/><br/><br/><input type='submit' value='שלח!' class='nice'/>").submit(function (e) {
             e.preventDefault();
             SubmitScoring($.trim($("#name").val()), Score);
@@ -135,13 +135,13 @@ function StartGame(div, timer, data) {
     div.lavalamp({ enableHover: false });
     addQuestionDiv(data, 0, div);
     div.data('active', $(".current").first()).lavalamp('update');
-    $("<img alt='רמז' src='graphics/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(addHint);
+    $("<img alt='רמז' src='graphics/images/game/help-hint.png' />").appendTo($(".lavalamp-object")).css({ height: "60%", top: "20%", position: "relative", float: "right", cursor: "pointer", left: "68px" }).click(addHint);
 }
 
 /** initializing all games components and start the countdown to game start */
 function InitGame() {
     divGame = $("#Game");
-    divGame.html($("<h3/>").text("טוען את המשחק...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(300);
+    divGame.html($("<h3/>").text("טוען את המשחק...")).append("<img src='graphics/images/game/MG_Spinner.gif' />").fadeIn(300);
     $.get("/getDefinitions.html")
     .done(function (str) {
         if (divGame.is(':empty')) return; //this means 'return to main menu' called before ajax finished.
@@ -178,7 +178,7 @@ function InitGame() {
 
 /** submit a scoring to the server */
 function SubmitScoring(name, score) {
-    $("#scoringBoard").html($("<h3/>").text("מוריד את טבלת המנצחים...")).append("<img src='graphics/MG_Spinner.gif' />").fadeIn(fadeConst);
+    $("#scoringBoard").html($("<h3/>").text("מוריד את טבלת המנצחים...")).append("<img src='graphics/images/game/MG_Spinner.gif' />").fadeIn(fadeConst);
     $.get("/ScoringBoard.html", { "name": name || "", "score": score || "" }).done(function (data) {
         $("#scoringBoard").stop().fadeOut(300, function () {
             $(this).html(data).fadeIn(300);

@@ -4,7 +4,7 @@
 }
 
 body {
-    background-image: url("/graphics/images/forum/white_brick_wall.png");
+    background-image: url("/graphics/images/backgrounds/white_brick_wall.png");
 }
 
 img {
@@ -14,11 +14,11 @@ img {
 }
 
 .qtext {
-    -webkit-box-sizing:border-box; 
-    -moz-box-sizing:border-box; 
-    box-sizing:border-box;
-    box-shadow:0px 0px 0px 2px gray;
-    border-radius:3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 0px 2px gray;
+    border-radius: 3px;
     width: 80%;
     padding: 10px;
     background-color: white;
@@ -30,7 +30,7 @@ img {
 }
 
 div {
-    text-indent:inherit;
+    text-indent: inherit;
 }
 
 h4 {
@@ -38,7 +38,7 @@ h4 {
     font-family: arial;
     font-weight: normal;
     font-size: 20px;
-    line-height:1;
+    line-height: 1;
 }
 
 Blocks-Input {
@@ -51,16 +51,16 @@ Blocks-Input {
 }
 
 .accordion, .accordion * {
-    -webkit-box-sizing:border-box; 
-    -moz-box-sizing:border-box; 
-    box-sizing:border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .accordion {
-    overflow:hidden;
-    box-shadow:0px 1px 3px rgba(0,0,0,0.25);
-    border-radius:3px;
-    background:#f7f7f7;
+    overflow: hidden;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.25);
+    border-radius: 3px;
+    background: #f7f7f7;
     width: 50%;
     margin-right: auto;
     margin-left: auto;
@@ -68,23 +68,23 @@ Blocks-Input {
 
 /*----- Section Titles -----*/
 .accordion-section-title {
-    width:100%;
-    padding:15px;
-    display:inline-block;
-    border-bottom:1px solid #1a1a1a;
-    background:#9197a3  ;
-    transition:all linear 0.15s;
+    width: 100%;
+    padding: 15px;
+    display: inline-block;
+    border-bottom: 1px solid #1a1a1a;
+    background: #9197a3;
+    transition: all linear 0.15s;
     /* Type */
-    font-size:25px;
-    text-shadow:0px 1px 0px #1a1a1a;
-    color:#fff;
+    font-size: 25px;
+    text-shadow: 0px 1px 0px #1a1a1a;
+    color: #fff;
     text-decoration: none;
 }
 
-.accordion-section-title.active, .accordion-section-title:hover {
-    /* Type */
-    text-decoration: none;
-}
+    .accordion-section-title.active, .accordion-section-title:hover {
+        /* Type */
+        text-decoration: none;
+    }
 
 
 .accordion-section:last-child .accordion-section-title {
@@ -93,45 +93,44 @@ Blocks-Input {
 
 /*----- Section Content -----*/
 .accordion-section-content {
-    padding:15px;
-    display:none;
+    padding: 15px;
+    display: none;
 }
 
 ul {
     list-style: none;
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
 }
 
-li { 
+li {
     padding-right: 1em;
     text-indent: -.7em;
     margin: 1em 0em 1em 0em;
 }
 
-li:nth-child(3n+0):before {
-    content: "• ";
-    color: rgb(252,207,65);
-}
+    li:nth-child(3n+0):before {
+        content: "• ";
+        color: rgb(252,207,65);
+    }
 
-li:nth-child(3n+1):before {
-    content: "• ";
-    color: rgb(55,184,155);
-}
+    li:nth-child(3n+1):before {
+        content: "• ";
+        color: rgb(55,184,155);
+    }
 
-li:nth-child(3n+2):before {
-    content: "• ";
-    color: rgb(255,152,44);
-}
+    li:nth-child(3n+2):before {
+        content: "• ";
+        color: rgb(255,152,44);
+    }
 
 .response {
     width: 75%;
-    -webkit-box-sizing:border-box; 
-    -moz-box-sizing:border-box; 
-    box-sizing:border-box;
-    box-shadow:0px 0px 0px 1px rgba(0,0,0,0.25);
-    border-radius:3px;
-
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.25);
+    border-radius: 3px;
 }
 
 #back {

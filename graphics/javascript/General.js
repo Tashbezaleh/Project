@@ -184,7 +184,7 @@ function showPopup(content, onPopupReady) {
         });
     $("#currentPopup").append("<div id='blackblock'></div>");
     $("#blackblock").click(closePopup).fadeIn(500, function () {
-        $("#currentPopup").append("<div id='fancyCloseHolder'><img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><div id='popupContentHolder'></div></div>");
+        $("#currentPopup").append("<div id='fancyCloseHolder'><img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><div id='popupContentHolder'></div></div>");
         if (scale_factor < 1) {
             scale_factor = 1 / scale_factor;
             $("#small_x").each(zoomImage);
@@ -251,7 +251,7 @@ function expirementWithForms() {
     $("#main_search form").submit(function (e) {
         e.preventDefault();
         if (isSearchFormValid(this)) {
-            $("#results").empty().append('<img src="graphics/spinner.gif" />');
+            $("#results").empty().append('<img src="graphics/images/spinner.gif" />');
             fixCSSIssues();
             appear($("#results").children());
             submitAForm($(this).attr("action"), $(this).serialize(), searchDoneAppear);
@@ -278,7 +278,7 @@ function expirementWithForms() {
                     duration: 500,
                     start: function () {
                         msg = data == "sent" ? "הודעתך נשלחה ותענה בהקדם" : "אירעה שגיאה, הודעתך לא נשלחה";
-                        $(this).empty().html("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + msg + "</h3>");
+                        $(this).empty().html("<img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + msg + "</h3>");
                         fixCSSIssues();
                     }
                 });

@@ -37,7 +37,7 @@
             <fieldset class="rating">
                 {% for i in range(5, 0, -1) %} <!-- for some reason it is reversed, probably rtl shit, but that fixes it-->
                 <input type="radio" id="star{{ i }}_{{ answer }}" name="rating_{{ answer }}" value="rate{{ i }}"
-                       onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars==i %} checked {% endif %} />
+                       onclick="submitRate('{{ definition }}', '{{ answer }}', '{{ pattern }}', this); return false;" {% if int_stars= =i %} checked {% endif %} />
                 <label class="full" for="star{{ i }}_{{ answer }}" title="{{ stars }} כוכבים מאת {{ entry.raters_count }} מדרגים"></label>
                 {% endfor %}
             </fieldset>
@@ -50,10 +50,10 @@
         </td>
         <td>
             <a href="http://www.google.co.il/search?q={{ '+'.join(answer.split()) }}" target="_blank">
-                <img src="graphics/google_icon.jpg" class="infoIcon" title='חפש את "{{ answer }}" בגוגל' />
+                <img src="graphics/images/buttons/google_icon.jpg" class="infoIcon" title='חפש את "{{ answer }}" בגוגל' />
             </a>
             <a href="http://he.wikipedia.org/wiki/{{ '_'.join(answer.split()) }}" target="_blank">
-                <img src="graphics/wiki_icon.jpg" class="infoIcon" title='קרא על "{{ answer }}" בויקיפדיה' />
+                <img src="graphics/images/buttons/wiki_icon.jpg" class="infoIcon" title='קרא על "{{ answer }}" בויקיפדיה' />
             </a>
         </td>
     </tr>
@@ -69,6 +69,6 @@
 <br />
 <br />
 <a href="#resultsHelp" class="popup">
-    <img src="graphics/question_mark.png" style="width: 48px;">
+    <img src="graphics/images/buttons/question_mark.png" style="width: 48px;">
 </a>
 <br />

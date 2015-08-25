@@ -88,7 +88,7 @@ function initializeForms() {
         e.preventDefault();
         if (!isCommentFormValid(this)) return;
         submitAForm($(this).attr("action"), $(this).serialize(), function (data) {
-            showPopup("<img src='graphics/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
+            showPopup("<img src='graphics/images/buttons/fancy_close.png' id='small_x' width='30px' alt='' onclick='closePopup()' /><h3>" + data + "</h3>");
         });
     });
 }
