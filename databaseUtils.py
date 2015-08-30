@@ -58,7 +58,8 @@ def Answer_to_NDBAnswer(answer):
 
 
 def create_NDBAnswer(answer, definition, source, total_stars, raters_count):
-	#creates an ndb_answer acording the given parms. also makes sure the parms are in the right encoding
+	#creates an ndb_answer acording the given parms.  also makes sure the parms
+	#are in the right encoding
 	return NDBAnswer(answer=urllib.quote(fix_encoding(answer)), \
 					 definition=urllib.quote(fix_encoding(definition)), \
 					 source=urllib.quote(fix_encoding(source)), \
@@ -94,11 +95,18 @@ def text_to_database_part(part):
 	ndb.put_multi(ls)
 
 def find_in_ndb(definition, guess):
-	'''Returns a list of Answers to definition that match guess'''
-	qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(fix_encoding(definition)))
-	answers = filter(lambda x: guess.match(x.answer),\
+    '''Returns a list of Answers to definition that match guess'''
+
+    # stupid regex hack to stupidly solve stupid bug (force answer match the
+    # pattern exactly instead of a substring)
+    pat = guess.pattern
+    pat = pat[pat.find(')') + 1: pat.rfind('(')]
+    guess = re.compile('^' + pat + '$', re.UNICODE)
+
+    qry = NDBAnswer.query(NDBAnswer.definition == urllib.quote(fix_encoding(definition)))
+    answers = filter(lambda x: guess.match(x.answer),\
 					map(NDBAnswer_to_Answer, qry.fetch()))
-	return sorted(list(set(answers)), key=lambda ans: 1.0 * ans.total_stars / ans.raters_count, reverse=True)
+    return sorted(list(set(answers)), key=lambda ans: 1.0 * ans.total_stars / ans.raters_count, reverse=True)
 
 def rate_to_ndb(definition, answer, rate, prev_rate=0, source=SOLVER_NAME):
 	# preforms a rating action in the data-base

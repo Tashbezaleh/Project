@@ -58,7 +58,14 @@ def get_search_results(s, hebrew=True):
 
 def find_online(definition, guess):
     '''Searches for 'definition' in google and then scans for 'guess' (compiled regex).'''
-    links = get_search_results(fix_encoding(definition))[:MAX_RESULTS_TO_SEARCH]
+
+    # repeating tries to search google in case of a block
+    links = []
+    i = 0
+    while i < 3 and not links:
+        links = get_search_results(fix_encoding(definition))[:MAX_RESULTS_TO_SEARCH]
+        i += 1
+
     histogram = dict()
     lock = Lock()
     # a function to download the webpages and add them to hist in parallel
@@ -100,6 +107,7 @@ def find_online(definition, guess):
 ##    total = sum(f for (w, f) in lst)
 ##    return sorted([(w, 100.0 * f / total) for (w,f) in lst], key = lambda t:
 ##    -t[1])
+
 def find(definition, guess):
     off_lst = databaseUtils.find_in_ndb(definition, guess)
     for e in off_lst[:NUM_OF_SOLS_TO_SHOW]:
