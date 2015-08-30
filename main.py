@@ -1,20 +1,5 @@
 # -*- coding: utf-8 -*-
 
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the 'License');
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an 'AS IS' BASIS,
-# WITHOUT WARRANTIES OR COsNDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 from google.appengine.api import users, mail
 from google.appengine.ext import ndb
 
@@ -124,18 +109,6 @@ class ScoringBoardHandler(webapp2.RequestHandler):
         sb = [(i + 1, t[0], t[1]) for i,t in enumerate(sb)]
         template_values = { "scoring" : sb }
         template = JINJA_ENVIRONMENT.get_template('/templates/ScoringBoard.html')
-        self.response.write(template.render(template_values))
-
-class FacebookHandler(webapp2.RequestHandler):
-    def get(self):
-        # uses /template/facebook.html template, and renders into it
-        # definitions_list which is a list of
-        # minigamesUtils.NUMBER_OF_DEFINTION_ANSWER_PAIRS_TO_RETURN
-        # definitions.  each element in the list is a pair of a definition and
-        # an array of possible answers
-        # make sure the facebook-app's url is matches the running one
-        template_values = {}
-        template = JINJA_ENVIRONMENT.get_template('/templates/facebook.html')
         self.response.write(template.render(template_values))
 
 class HelpHandler(webapp2.RequestHandler):
@@ -292,11 +265,10 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 app = webapp2.WSGIApplication([('/', MainHandler),
     ('/results.html', ResultsHandler),
     ('/result_action', ResultActionHandler), 
-    ('/reset_db.html', ResetDBHandler),
+    #('/reset_db.html', ResetDBHandler),
     ('/getDefinitions.html', MinigameDefinitionsHandler),
     ('/ScoringBoard.html', ScoringBoardHandler),
     ('/MiniGame.html', MiniGameHandler),
-    ('/facebook.html', FacebookHandler),
     ('/help.html',HelpHandler),
     ('/addQuestion.html',AddQuestionHandler),
     ('/addComment.html',AddCommentHandler),

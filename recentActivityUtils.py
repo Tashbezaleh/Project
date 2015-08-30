@@ -6,6 +6,14 @@ import webapp2, cgi, re
 import urllib
 from encodingUtils import fix_encoding
 
+# This is the code used for the news feed in the main page.
+# How does it work?
+# Every activity has its type (someone added definition, someone won the game and etc.)
+# Every type has its own template.
+# When new activity happens, we call the function add_ra with its type and parameters.
+# It is being formatted due to the type's template and inserted into NDB.
+# It is stored in NDB as (ID, description, on_click func)
+
 ACTIVITIES_LIST = 'activities_list'
 
 ADD_DEFI_TYPE = 1 # args: [definition, answer, source]
@@ -26,7 +34,7 @@ MAX_ACTIVITIES = 10 # number of maximum activities shown
 
 # ra - recent activity
 # activity - tuple of activity type number and activity args.
-# every activity type has its own parser
+# every activity type has its own parser (in parse_ra_string).
 
 class Activity(ndb.Model):
 	activityID = ndb.IntegerProperty()
@@ -38,15 +46,18 @@ class Activity(ndb.Model):
 		return Activity(activityID=activityID, description=fix_encoding(description), onclick_func=fix_encoding(onclick_func))
 
 def get_raw_ra_feed():
+	# get the list of the activities which is in NDB
 	return Activity.query().order(-Activity.activityID).fetch(MAX_ACTIVITIES)
 
 def get_ra_feed():
+	# get a list of all of the recent activities. 
 	ra_feed = map(lambda x: (fix_encoding(x.description), fix_encoding(x.onclick_func)), get_raw_ra_feed())
 	if not ra_feed:
 		return [(fix_encoding('אין חדשות בינתיים'), "")]
 	return ra_feed
 
 def add_ra(act_type, args):
+	# adds the give activity to NDB after parsing it.
 	description, onclick_func = parse_ra_string(act_type, args)
 	activities = get_raw_ra_feed()
 	new_activity = Activity.create(1 + max(map(lambda x:x.activityID, activities)) if activities else 0, description, onclick_func)
@@ -54,6 +65,7 @@ def add_ra(act_type, args):
 	return [new_activity] + activities
 
 def parse_ra_string(act_type, args):
+	# given the activity type, formatting the arguments and template before inserting NDB.
 	if act_type == 1:
 		# Add Definition
 		description = fix_encoding(ADD_DEFI_TEMPLATE%(fix_encoding(args[2]), fix_encoding(args[0]), fix_encoding(args[1])))
